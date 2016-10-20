@@ -20,7 +20,7 @@ public class DisplayManager {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("GAMETITEL");
+			Display.setTitle("GAMETITLE");
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}	
