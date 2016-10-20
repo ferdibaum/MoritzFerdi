@@ -8,6 +8,11 @@ import renderEngine.RawModel;
 import renderEngine.Renderer;
 import shaders.StaticShader;
 
+
+/// TO_DO:  3, 4, 5
+
+
+
 public class MainGameLoop {
 	
 	public static void main(String[] args) {
