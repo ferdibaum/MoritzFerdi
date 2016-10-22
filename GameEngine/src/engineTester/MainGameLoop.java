@@ -2,11 +2,13 @@ package engineTester;
 
 import org.lwjgl.opengl.Display;
 
+import Models.RawModel;
+import Models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
-import renderEngine.RawModel;
 import renderEngine.Renderer;
 import shaders.StaticShader;
+import textures.ModelTexture;
 
 
 /// TO_DO:  3, 4, 5
@@ -34,13 +36,22 @@ public class MainGameLoop {
 				3,1,2
 		};
 		
-		RawModel model = loader.loadToVAO(vertices, indices);
+		float[] texturedCoords = {
+			0,0,
+			0,1,
+			1,1,
+			1,0
+		};
+		
+		RawModel model = loader.loadToVAO(vertices, texturedCoords, indices);
+		ModelTexture texture = new ModelTexture(loader.loadTexture("Untitled"));
+		TexturedModel texturedModel = new TexturedModel(model, texture);
 		
 		while(!Display.isCloseRequested()){
 			//gameLogic
 			renderer.prepare();
 			shader.start();
-			renderer.render(model);
+			renderer.render(texturedModel);
 			shader.stop();
 			DisplayManager.updateDisplay();
 			
