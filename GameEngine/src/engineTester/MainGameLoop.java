@@ -28,7 +28,6 @@ public class MainGameLoop {
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 		
-		
 		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("Untitled")));
 		ModelTexture texture = staticModel.getTexture();
 		texture.setShineDamper(10);
@@ -42,7 +41,7 @@ public class MainGameLoop {
 		
 		while(!Display.isCloseRequested()){
 			//gameLogic
-			//entity.increasePosition(0, 0, -0.001f);fd
+			//entity.increasePosition(0, 0, -0.001f);
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
 			renderer.prepare();
