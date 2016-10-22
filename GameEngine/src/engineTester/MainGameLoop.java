@@ -31,7 +31,7 @@ public class MainGameLoop {
 		ModelTexture texture = new ModelTexture(loader.loadTexture("Untitled"));
 		
 		TexturedModel staticModel = new TexturedModel(model, texture);
-		ModelTexture texture = staticModel.getTexture();
+		ModelTexture staticTexture = staticModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
 		
