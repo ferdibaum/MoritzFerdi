@@ -39,7 +39,7 @@ public class MainGameLoop {
 		
 		while(!Display.isCloseRequested()){
 			//gameLogic
-			//entity.increasePosition(0, 0, -0.001f);
+			//entity.increasePosition(0, 0, -0.001f);fd
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
 			renderer.prepare();
