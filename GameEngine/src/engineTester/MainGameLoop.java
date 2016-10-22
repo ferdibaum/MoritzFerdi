@@ -25,7 +25,7 @@ public class MainGameLoop {
 		Renderer renderer = new Renderer(shader);
 		
 		
-		RawModel model = OBJLoader.loadObjModel("", loader);
+		RawModel model = OBJLoader.loadObjModel("teamonster_teamonster_ishtarian_soldier", loader);
 		
 		ModelTexture texture = new ModelTexture(loader.loadTexture("Untitled"));
 		
