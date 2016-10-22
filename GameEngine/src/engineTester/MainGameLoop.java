@@ -11,10 +11,6 @@ import shaders.StaticShader;
 import textures.ModelTexture;
 
 
-/// TO_DO:  3, 4, 5
-
-
-
 public class MainGameLoop {
 	
 	public static void main(String[] args) {
