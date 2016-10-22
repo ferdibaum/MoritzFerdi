@@ -27,7 +27,7 @@ public class Loader {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indicies);
 		storeDataInAttributeList(0,3, positions);
-		storeDataInAttributeList(0,2, textureCoords);
+		storeDataInAttributeList(1,2, textureCoords);
 		unbindVAO();
 		return new RawModel(vaoID,indicies.length);
 	}
