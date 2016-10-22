@@ -28,7 +28,6 @@ public class MainGameLoop {
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 		
-		//ModelTexture texture = new ModelTexture(loader.loadTexture("Untitled"));
 		
 		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("Untitled")));
 		ModelTexture texture = staticModel.getTexture();
