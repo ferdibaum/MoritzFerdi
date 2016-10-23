@@ -14,7 +14,11 @@ public class Camera {
 	
 	public void move(){
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			position.z-=0.05f;
+			Vector3f diff = new Vector3f();
+			diff.x = (float) ( -0.05f * Math.sin((double)yaw)); diff.y = 0; diff.z = (float) ( -0.05f * Math.cos((double)yaw));
+			position.x = position.x + diff.x;
+			position.y = position.y + diff.y;
+			position.z = position.z + diff.z;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
 			position.x+=0.05f;
@@ -31,6 +35,13 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
 			yaw-=0.2f;
 		}
+		if(yaw > 360){
+			yaw = yaw - 360;
+		}
+		if(yaw < 360){
+			yaw = yaw + 360;
+		}
+		System.out.println(yaw);
 	}
 
 	public Vector3f getPosition() {
