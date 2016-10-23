@@ -29,9 +29,7 @@ public class Camera {
 		diff.z = (float) (getCos((double)yaw));
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 			position.x = position.x + diff.x * 0.2f;
-			position.y = position.y + diff.y;
-			position.z = position.z + diff.z * -0.2f;;
-
+			position.z = position.z + diff.z * -0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
 			position.x+=0.2f;
@@ -40,7 +38,8 @@ public class Camera {
 			position.x-=0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			position.z+=0.2f;
+			position.x = position.x + diff.x * -0.2f;
+			position.z = position.z + diff.z * 0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
 			yaw+=0.2f;
