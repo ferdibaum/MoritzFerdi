@@ -18,6 +18,8 @@ import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 public class MainGameLoop {
 	
@@ -27,6 +29,18 @@ public class MainGameLoop {
 		
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		
+		//******TERRAIN TEXTURE
+		
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,gTexture,bTexture);
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+		
+		//**************
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
@@ -48,13 +62,11 @@ public class MainGameLoop {
 		
 		Camera camera = new Camera();
 		
-		Terrain terrain = new Terrain(-0.5f,0,loader,new ModelTexture(loader.loadTexture("gras1")));
-		Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("gras1")));
+		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap);
 		
 		while(!Display.isCloseRequested()){
 			camera.move();
 			renderer.processTerrain(terrain);
-			renderer.processTerrain(terrain2);
 			for(Entity entity:allEntities){
 				renderer.processEntity(entity);							
 			}
