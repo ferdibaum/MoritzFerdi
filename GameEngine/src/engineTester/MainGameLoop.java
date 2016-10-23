@@ -19,7 +19,6 @@ import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
 
-
 public class MainGameLoop {
 	
 	public static void main(String[] args) {
