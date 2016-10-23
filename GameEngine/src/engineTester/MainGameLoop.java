@@ -1,5 +1,9 @@
 package engineTester;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -10,9 +14,8 @@ import entities.Entity;
 import entities.Light;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.Renderer;
-import shaders.StaticShader;
 import textures.ModelTexture;
 
 
@@ -20,41 +23,45 @@ public class MainGameLoop {
 	
 	public static void main(String[] args) {
 		
+		Random random = new Random();
+		
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
 		
+		MasterRenderer renderer = new MasterRenderer();
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 		
 		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("Untitled")));
-		ModelTexture texture = staticModel.getTexture();
-		texture.setShineDamper(10);
-		texture.setReflectivity(1);
 		
+		List<Entity> allEntities = new ArrayList<Entity>();
 		
-		Entity entity = new Entity(staticModel, new Vector3f(0,0,-50),0,0,0,1);
+		for(int i = 0; i < 200; i++){
+			float x = random.nextFloat() * 100 - 50;
+			float y = random.nextFloat() * 100 - 50;
+			float z = random.nextFloat() * -300;
+			allEntities.add(new Entity(staticModel, new Vector3f(x, y ,z), random.nextFloat() * 180f, random.nextFloat() * 180f, 0f, 1f));
+			
+		}
+		
 		Light light = new Light(new Vector3f(0,0,-20),new Vector3f(1,1,1));
 		
 		Camera camera = new Camera();
 		
 		while(!Display.isCloseRequested()){
-			//gameLogic
-			//entity.increasePosition(0, 0, -0.001f);
-			entity.increaseRotation(0, 1, 0);
 			camera.move();
-			renderer.prepare();
-			shader.start();
-			shader.loadLight(light);
-			shader.loadViewMatrix(camera);
-			renderer.render(entity,shader);
-			shader.stop();
+			
+			for(Entity entity: allEntities){
+				renderer.processEntity(entity);
+			}
+			
+			renderer.render(light, camera);
+			
 			DisplayManager.updateDisplay();
 			
 		}
 		
-		shader.cleanUp();
+		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 	}
