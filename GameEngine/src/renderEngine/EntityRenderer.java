@@ -3,7 +3,6 @@ package renderEngine;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -34,7 +33,7 @@ public class EntityRenderer {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity : batch){
-				prepareInstace(entity);
+				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
 			
@@ -66,7 +65,7 @@ public class EntityRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
-	private void prepareInstace(Entity entity){
+	private void prepareInstance(Entity entity){
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
 				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);

@@ -25,6 +25,12 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
 			position.z+=0.05f;
 		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
+			yaw+=0.2f;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
+			yaw-=0.2f;
+		}
 	}
 
 	public Vector3f getPosition() {
