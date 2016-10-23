@@ -41,7 +41,6 @@ public class MainGameLoop {
 			float y = random.nextFloat() * 100 - 50;
 			float z = random.nextFloat() * -300;
 			allEntities.add(new Entity(staticModel, new Vector3f(x, y ,z), random.nextFloat() * 180f, random.nextFloat() * 180f, 0f, 1f));
-			
 		}
 		
 		Light light = new Light(new Vector3f(0,0,-20),new Vector3f(1,1,1));
