@@ -12,13 +12,25 @@ public class Camera {
 	
 	public Camera(){}
 	
+	public static double getSin(double angleInDegrees) {
+		 double angleInRadians = Math.toRadians(angleInDegrees);
+		 return Math.sin(angleInRadians);
+		}
+	
+	public static double getCos(double angleInDegrees) {
+		 double angleInRadians = Math.toRadians(angleInDegrees);
+		 return Math.cos(angleInRadians);
+		}
+	
 	public void move(){
+		Vector3f diff = new Vector3f();
+		diff.x = (float) (getSin((double)yaw));
+		diff.y = 0; 
+		diff.z = (float) (getCos((double)yaw));
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			Vector3f diff = new Vector3f();
-			diff.x = (float) ( -0.2f * Math.sin((double)yaw)); diff.y = 0; diff.z = (float) ( -0.2f * Math.cos((double)yaw));
-			position.x = position.x + diff.x;
+			position.x = position.x + diff.x * 0.2f;
 			position.y = position.y + diff.y;
-			position.z = position.z + diff.z;
+			position.z = position.z + diff.z * -0.2f;;
 
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
@@ -36,7 +48,7 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
 			yaw-=0.2f;
 		}
-		System.out.println(yaw);
+		System.out.println(yaw + "\t" + diff.x + "\t" + diff.z);
 	}
 
 	public Vector3f getPosition() {
