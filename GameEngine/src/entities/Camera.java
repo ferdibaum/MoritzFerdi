@@ -44,10 +44,10 @@ public class Camera {
 			position.z = position.z + diff.z * 0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
-			yaw+=0.2f;
+			yaw+=0.6f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
-			yaw-=0.2f;
+			yaw-=0.6f;
 		}
 	}
 
