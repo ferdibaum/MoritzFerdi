@@ -32,11 +32,12 @@ public class Camera {
 			position.z = position.z + diff.z * -0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			position.x = position.x + diff.x * 0.2f;
-			position.z = position.z + diff.z * -0.2f;
+			position.x = position.x + diff.z * 0.2f;
+			position.z = position.z + diff.x * 0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			position.x-=0.2f;
+			position.x = position.x + diff.z * -0.2f;
+			position.z = position.z + diff.x * -0.2f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
 			position.x = position.x + diff.x * -0.2f;
