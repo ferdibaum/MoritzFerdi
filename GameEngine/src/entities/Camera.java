@@ -50,6 +50,7 @@ public class Camera {
 			yaw-=0.2f;
 		}
 		System.out.println("");
+		System.err.println("");
 	}
 
 	public Vector3f getPosition() {
