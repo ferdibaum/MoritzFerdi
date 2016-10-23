@@ -35,12 +35,6 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
 			yaw-=0.2f;
 		}
-		if(yaw > 360){
-			yaw = yaw - 360;
-		}
-		if(yaw < 360){
-			yaw = yaw + 360;
-		}
 		System.out.println(yaw);
 	}
 
