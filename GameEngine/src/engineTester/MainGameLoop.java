@@ -49,13 +49,13 @@ public class MainGameLoop {
 		
 		Camera camera = new Camera();
 		
-		Terrain terrain = new Terrain(-0.5f,0,loader,new ModelTexture(loader.loadTexture("grass")));
-		//Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain = new Terrain(-0.5f,0,loader,new ModelTexture(loader.loadTexture("gras1")));
+		Terrain terrain2 = new Terrain(1,0,loader,new ModelTexture(loader.loadTexture("gras1")));
 		
 		while(!Display.isCloseRequested()){
 			camera.move();
 			renderer.processTerrain(terrain);
-			//renderer.processTerrain(terrain2);
+			renderer.processTerrain(terrain2);
 			renderer.processEntity(entity);			
 			renderer.render(light, camera);
 			
