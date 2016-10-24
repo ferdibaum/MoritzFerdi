@@ -5,11 +5,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
 import renderEngine.DisplayManager;
+import terrains.Terrain;
 
 public class Player extends Entity{
 	
 	private static final float RUN_SPEED = 20;
 	private static final float TURN_SPEED = 160;
+	
+	//private static final float TERRAIN_HEIGHT = 0;
 	
 	private float currentSpeed = 0;
 	private float currentTurnSpeed = 0;
@@ -18,13 +21,17 @@ public class Player extends Entity{
 		super(model, position, rotX, rotY, rotZ, scale);
 	}
 
-	public void move(){
+	public void move(Terrain terrain){
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float distance = currentSpeed * DisplayManager.getFrameTimeSeconds();
 		float dx =(float) (distance * Math.sin(Math.toRadians(super.getRotY())));
 		float dz =(float) (distance * Math.cos(Math.toRadians(super.getRotY())));
 		super.increasePosition(dx, 0, dz);
+		float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+		if(super.getPosition().y != terrainHeight) {
+			super.getPosition().y = terrainHeight;
+		}
 	}
 	
 	private void checkInputs(){

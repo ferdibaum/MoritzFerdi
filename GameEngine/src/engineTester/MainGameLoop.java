@@ -45,18 +45,12 @@ public class MainGameLoop {
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
-		RawModel model = OBJLoader.loadObjModel("Nova", loader);
-		
-		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("Untitled")));
+		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
+		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
+		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
+		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
 		
 		List<Entity> allEntities = new ArrayList<Entity>();
-		
-		for(int i = 0; i < 20; i++){
-			float x = random.nextFloat() * 100 - 50 ;
-			float y = 0;
-			float z = random.nextFloat() * -300 ;
-			allEntities.add(new Entity(staticModel, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
-		}
 		
 		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
@@ -65,11 +59,18 @@ public class MainGameLoop {
 		
 		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
 		
-		Player player = new Player(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);
+		Player player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1);
+		
+		for(int i = 0; i < 200; i++){
+			float x = random.nextFloat() * 100 - 50 ;
+			float z = random.nextFloat() * -300 ;
+			float y = terrain.getHeightOfTerrain(x, z);
+			allEntities.add(new Entity(textModelTree, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
+		}
 		
 		while(!Display.isCloseRequested()){
-			camera.move();
-			//player.move();
+			//camera.move();
+			player.move(terrain);
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){
