@@ -51,13 +51,6 @@ public class MainGameLoop {
 		
 		List<Entity> allEntities = new ArrayList<Entity>();
 		
-		for(int i = 0; i < 20; i++){
-			float x = random.nextFloat() * 100 - 50 ;
-			float y = 0;
-			float z = random.nextFloat() * -300 ;
-			allEntities.add(new Entity(staticModel, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
-		}
-		
 		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
 		
@@ -67,9 +60,16 @@ public class MainGameLoop {
 		
 		Player player = new Player(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);
 		
+		for(int i = 0; i < 20; i++){
+			float x = random.nextFloat() * 100 - 50 ;
+			float z = random.nextFloat() * -300 ;
+			float y = terrain.getHeightOfTerrain(x, z);
+			allEntities.add(new Entity(staticModel, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
+		}
+		
 		while(!Display.isCloseRequested()){
-			camera.move();
-			//player.move();
+			//camera.move();
+			player.move(terrain);
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){
