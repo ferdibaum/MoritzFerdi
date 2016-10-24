@@ -63,13 +63,13 @@ public class MainGameLoop {
 		
 		Camera camera = new Camera();
 		
-		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap);
+		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
 		
 		Player player = new Player(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);
 		
 		while(!Display.isCloseRequested()){
-			//camera.move();
-			player.move();
+			camera.move();
+			//player.move();
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){
