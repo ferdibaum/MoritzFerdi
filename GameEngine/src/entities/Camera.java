@@ -63,7 +63,6 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)){
 			pitch-=0.2f;
 		}
-		System.out.println(position.y);
 		
 	}
 
