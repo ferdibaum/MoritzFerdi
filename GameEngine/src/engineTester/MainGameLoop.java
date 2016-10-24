@@ -12,6 +12,7 @@ import Models.TexturedModel;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -64,8 +65,12 @@ public class MainGameLoop {
 		
 		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap);
 		
+		Player player = new Player(staticModel, new Vector3f(0, 0, -50), 0, 0, 0, 1);
+		
 		while(!Display.isCloseRequested()){
-			camera.move();
+			//camera.move();
+			player.move();
+			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){
 				renderer.processEntity(entity);							
