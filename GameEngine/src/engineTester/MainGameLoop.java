@@ -44,7 +44,7 @@ public class MainGameLoop {
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
-		RawModel model = OBJLoader.loadObjModel("bimbo", loader);
+		RawModel model = OBJLoader.loadObjModel("Nova", loader);
 		
 		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("Untitled")));
 		
