@@ -31,6 +31,7 @@ public class MainGameLoop {
 	private static MasterRenderer renderer;
 	private static List<Entity> allEntities;
 	private static Light light;
+	private static MousePicker mPicker;
 	
 	public static void main(String[] args) {
 		
@@ -70,7 +71,7 @@ public class MainGameLoop {
 		
 		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
-		MousePicker mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 		
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
@@ -99,11 +100,6 @@ public class MainGameLoop {
 				update();
 				updates++;
 				delta--;
-				mPicker.update();
-				Vector3f mousePos = mPicker.getCurrentTerrainPoint();
-				if (mousePos != null){
-					//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
-				}
 			}
 			render();
 			frames++;
@@ -129,7 +125,11 @@ public class MainGameLoop {
 		camera.move();
 		player.move(terrain);
 		player.update();
-		
+		mPicker.update();
+		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
+		if (mousePos != null){
+			//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
+		}
 	}
 	
 	private static void render(){
