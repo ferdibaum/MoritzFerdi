@@ -47,7 +47,7 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 		 
-		renderer = new MasterRenderer();
+		renderer = new MasterRenderer(); 
 		
 		RawModel modelNova = OBJLoader.loadObjModel("dog", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
