@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
+import engineTester.MainGameLoop;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 
@@ -51,6 +53,8 @@ public class Player extends Entity {
 	}
 
 	private void checkInputs() {
+		
+		/*
 		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 			this.currentSpeed = RUN_SPEED;
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -66,6 +70,8 @@ public class Player extends Entity {
 		} else {
 			this.currentTurnSpeed = 0;
 		}
+		
+		*/
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
 			long now = System.currentTimeMillis();
@@ -79,6 +85,12 @@ public class Player extends Entity {
 				deltaShoot = 0; 
 				lastShoot = now;
 			}
+		}
+		
+		if(Mouse.isButtonDown(0)){
+			Vector3f mousePos = new Vector3f().set(MainGameLoop.getMPicker().getCurrentTerrainPoint());
+			Vector3f dir = Vector3f.sub(mousePos, this.getPosition(), null);
+			this.increasePosition(dir.x / dir.length(), dir.y/ dir.length(), dir.z/ dir.length());
 		}
 	}
 
