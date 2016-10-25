@@ -81,15 +81,13 @@ public class Player extends Entity {
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
 			
-			if (Math.abs(bullet.getPosition().x - bullet.getStart().x) > Projectile.RANGE) {
+			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 			}
+			renderer.processEntity(bullet);
 
 		}
-		System.out.println(bullets.size());
-		for (Entity entity : bullets) {
-			renderer.processEntity(entity);
-		}
+		
 	}
 
 }
