@@ -46,7 +46,7 @@ public class MainGameLoop {
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
-		
+		 
 		renderer = new MasterRenderer();
 		
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
