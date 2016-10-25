@@ -78,9 +78,7 @@ public class MainGameLoop {
 				renderer.processEntity(entity);							
 			}
 			renderer.render(light, camera);
-			
 			DisplayManager.updateDisplay();
-			System.out.println(DisplayManager.getFrameTimeSeconds());
 		}
 		
 		renderer.cleanUp();
