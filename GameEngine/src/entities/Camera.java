@@ -63,7 +63,7 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)){
 			pitch-=0.2f;
 		}
-		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
+		//System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
 	}
 
 	public Vector3f getPosition() {

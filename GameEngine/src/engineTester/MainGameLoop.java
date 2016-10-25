@@ -21,6 +21,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import toolbox.MousePicker;
 
 public class MainGameLoop {
 	
@@ -69,6 +70,8 @@ public class MainGameLoop {
 		
 		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
+		MousePicker mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+		
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
 			float z = random.nextFloat() * -300 ;
@@ -86,6 +89,7 @@ public class MainGameLoop {
 		
 		// ************* MAIN GAME LOOP
 		
+		
 		while(!Display.isCloseRequested()){
 			
 			long now = System.nanoTime();
@@ -95,17 +99,22 @@ public class MainGameLoop {
 				update();
 				updates++;
 				delta--;
+				mPicker.update();
+				Vector3f mousePos = mPicker.getCurrentTerrainPoint();
+				if (mousePos != null){
+					System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
+				}
 			}
 			render();
 			frames++;
-					
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
-				System.out.println("FPS: " + frames + " UPDATES: " + updates);
+				//System.out.println("FPS: " + frames + " UPDATES: " + updates);
 				frames = 0;
 				updates = 0;
+				
 			}
-			
+
 			
 		}
 		
@@ -117,7 +126,7 @@ public class MainGameLoop {
 	// ************* END GAME LOOP ***********************
 	
 	private static void update(){
-		//camera.move();
+		camera.move();
 		player.move(terrain);
 		player.update();
 		
