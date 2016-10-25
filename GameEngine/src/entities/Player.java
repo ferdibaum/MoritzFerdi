@@ -23,6 +23,8 @@ public class Player extends Entity {
 	private TexturedModel bulletModel;
 	private long lastShoot;
 	private long deltaShoot;
+	
+	private int atkSpeed;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -31,6 +33,8 @@ public class Player extends Entity {
 		super(model, position, rotX, rotY, rotZ, scale);
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
+		
+		atkSpeed = 500;
 	}
 
 	public void move(Terrain terrain) {
@@ -66,7 +70,7 @@ public class Player extends Entity {
 		if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
 			long now = System.currentTimeMillis();
 			deltaShoot = now  - lastShoot;
-			if (deltaShoot > 500) {
+			if (deltaShoot > atkSpeed) {
 				Vector3f bullletPos = new Vector3f();
 				bullletPos.x = this.getPosition().x;
 				bullletPos.y = this.getPosition().y + 3;
