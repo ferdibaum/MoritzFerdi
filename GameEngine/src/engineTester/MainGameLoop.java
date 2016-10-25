@@ -38,31 +38,26 @@ public class MainGameLoop {
 		DisplayManager.createDisplay(); // Fenster erzeugen
 		Loader loader = new Loader();
 		
-		//******TERRAIN TEXTURE
-		
+		// Terrain mit Texturen erstellen
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
-		
-		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,gTexture,bTexture);
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-		
-		//**************
+		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 		
 		renderer = new MasterRenderer();
 		
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
-		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
+		RawModel modelTree = OBJLoader.loadObjModel("bunny", loader);
 		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
 		
 		
 		light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
 		
 		camera = new Camera();
-		
-		terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
 		
 		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
