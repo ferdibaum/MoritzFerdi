@@ -6,7 +6,7 @@ import Models.TexturedModel;
 
 public class Projectile extends Entity{
 	
-	public static float SPEED = 0.2f;
+	public static float SPEED = 0.4f;
 
 	public static float RANGE = 50;
 	

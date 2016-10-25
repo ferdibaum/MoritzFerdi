@@ -29,6 +29,7 @@ public class MainGameLoop {
 	private static Camera camera;
 	private static MasterRenderer renderer;
 	private static List<Entity> allEntities;
+	private static Light light;
 	
 	public static void main(String[] args) {
 		
@@ -59,7 +60,8 @@ public class MainGameLoop {
 		allEntities = new ArrayList<Entity>();
 		
 		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
-		Light light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
+		
+		light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
 		
 		camera = new Camera();
 		
@@ -74,10 +76,37 @@ public class MainGameLoop {
 			allEntities.add(new Entity(textModelTree, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
 		}
 		
+		long lastTime = System.nanoTime();
+		double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+		int updates = 0;
+		int frames = 0;
+		
+		// ************* MAIN GAME LOOP
+		
 		while(!Display.isCloseRequested()){
-			update();
-			renderer.render(light, camera);
-			DisplayManager.updateDisplay();
+			
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			while(delta >= 1){
+				update();
+				updates++;
+				delta--;
+			}
+			render();
+			frames++;
+					
+			if(System.currentTimeMillis() - timer > 1000){
+				timer += 1000;
+				System.out.println("FPS: " + frames + " UPDATES: " + updates);
+				frames = 0;
+				updates = 0;
+			}
+			
+			
 		}
 		
 		renderer.cleanUp();
@@ -85,14 +114,23 @@ public class MainGameLoop {
 		DisplayManager.closeDisplay();
 	}
 	
+	// ************* END GAME LOOP ***********************
+	
 	private static void update(){
 		//camera.move();
 		player.move(terrain);
-		player.update(renderer);
+		player.update();
+		
+	}
+	
+	private static void render(){
+		renderer.render(light, camera);
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
+		player.render(renderer);
 		for(Entity entity:allEntities){
 			renderer.processEntity(entity);							
 		}
+		DisplayManager.updateDisplay();
 	}
 }

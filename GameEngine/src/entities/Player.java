@@ -7,14 +7,13 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
-import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 
 public class Player extends Entity {
 
-	private static final float RUN_SPEED = 20;
-	private static final float TURN_SPEED = 160;
+	private static final float RUN_SPEED = 0.2f;
+	private static final float TURN_SPEED = 1.7f;
 
 	// private static final float TERRAIN_HEIGHT = 0;
 
@@ -33,8 +32,8 @@ public class Player extends Entity {
 
 	public void move(Terrain terrain) {
 		checkInputs();
-		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
-		float distance = currentSpeed * DisplayManager.getFrameTimeSeconds();
+		super.increaseRotation(0, currentTurnSpeed , 0);
+		float distance = currentSpeed ;
 		float dx = (float) (distance * Math.sin(Math.toRadians(super.getRotY())));
 		float dz = (float) (distance * Math.cos(Math.toRadians(super.getRotY())));
 		super.increasePosition(dx, 0, dz);
@@ -70,7 +69,7 @@ public class Player extends Entity {
 		}
 	}
 
-	public void update(MasterRenderer renderer) {
+	public void update() {
 		for (int i = 0; i < bullets.size(); i++) {
 			Projectile bullet = bullets.get(i);
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
@@ -80,13 +79,15 @@ public class Player extends Entity {
 			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 			}
-			renderer.processEntity(bullet);
 
 		}
 		//System.out.println(bullets.size());
+		
+	}
+	
+	public void render(MasterRenderer renderer) {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
 	}
-
 }
