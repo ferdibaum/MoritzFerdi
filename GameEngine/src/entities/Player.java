@@ -90,7 +90,7 @@ public class Player extends Entity {
 		if(Mouse.isButtonDown(0)){
 			Vector3f mousePos = new Vector3f().set(MainGameLoop.getMPicker().getCurrentTerrainPoint());
 			Vector3f dir = Vector3f.sub(mousePos, this.getPosition(), null);
-			this.increasePosition(dir.x / dir.length(), dir.y/ dir.length(), dir.z/ dir.length());
+			this.increasePosition(dir.x / dir.length(), dir.y/ dir.length(), dir.z/ dir.length()); 
 		}
 	}
 
