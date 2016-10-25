@@ -71,7 +71,7 @@ public class MainGameLoop {
 		while(!Display.isCloseRequested()){
 			//camera.move();
 			player.move(terrain);
-			player.update( renderer);
+			player.update(renderer);
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){

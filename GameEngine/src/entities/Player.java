@@ -70,14 +70,17 @@ public class Player extends Entity {
 			bullletPos.x = this.getPosition().x;
 			bullletPos.y = this.getPosition().y;
 			bullletPos.z = this.getPosition().z;
-			bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, 0.0f, 0.0f, 1.0f));
+			bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), 0.0f, 1.0f));
 		}
 	}
 
 	public void update(MasterRenderer renderer) {
 		for (int i = 0; i < bullets.size(); i++) {
 			Projectile bullet = bullets.get(i);
-			bullet.getPosition().x += Projectile.SPEED;
+			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
+			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
+			bullet.increasePosition(dx, 0, dz);
+			
 			if (Math.abs(bullet.getPosition().x - bullet.getStart().x) > Projectile.RANGE) {
 				bullets.remove(bullet);
 			}
