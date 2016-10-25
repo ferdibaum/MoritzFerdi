@@ -26,7 +26,7 @@ public class DisplayManager {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("GAMETITLE");
+			Display.setTitle("FPS: 0 UPDATES: 0");
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}	
@@ -35,8 +35,9 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 		
 	}
-	public static void updateDisplay(){
+	public static void updateDisplay(String title){
 		
+		Display.setTitle(title);
 		Display.sync(FPS_CAP);
 		Display.update();
 		long currentFrameTime = getCurrentTime();
