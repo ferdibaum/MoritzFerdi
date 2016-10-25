@@ -49,9 +49,9 @@ public class MainGameLoop {
 		 
 		renderer = new MasterRenderer(); 
 		
-		RawModel modelNova = OBJLoader.loadObjModel("dog", loader);
+		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
-		RawModel modelTree = OBJLoader.loadObjModel("bunny", loader);
+		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
 		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
 		
 		
