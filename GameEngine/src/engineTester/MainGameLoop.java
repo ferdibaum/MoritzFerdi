@@ -24,6 +24,12 @@ import textures.TerrainTexturePack;
 
 public class MainGameLoop {
 	
+	private static Player player;
+	private static Terrain terrain;
+	private static Camera camera;
+	private static MasterRenderer renderer;
+	private static List<Entity> allEntities;
+	
 	public static void main(String[] args) {
 		
 		Random random = new Random();
@@ -43,23 +49,23 @@ public class MainGameLoop {
 		
 		//**************
 		
-		MasterRenderer renderer = new MasterRenderer();
+		renderer = new MasterRenderer();
 		
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
 		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
 		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
 		
-		List<Entity> allEntities = new ArrayList<Entity>();
+		allEntities = new ArrayList<Entity>();
 		
 		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
 		
-		Camera camera = new Camera();
+		camera = new Camera();
 		
-		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
+		terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
 		
-		Player player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
+		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
@@ -69,14 +75,7 @@ public class MainGameLoop {
 		}
 		
 		while(!Display.isCloseRequested()){
-			//camera.move();
-			player.move(terrain);
-			player.update(renderer);
-			renderer.processEntity(player);
-			renderer.processTerrain(terrain);
-			for(Entity entity:allEntities){
-				renderer.processEntity(entity);							
-			}
+			update();
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
 		}
@@ -84,5 +83,16 @@ public class MainGameLoop {
 		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
+	}
+	
+	private static void update(){
+		//camera.move();
+		player.move(terrain);
+		player.update(renderer);
+		renderer.processEntity(player);
+		renderer.processTerrain(terrain);
+		for(Entity entity:allEntities){
+			renderer.processEntity(entity);							
+		}
 	}
 }
