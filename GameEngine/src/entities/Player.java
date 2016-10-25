@@ -84,7 +84,10 @@ public class Player extends Entity {
 			renderer.processEntity(bullet);
 
 		}
-		
+		//System.out.println(bullets.size());
+		for (Entity entity : bullets) {
+			renderer.processEntity(entity);
+		}
 	}
 
 }

@@ -80,7 +80,7 @@ public class MainGameLoop {
 			renderer.render(light, camera);
 			
 			DisplayManager.updateDisplay();
-			
+			System.out.println(DisplayManager.getFrameTimeSeconds());
 		}
 		
 		renderer.cleanUp();
