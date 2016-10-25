@@ -68,7 +68,7 @@ public class Player extends Entity {
 		if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
 			Vector3f bullletPos = new Vector3f();
 			bullletPos.x = this.getPosition().x;
-			bullletPos.y = this.getPosition().y;
+			bullletPos.y = this.getPosition().y + 3;
 			bullletPos.z = this.getPosition().z;
 			bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), 0.0f, 1.0f));
 		}
