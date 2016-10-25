@@ -6,14 +6,11 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.RawModel;
 import Models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
-import renderEngine.OBJLoader;
 import terrains.Terrain;
 import testing.Projectile;
-import textures.ModelTexture;
 
 public class Player extends Entity {
 
