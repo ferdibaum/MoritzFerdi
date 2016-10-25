@@ -52,7 +52,7 @@ public class MainGameLoop {
 		
 		renderer = new MasterRenderer();
 		
-		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
+		RawModel modelNova = OBJLoader.loadObjModel("dog", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
 		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
 		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
@@ -71,7 +71,6 @@ public class MainGameLoop {
 		
 		// Paar Bäume pflanzen
 		allEntities = new ArrayList<Entity>();
-		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Random random = new Random();
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
