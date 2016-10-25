@@ -1,10 +1,17 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
+
+import renderEngine.DisplayManager;
+
 
 public class Camera {
 
+	private static final float SPEED = 0.5f;
+	
+	
 	private Vector3f position = new Vector3f(-38,30,-22);
 	private float yaw = 28;
 	private float pitch = 30;
@@ -12,36 +19,29 @@ public class Camera {
 	
 	public Camera(){}
 	
-	public static double getSin(double angleInDegrees) {
-		 double angleInRadians = Math.toRadians(angleInDegrees);
-		 return Math.sin(angleInRadians);
-		}
-	
-	public static double getCos(double angleInDegrees) {
-		 double angleInRadians = Math.toRadians(angleInDegrees);
-		 return Math.cos(angleInRadians);
-		}
-	
 	public void move(){
 		Vector3f diff = new Vector3f();
-		diff.x = (float) (getSin((double)yaw));
+		diff.x = (float) Math.sin(Math.toRadians(yaw));
 		diff.y = 0; 
-		diff.z = (float) (getCos((double)yaw));
+		diff.z = (float) Math.cos(Math.toRadians(yaw));
+		
+		
+		/* ONLY USE FOR CAMERA ADJUSTMENT
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			position.x = position.x + diff.x * 0.2f;
-			position.z = position.z + diff.z * -0.2f;
+			position.x = position.x + diff.x * SPEED;
+			position.z = position.z + diff.z * -SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			position.x = position.x + diff.z * 0.2f;
-			position.z = position.z + diff.x * 0.2f;
+			position.x = position.x + diff.z * SPEED;
+			position.z = position.z + diff.x * SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			position.x = position.x + diff.z * -0.2f;
-			position.z = position.z + diff.x * -0.2f;
+			position.x = position.x + diff.z * -SPEED;
+			position.z = position.z + diff.x * -SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			position.x = position.x + diff.x * -0.2f;
-			position.z = position.z + diff.z * 0.2f;
+			position.x = position.x + diff.x * -SPEED;
+			position.z = position.z + diff.z * SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
 			yaw+=0.6f;
@@ -50,11 +50,11 @@ public class Camera {
 			yaw-=0.6f;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-			position.y = position.y + 0.2f;
+			position.y = position.y + SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_X)){
 			if(position.y > 1) {
-				position.y = position.y - 0.2f;
+				position.y = position.y - SPEED;
 			}
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_R)){
@@ -63,7 +63,25 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)){
 			pitch-=0.2f;
 		}
-		//System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
+		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
+		***************************************/
+		
+		if(Mouse.getX() < 30){
+			position.x = position.x + diff.z * -SPEED;
+			position.z = position.z + diff.x * -SPEED;
+		}
+		if(Mouse.getX() > (DisplayManager.WIDTH - 30)){
+			position.x = position.x + diff.z * SPEED;
+			position.z = position.z + diff.x * SPEED;
+		}
+		if(Mouse.getY() < 30){
+			position.x = position.x + diff.x * -SPEED;
+			position.z = position.z + diff.z * SPEED;
+		}
+		if(Mouse.getY() > (DisplayManager.HEIGHT - 30)){
+			position.x = position.x + diff.x * SPEED;
+			position.z = position.z + diff.z * -SPEED;
+		}
 	}
 
 	public Vector3f getPosition() {

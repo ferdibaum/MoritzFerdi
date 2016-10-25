@@ -102,7 +102,7 @@ public class MainGameLoop {
 				mPicker.update();
 				Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 				if (mousePos != null){
-					System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
+					//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
 				}
 			}
 			render();
