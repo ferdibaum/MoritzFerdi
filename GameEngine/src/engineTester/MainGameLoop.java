@@ -34,11 +34,8 @@ public class MainGameLoop {
 	private static MousePicker mPicker;
 	private static String title = "FPS: 0 UPDATES: 0" ;
 	
-	public static void main(String[] args) {
-		
-		Random random = new Random();
-		
-		DisplayManager.createDisplay();
+	public static void main(String[] args) {		
+		DisplayManager.createDisplay(); // Fenster erzeugen
 		Loader loader = new Loader();
 		
 		//******TERRAIN TEXTURE
@@ -60,9 +57,6 @@ public class MainGameLoop {
 		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
 		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
 		
-		allEntities = new ArrayList<Entity>();
-		
-		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		
 		light = new Light(new Vector3f(3000,2000,2000),new Vector3f(1,1,1));
 		
@@ -73,7 +67,12 @@ public class MainGameLoop {
 		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+
 		
+		// Paar B‰ume pflanzen
+		allEntities = new ArrayList<Entity>();
+		//Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
+		Random random = new Random();
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
 			float z = random.nextFloat() * -300 ;
@@ -81,48 +80,55 @@ public class MainGameLoop {
 			allEntities.add(new Entity(textModelTree, new Vector3f(x, y ,z), 0, random.nextFloat() * 180f, 0f, 1f));
 		}
 		
+
+		/*----------------------------
+		 *   MAIN GAME LOOP
+		 */
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
+		final double AMOUNT_OF_TICKS = 60.0;
+		final double NS = 1000000000 / AMOUNT_OF_TICKS;
 		double delta = 0;
+		
+		// Updates und Frames f¸r den Fenstertitel nachhalten
 		long timer = System.currentTimeMillis();
 		int updates = 0;
 		int frames = 0;
 		
-		// ************* MAIN GAME LOOP
-		
-		
+		// Solange das Fenster noch nicht geschlossen wurde
 		while(!Display.isCloseRequested()){
-			
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
+			// Physikalische Berechnungen machen, rendern aufschieben
+			final long NOW = System.nanoTime();
+			delta += (NOW - lastTime) / NS;
+			lastTime = NOW;
 			while(delta >= 1){
 				update();
 				updates++;
 				delta--;
 			}
 			
+			// Alles rendern
 			render(title);
+			
+			// Updates und Frames im Fenstertitel anzeigen
 			frames++;
-			if(System.currentTimeMillis() - timer > 1000){
+			if((System.currentTimeMillis() - timer) > 1000){
 				timer += 1000;
 				title = "FPS: " + frames + " UPDATES: " + updates;
 				frames = 0;
 				updates = 0;
-				
 			}
-
-			
 		}
+		/*
+		 *   END MAIN GAME LOOP
+		 *---------------------------*/
 		
+		// Beim Schlieﬂen aufr‰umen
 		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 	}
 	
-	// ************* END GAME LOOP ***********************
-	
+	// Physikalische Berechnungen und den ganzen Kram machen
 	private static void update(){
 		camera.move();
 		player.move(terrain);
@@ -133,7 +139,8 @@ public class MainGameLoop {
 			//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
 		}
 	}
-	
+
+	// Alles rendern und anzeigen
 	private static void render(String s){
 		renderer.render(light, camera);
 		renderer.processEntity(player);
