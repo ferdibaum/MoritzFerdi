@@ -84,14 +84,10 @@ public class Player extends Entity {
 			renderer.processEntity(bullet);
 
 		}
-<<<<<<< HEAD
 		//System.out.println(bullets.size());
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
-=======
-		
->>>>>>> refs/remotes/origin/master
 	}
 
 }
