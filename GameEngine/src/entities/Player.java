@@ -21,6 +21,8 @@ public class Player extends Entity {
 	private float currentTurnSpeed = 0;
 
 	private TexturedModel bulletModel;
+	private long lastShoot;
+	private long deltaShoot;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -28,12 +30,13 @@ public class Player extends Entity {
 			TexturedModel bulletModel) {
 		super(model, position, rotX, rotY, rotZ, scale);
 		this.bulletModel = bulletModel;
+		lastShoot = System.currentTimeMillis();
 	}
 
 	public void move(Terrain terrain) {
 		checkInputs();
-		super.increaseRotation(0, currentTurnSpeed , 0);
-		float distance = currentSpeed ;
+		super.increaseRotation(0, currentTurnSpeed, 0);
+		float distance = currentSpeed;
 		float dx = (float) (distance * Math.sin(Math.toRadians(super.getRotY())));
 		float dz = (float) (distance * Math.cos(Math.toRadians(super.getRotY())));
 		super.increasePosition(dx, 0, dz);
@@ -61,11 +64,17 @@ public class Player extends Entity {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
-			Vector3f bullletPos = new Vector3f();
-			bullletPos.x = this.getPosition().x;
-			bullletPos.y = this.getPosition().y + 3;
-			bullletPos.z = this.getPosition().z;
-			bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), 0.0f, 1.0f));
+			long now = System.currentTimeMillis();
+			deltaShoot = now  - lastShoot;
+			if (deltaShoot > 500) {
+				Vector3f bullletPos = new Vector3f();
+				bullletPos.x = this.getPosition().x;
+				bullletPos.y = this.getPosition().y + 3;
+				bullletPos.z = this.getPosition().z;
+				bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), 0.0f, 1.0f));
+				deltaShoot = 0; 
+				lastShoot = now;
+			}
 		}
 	}
 
@@ -75,16 +84,16 @@ public class Player extends Entity {
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
-			
+
 			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 			}
 
 		}
-		//System.out.println(bullets.size());
-		
+		// System.out.println(bullets.size());
+
 	}
-	
+
 	public void render(MasterRenderer renderer) {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
