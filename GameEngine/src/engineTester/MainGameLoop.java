@@ -32,6 +32,7 @@ public class MainGameLoop {
 	private static List<Entity> allEntities;
 	private static Light light;
 	private static MousePicker mPicker;
+	private static String title = "FPS: 0 UPDATES: 0" ;
 	
 	public static void main(String[] args) {
 		
@@ -101,11 +102,12 @@ public class MainGameLoop {
 				updates++;
 				delta--;
 			}
-			render();
+			
+			render(title);
 			frames++;
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
-				//System.out.println("FPS: " + frames + " UPDATES: " + updates);
+				title = "FPS: " + frames + " UPDATES: " + updates;
 				frames = 0;
 				updates = 0;
 				
@@ -132,7 +134,7 @@ public class MainGameLoop {
 		}
 	}
 	
-	private static void render(){
+	private static void render(String s){
 		renderer.render(light, camera);
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
@@ -140,6 +142,6 @@ public class MainGameLoop {
 		for(Entity entity:allEntities){
 			renderer.processEntity(entity);							
 		}
-		DisplayManager.updateDisplay();
+		DisplayManager.updateDisplay(s);
 	}
 }
