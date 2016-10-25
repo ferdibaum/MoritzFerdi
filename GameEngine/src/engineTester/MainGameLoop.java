@@ -59,7 +59,7 @@ public class MainGameLoop {
 		
 		Terrain terrain = new Terrain(-0.5f,0,loader, texturePack, blendMap, "heightMapTest");
 		
-		Player player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1);
+		Player player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
 		for(int i = 0; i < 200; i++){
 			float x = random.nextFloat() * 100 - 50 ;
@@ -71,6 +71,7 @@ public class MainGameLoop {
 		while(!Display.isCloseRequested()){
 			//camera.move();
 			player.move(terrain);
+			player.update( renderer);
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
 			for(Entity entity:allEntities){

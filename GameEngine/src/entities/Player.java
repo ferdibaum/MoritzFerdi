@@ -1,11 +1,19 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
+import Models.RawModel;
 import Models.TexturedModel;
 import renderEngine.DisplayManager;
+import renderEngine.MasterRenderer;
+import renderEngine.OBJLoader;
 import terrains.Terrain;
+import testing.Projectile;
+import textures.ModelTexture;
 
 public class Player extends Entity{
 	
@@ -16,9 +24,14 @@ public class Player extends Entity{
 	
 	private float currentSpeed = 0;
 	private float currentTurnSpeed = 0;
+	
+	private TexturedModel bulletModel;
+	
+	private List<Projectile> bullets = new ArrayList<Projectile>();
 
-	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, TexturedModel bulletModel) {
 		super(model, position, rotX, rotY, rotZ, scale);
+		this.bulletModel = bulletModel;
 	}
 
 	public void move(Terrain terrain){
@@ -49,6 +62,29 @@ public class Player extends Entity{
 			this.currentTurnSpeed = TURN_SPEED;
 		}else{
 			this.currentTurnSpeed = 0;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_V)){
+			Vector3f bullletPos = new Vector3f();
+			bullletPos.x = this.getPosition().x;
+			bullletPos.y = this.getPosition().y;
+			bullletPos.z = this.getPosition().z;
+			bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, 0.0f, 0.0f, 1.0f));
+		}
+	}
+
+	public void update(MasterRenderer renderer) {
+		for(int i = 0; i < bullets.size(); i++){
+			Projectile bullet = bullets.get(i);
+			bullet.getPosition().x += Projectile.SPEED;
+			if(Math.abs(bullet.getPosition().x - bullet.getStart().x) > Projectile.RANGE){
+				bullets.remove(bullet);
+			}
+
+		}
+		System.out.println(bullets.size());
+		for(Entity entity:bullets){
+			renderer.processEntity(entity);
 		}
 	}
 	
