@@ -10,7 +10,6 @@ import Models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import testing.Projectile;
 
 public class Player extends Entity {
 

@@ -1,9 +1,8 @@
-package testing;
+package entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
-import entities.Entity;
 
 public class Projectile extends Entity{
 	
