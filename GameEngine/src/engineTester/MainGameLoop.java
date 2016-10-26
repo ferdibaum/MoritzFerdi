@@ -66,7 +66,7 @@ public class MainGameLoop {
 		
 		//GUI
 		guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("Untitled"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+		GuiTexture gui = new GuiTexture(loader.loadTexture("path"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
 
@@ -127,6 +127,7 @@ public class MainGameLoop {
 		 *---------------------------*/
 		
 		// Beim Schlieﬂen aufr‰umen
+		guiRenderer.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
@@ -140,7 +141,7 @@ public class MainGameLoop {
 		mPicker.update();
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		if (mousePos != null){
-			System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
+			//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
 		}
 	}
 
@@ -153,8 +154,8 @@ public class MainGameLoop {
 		for(Entity entity:allEntities){
 			renderer.processEntity(entity);							
 		}
-		DisplayManager.updateDisplay(s);
 		guiRenderer.render(guis);
+		DisplayManager.updateDisplay(s);
 	}
 	
 	public static MousePicker getMPicker(){

@@ -112,11 +112,11 @@ public class Player extends Entity {
 			double angleofTurn2 = Math.acos(
 					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
 			
-			System.out.println(angleofTurn);
+			//System.out.println(angleofTurn);
 			if(angleofTurn < angleofTurn2)
 			{
 				turnDir = 1;
-				System.out.println("right");
+				//System.out.println("right");
 			}else{
 				turnDir = -1;
 			}
@@ -145,7 +145,6 @@ public class Player extends Entity {
 			
 			double angleofTurn = Math.acos(
 					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
-			
 			if(turnDir == 1 ){
 				this.currentTurnSpeed = -TURN_SPEED;
 				if(angleofTurn < 0.05){
@@ -161,8 +160,8 @@ public class Player extends Entity {
 				}
 			}
 			if(turnDir == 0){
-				this.increasePosition(dir.x / dir.length() * RUN_SPEED, dir.y/ dir.length()* RUN_SPEED, dir.z/ dir.length()* RUN_SPEED);
-				if(dir.length() <= 0.3){
+				this.increasePosition(dir.x / dir.length() * RUN_SPEED, 0, dir.z/ dir.length()* RUN_SPEED);
+				if(dir.length() <= 0.1){
 					moving = false;
 				}
 			}
