@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.RawModel;
@@ -13,6 +14,8 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import guis.GuiRenderer;
+import guis.GuiTexture;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -28,11 +31,13 @@ public class MainGameLoop {
 	private static Player player;
 	private static Terrain terrain;
 	private static Camera camera;
+	private static GuiRenderer guiRenderer;
 	private static MasterRenderer renderer;
 	private static List<Entity> allEntities;
 	private static Light light;
 	private static MousePicker mPicker;
 	private static String title = "FPS: 0 UPDATES: 0" ;
+	private static List<GuiTexture> guis;
 	
 	public static void main(String[] args) {		
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -59,6 +64,12 @@ public class MainGameLoop {
 		
 		camera = new Camera();
 		
+		//GUI
+		guis = new ArrayList<GuiTexture>();
+		GuiTexture gui = new GuiTexture(loader.loadTexture("Untitled"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
+		guis.add(gui);
+		guiRenderer = new GuiRenderer(loader);
+
 		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
 		
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
@@ -99,7 +110,6 @@ public class MainGameLoop {
 				updates++;
 				delta--;
 			}
-			
 			// Alles rendern
 			render(title);
 			
@@ -130,7 +140,7 @@ public class MainGameLoop {
 		mPicker.update();
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		if (mousePos != null){
-			//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
+			System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
 		}
 	}
 
@@ -144,6 +154,7 @@ public class MainGameLoop {
 			renderer.processEntity(entity);							
 		}
 		DisplayManager.updateDisplay(s);
+		guiRenderer.render(guis);
 	}
 	
 	public static MousePicker getMPicker(){
