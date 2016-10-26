@@ -94,6 +94,7 @@ public class Player extends Entity {
 		}
 
 		if (Mouse.isButtonDown(0)) {
+
 			destination = new Vector3f().set(MainGameLoop.getMPicker().getCurrentTerrainPoint());
 			
 			Vector3f dir = Vector3f.sub(destination, this.getPosition(), null);
@@ -136,7 +137,7 @@ public class Player extends Entity {
 		}
 
 		if (moving) {
-			
+
 			Vector3f dir = Vector3f.sub(destination, this.getPosition(), null);
 			Vector3f currDir = new Vector3f();
 			currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY())));
