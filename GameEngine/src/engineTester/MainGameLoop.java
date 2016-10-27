@@ -135,7 +135,7 @@ public class MainGameLoop {
 	
 	// Physikalische Berechnungen und den ganzen Kram machen
 	private static void update(){
-		camera.move();
+		camera.move(player);
 		player.move(terrain);
 		player.update();
 		mPicker.update();

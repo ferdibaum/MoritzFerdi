@@ -1,5 +1,6 @@
 package entities;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -18,7 +19,7 @@ public class Camera {
 	
 	public Camera(){}
 	
-	public void move(){
+	public void move(Player player){
 		Vector3f diff = new Vector3f();
 		diff.x = (float) Math.sin(Math.toRadians(yaw));
 		diff.y = 0; 
@@ -63,8 +64,13 @@ public class Camera {
 			pitch-=0.2f;
 		}
 		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
-		***************************************/
-		
+		 ***************************************/
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			Vector3f playerPos = player.getPosition();
+			position.x = playerPos.x - 22;
+			position.z = playerPos.z + 41.5f;
+		}
+				
 		if(Mouse.getX() < 30){
 			position.x = position.x + diff.z * -SPEED;
 			position.z = position.z + diff.x * -SPEED;
