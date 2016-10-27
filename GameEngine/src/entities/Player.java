@@ -2,21 +2,20 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.TexturedModel;
-import engineTester.MainGameLoop;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
+import Models.TexturedModel;
+import engineTester.MainGameLoop;
 
 public class Player extends Entity {
 
 	private static final float RUN_SPEED = 0.2f;
-	private static final float TURN_SPEED = 3.5f;
+	private static final int TURNSTEPS = 3;
 
 	// private static final float TERRAIN_HEIGHT = 0;
 
@@ -32,8 +31,10 @@ public class Player extends Entity {
 	
 	private boolean moving;
 	private Vector3f destination = new Vector3f();
-	private float destAngle;
-	private int turnDir;
+	
+	private float oneRot;
+	private float finalRot;
+	private int turnesDone;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -46,6 +47,7 @@ public class Player extends Entity {
 		atkSpeed = 500;
 		destination.set(this.getPosition());
 		moving = false;
+		turnesDone = 0;
 	}
 
 	public void move(Terrain terrain) {
@@ -63,22 +65,6 @@ public class Player extends Entity {
 
 	private void checkInputs() {
 
-//		if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-//			this.currentSpeed = RUN_SPEED;
-//		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-//			this.currentSpeed = -RUN_SPEED;
-//		} else {
-//			this.currentSpeed = 0;
-//		}
-//
-//		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-//			this.currentTurnSpeed = -TURN_SPEED;
-//		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-//			this.currentTurnSpeed = TURN_SPEED;
-//		} else {
-//			this.currentTurnSpeed = 0;
-//		}
-
 		if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
 			long now = System.currentTimeMillis();
 			deltaShoot = now - lastShoot;
@@ -94,6 +80,8 @@ public class Player extends Entity {
 		}
 
 		if (Mouse.isButtonDown(0)) {
+			
+			turnesDone = 0;
 
 			destination = new Vector3f().set(MainGameLoop.getMPicker().getCurrentTerrainPoint());
 			
@@ -113,13 +101,13 @@ public class Player extends Entity {
 			double angleofTurn2 = Math.acos(
 					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
 			
-			//System.out.println(angleofTurn);
 			if(angleofTurn < angleofTurn2)
 			{
-				turnDir = 1;
-				//System.out.println("right");
+				oneRot = (float) (-1 *(Math.toDegrees(angleofTurn) / TURNSTEPS));
+				finalRot = (float) (this.getRotY() - Math.toDegrees(angleofTurn));
 			}else{
-				turnDir = -1;
+				oneRot = (float) ((Math.toDegrees(angleofTurn) / TURNSTEPS));
+				finalRot = (float) (this.getRotY() + Math.toDegrees(angleofTurn));
 			}
 			moving = true;
 		}
@@ -139,32 +127,18 @@ public class Player extends Entity {
 		if (moving) {
 
 			Vector3f dir = Vector3f.sub(destination, this.getPosition(), null);
-			Vector3f currDir = new Vector3f();
-			currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY())));
-			currDir.y = 0;
-			currDir.z = (float) (Math.cos(Math.toRadians(super.getRotY())));
-			
-			double angleofTurn = Math.acos(
-					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
-			if(turnDir == 1 ){
-				this.currentTurnSpeed = -TURN_SPEED;
-				if(angleofTurn < 0.05){
-					this.currentTurnSpeed = 0;
-					turnDir = 0;
-				}
+
+			if(turnesDone < TURNSTEPS){
+				this.increaseRotation(0, oneRot, 0);
+				turnesDone++;
 			}
-			if(turnDir == -1){
-				this.currentTurnSpeed = TURN_SPEED;
-				if(angleofTurn < 0.05){
-					this.currentTurnSpeed = 0;
-					turnDir = 0;
-				}
-			}
-			if(turnDir == 0){
+			System.out.println(finalRot + "  " + this.getRotY());
+		
 				this.increasePosition(dir.x / dir.length() * RUN_SPEED, 0, dir.z/ dir.length()* RUN_SPEED);
 				if(dir.length() <= 0.1){
 					moving = false;
-				}
+					turnesDone = 0;
+				
 			}
 		}
 	}
