@@ -12,9 +12,9 @@ public class Camera {
 	private static final float SPEED = 0.5f;
 	
 	
-	private Vector3f position = new Vector3f(-38,30,-22);
-	private float yaw = 28;
-	private float pitch = 30;
+	private Vector3f position = new Vector3f(-38,55,-22);
+	private float yaw = 20;
+	private float pitch = 54;
 	private float roll;
 	
 	public Camera(){}
@@ -49,7 +49,7 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
 			yaw-=0.6f;
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+		if(Keyboard.isKeyDown(Keyboard.KEY_C)){
 			position.y = position.y + SPEED;
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_X)){
@@ -65,10 +65,11 @@ public class Camera {
 		}
 		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
 		 ***************************************/
+		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			Vector3f playerPos = player.getPosition();
-			position.x = playerPos.x - 22;
-			position.z = playerPos.z + 41.5f;
+			position.x = playerPos.x - 15;
+			position.z = playerPos.z + 41;
 		}
 				
 		if(Mouse.getX() < 30){
