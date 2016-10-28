@@ -22,14 +22,6 @@ public class Projectile extends Entity{
 	public Vector3f getStart(){
 		return start;
 	}
-	
-	public void update(){
-		if(this.colliding() != null){
-			if(this.colliding().getClass().getName().equals("entities.Enemy")){
-				this.colliding().setLife(this.colliding().getLife() - 1);
-			}
-		}
-	}
 
 	
 }

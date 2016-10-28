@@ -44,7 +44,7 @@ public class Player extends Entity {
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
 
-		atkSpeed = 150;
+		atkSpeed = 500;
 		destination.set(this.getPosition());
 		moving = false;
 		turnesDone = 0;
@@ -133,7 +133,12 @@ public class Player extends Entity {
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
-			bullet.update();
+			if(bullet.colliding() != null){
+				if(bullet.colliding().getClass().getName().equals("entities.Enemy")){
+					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
+					bullets.remove(this);
+				}
+			}
 			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 				bullet.destroy();
