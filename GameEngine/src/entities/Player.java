@@ -27,9 +27,9 @@ public class Player extends Entity {
 	private long deltaShoot;
 
 	private int atkSpeed;
-	private int damage;
-	private int life;
+
 	
+	private boolean shooting;
 	private boolean moving;
 	private Vector3f destination = new Vector3f();
 	
