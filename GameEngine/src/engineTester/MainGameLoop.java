@@ -20,6 +20,7 @@ import guis.GuiRenderer;
 import guis.GuiTexture;
 import particles.Particle;
 import particles.ParticleMaster;
+import particles.ParticleSystem;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -41,6 +42,7 @@ public class MainGameLoop {
 	private static MousePicker mPicker;
 	private static String title = "FPS: 0 UPDATES: 0";
 	private static List<GuiTexture> guis;
+	private static ParticleSystem system;
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -59,6 +61,7 @@ public class MainGameLoop {
 		 
 		renderer = new MasterRenderer();
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		system = new ParticleSystem(50, 25, 0.3f, 4, 1);
 		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
@@ -149,9 +152,7 @@ public class MainGameLoop {
 		player.move(terrain);
 		mPicker.update();
 		player.update();
-		if(Keyboard.isKeyDown(Keyboard.KEY_Y)){
-			new Particle(new Vector3f(player.getPosition()), new Vector3f(0, 30, 0), 1, 4, 0, 1);
-		}
+		system.generateParticles(player.getPosition());
 		ParticleMaster.update();
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		for (int i = 0; i < Enemy.enemies.size(); i++) {
