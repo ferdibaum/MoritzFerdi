@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
@@ -16,7 +18,7 @@ public class Player extends Entity {
 	private static final int TURNSTEPS = 3;
 	private static final float MAX_SPEED = 0.2f;
 	private static final int HITBOX = 1;
-	
+
 	// private static final float TERRAIN_HEIGHT = 0;
 	private float speed = 0.2f;
 
@@ -31,7 +33,7 @@ public class Player extends Entity {
 
 	private boolean shooting;
 	private boolean moving;
-	private Vector3f destination = new Vector3f();
+	private Vector2f destination = new Vector2f();
 
 	private float oneRot;
 	private int turnesDone;
@@ -45,7 +47,7 @@ public class Player extends Entity {
 		lastShoot = System.currentTimeMillis();
 
 		atkSpeed = 500;
-		destination.set(this.getPosition());
+		destination.set(0, 0);
 		moving = false;
 		turnesDone = 0;
 	}
@@ -84,43 +86,46 @@ public class Player extends Entity {
 
 		if (Mouse.isButtonDown(1)) {
 
-			turnesDone = 0;
+			if (MainGameLoop.getMPicker().getCurrentTerrainPoint() != null) {
 
-			destination = new Vector3f().set(MainGameLoop.getMPicker().getCurrentTerrainPoint());
+				turnesDone = 0;
 
-			Vector3f dir = Vector3f.sub(destination, this.getPosition(), null);
-			Vector3f currDir = new Vector3f();
-			currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY())));
-			currDir.y = 0;
-			currDir.z = (float) (Math.cos(Math.toRadians(super.getRotY())));
+				destination.set(MainGameLoop.getMPicker().getCurrentTerrainPoint().x,
+						MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
 
-			double angleofTurn = Math.acos(
-					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
+				Vector2f pos = new Vector2f();
+				pos.set(this.getPosition().getX(), this.getPosition().getZ());
+				Vector2f dir = Vector2f.sub(destination, pos, null);
+				Vector2f currDir = new Vector2f();
+				currDir.x = (float) (Math.sin(Math.toRadians(this.getRotY())));
+				currDir.y = (float) (Math.cos(Math.toRadians(this.getRotY())));
 
-			currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY() + 0.1)));
-			currDir.y = 0;
-			currDir.z = (float) (Math.cos(Math.toRadians(super.getRotY() + 0.1)));
+				double angleofTurn = Math
+						.acos((currDir.x * dir.x + currDir.y * dir.y) / (dir.length() * currDir.length()));
+				if (angleofTurn > 0) {
 
-			double angleofTurn2 = Math.acos(
-					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
+					currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY() + 0.1)));
+					currDir.y = (float) (Math.cos(Math.toRadians(super.getRotY() + 0.1)));
 
-			if (angleofTurn < angleofTurn2) {
-				oneRot = (float) (-1 * (Math.toDegrees(angleofTurn) / TURNSTEPS));
-			} else {
-				oneRot = (float) ((Math.toDegrees(angleofTurn) / TURNSTEPS));
+					double angleofTurn2 = Math
+							.acos((currDir.x * dir.x + currDir.y * dir.y) / (dir.length() * currDir.length()));
+
+					System.out.println(angleofTurn + "  " + angleofTurn2);
+
+					if (angleofTurn < angleofTurn2) {
+						oneRot = (float) (-1 * (Math.toDegrees(angleofTurn) / TURNSTEPS));
+					} else {
+						oneRot = (float) ((Math.toDegrees(angleofTurn) / TURNSTEPS));
+					}
+					moving = true;
+				}
 			}
-			moving = true;
 		}
 	}
 
 	public void update() {
-		// ********** COLLIDING ***************
-		
-		
-		
-		// ********** COLLIDING ***************
-		
-		
+		// printData();
+
 		// ********** SHOOTING ***************
 		if (shooting) {
 
@@ -133,10 +138,11 @@ public class Player extends Entity {
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
-			if(bullet.colliding() != null){
-				if(bullet.colliding().getClass().getName().equals("entities.Enemy")){
+			if (bullet.colliding() != null) {
+				if (bullet.colliding().getClass().getName().equals("entities.Enemy")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
-					bullets.remove(this);
+					bullets.remove(bullet);
+					bullet.destroy();
 				}
 			}
 			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
@@ -145,12 +151,14 @@ public class Player extends Entity {
 			}
 		}
 		// ********** SHOOTING ***************
-		
+
 		// ********** MOVE ***************
 
 		if (moving) {
 
-			Vector3f dir = Vector3f.sub(destination, this.getPosition(), null);
+			Vector2f pos = new Vector2f();
+			pos.set(this.getPosition().getX(), this.getPosition().getZ());
+			Vector2f dir = Vector2f.sub(destination, pos, null);
 			if (dir.length() > 0.1) {
 
 				if (turnesDone < TURNSTEPS) {
@@ -158,14 +166,14 @@ public class Player extends Entity {
 					turnesDone++;
 				}
 
-				this.increasePosition(dir.x / dir.length() * speed, 0, dir.z / dir.length() * speed);
+				this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
 
 			} else {
 				moving = false;
 				turnesDone = 0;
 			}
 		}
-		
+
 		// ********** MOVE ***************
 	}
 
@@ -173,5 +181,10 @@ public class Player extends Entity {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
+	}
+
+	private void printData() {
+		System.out.println("X: " + this.getPosition().getX() + "  Y: " + this.getPosition().getY() + "  Z: "
+				+ this.getPosition().getZ() + "  Rot: " + this.getRotY());
 	}
 }

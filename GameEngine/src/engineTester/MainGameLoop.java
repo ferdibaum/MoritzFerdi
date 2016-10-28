@@ -13,6 +13,7 @@ import Models.RawModel;
 import Models.TexturedModel;
 import entities.Camera;
 import entities.Enemy;
+import entities.Entity;
 import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
@@ -91,7 +92,7 @@ public class MainGameLoop {
 			float x = random.nextFloat() * 100 - 50;
 			float z = random.nextFloat() * -300;
 			float y = terrain.getHeightOfTerrain(x, z);
-			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 1, 1);
+			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 0, 1);
 		}
 
 		/*----------------------------
@@ -144,10 +145,11 @@ public class MainGameLoop {
 
 	// Physikalische Berechnungen und den ganzen Kram machen
 	private static void update() {
+		//System.out.println(player.getPosition().x + "  " + player.getPosition().y + "  " + player.getPosition().z);
 		camera.move(player);
 		player.move(terrain);
-		player.update();
 		mPicker.update();
+		player.update();
 		if(Keyboard.isKeyDown(Keyboard.KEY_Y)){
 			new Particle(new Vector3f(player.getPosition()), new Vector3f(0, 30, 0), 1, 4, 0, 1);
 		}
@@ -158,8 +160,8 @@ public class MainGameLoop {
 			enemy.update();
 		}
 		if (mousePos != null) {
-			// System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
-			// mousePos.z);
+//			 System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
+//			 mousePos.z);
 		}
 	}
 
