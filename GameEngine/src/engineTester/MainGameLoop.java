@@ -64,15 +64,15 @@ public class MainGameLoop {
 		
 		camera = new Camera();
 		
+		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
+		
+		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+		
 		//GUI
 		guis = new ArrayList<GuiTexture>();
 		GuiTexture gui = new GuiTexture(loader.loadTexture("path"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
-
-		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0,-50), -50), 0, 0, 0, 1, textModelTree);
-		
-		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 
 		
 		// Paar Bäume pflanzen

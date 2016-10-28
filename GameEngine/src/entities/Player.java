@@ -3,14 +3,13 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import renderEngine.MasterRenderer;
-import terrains.Terrain;
 import Models.TexturedModel;
 import engineTester.MainGameLoop;
+import renderEngine.MasterRenderer;
+import terrains.Terrain;
 
 public class Player extends Entity {
 
@@ -18,7 +17,7 @@ public class Player extends Entity {
 	private static final float MAX_SPEED = 0.2f;
 
 	// private static final float TERRAIN_HEIGHT = 0;
-	private   float speed = 0.2f;
+	private float speed = 0.2f;
 
 	private float currentSpeed = 0;
 	private float currentTurnSpeed = 0;
@@ -28,19 +27,18 @@ public class Player extends Entity {
 	private long deltaShoot;
 
 	private int atkSpeed;
-	private int damage;
 
 	private boolean shooting;
 	private boolean moving;
 	private Vector3f destination = new Vector3f();
 
 	private float oneRot;
-	private float finalRot;
 	private int turnesDone;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
-	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, TexturedModel bulletModel) {
+	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale,
+			TexturedModel bulletModel) {
 		super(model, position, rotX, rotY, rotZ, scale);
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
@@ -75,11 +73,11 @@ public class Player extends Entity {
 				bullletPos.x = this.getPosition().x;
 				bullletPos.y = this.getPosition().y + 3;
 				bullletPos.z = this.getPosition().z;
-				bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(),1f));
+				bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(), 1f));
 				deltaShoot = 0;
 				lastShoot = now;
 			}
-		}else{
+		} else {
 			shooting = false;
 		}
 
@@ -95,42 +93,55 @@ public class Player extends Entity {
 			currDir.y = 0;
 			currDir.z = (float) (Math.cos(Math.toRadians(super.getRotY())));
 
-			double angleofTurn = Math.acos((currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
+			double angleofTurn = Math.acos(
+					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
 
 			currDir.x = (float) (Math.sin(Math.toRadians(super.getRotY() + 0.1)));
 			currDir.y = 0;
 			currDir.z = (float) (Math.cos(Math.toRadians(super.getRotY() + 0.1)));
 
-			double angleofTurn2 = Math.acos((currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
+			double angleofTurn2 = Math.acos(
+					(currDir.x * dir.x + currDir.y * dir.y + currDir.z * dir.z) / (dir.length() * currDir.length()));
 
 			if (angleofTurn < angleofTurn2) {
 				oneRot = (float) (-1 * (Math.toDegrees(angleofTurn) / TURNSTEPS));
-				finalRot = (float) (this.getRotY() - Math.toDegrees(angleofTurn));
 			} else {
 				oneRot = (float) ((Math.toDegrees(angleofTurn) / TURNSTEPS));
-				finalRot = (float) (this.getRotY() + Math.toDegrees(angleofTurn));
 			}
 			moving = true;
 		}
 	}
 
 	public void update() {
-		if(shooting){
-			
+		// ********** COLLIDING ***************
+		
+		if(this.colliding() != null){
+			this.colliding().increasePosition(0, 0.5f, 0);
+		}
+		
+		// ********** COLLIDING ***************
+		
+		
+		// ********** SHOOTING ***************
+		if (shooting) {
+
 			speed = MAX_SPEED / 2;
-		}else{
+		} else {
 			speed = MAX_SPEED;
 		}
-			for (int i = 0; i < bullets.size(); i++) {
-				Projectile bullet = bullets.get(i);
-				float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
-				float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
-				bullet.increasePosition(dx, 0, dz);
-				if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
-					bullets.remove(bullet);
-				}
+		for (int i = 0; i < bullets.size(); i++) {
+			Projectile bullet = bullets.get(i);
+			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
+			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
+			bullet.increasePosition(dx, 0, dz);
+			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
+				bullets.remove(bullet);
+				bullet.destroy();
 			}
+		}
+		// ********** SHOOTING ***************
 		
+		// ********** MOVE ***************
 
 		if (moving) {
 
@@ -141,7 +152,6 @@ public class Player extends Entity {
 					this.increaseRotation(0, oneRot, 0);
 					turnesDone++;
 				}
-				//System.out.println(finalRot + "  " + this.getRotY());
 
 				this.increasePosition(dir.x / dir.length() * speed, 0, dir.z / dir.length() * speed);
 
@@ -150,6 +160,8 @@ public class Player extends Entity {
 				turnesDone = 0;
 			}
 		}
+		
+		// ********** MOVE ***************
 	}
 
 	public void render(MasterRenderer renderer) {

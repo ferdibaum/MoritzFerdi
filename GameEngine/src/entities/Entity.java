@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -12,8 +15,7 @@ public class Entity {
 	private float rotX, rotY, rotZ;
 	private float scale;
 	
-	private Vector2f hitBoX;
-	private Vector2f hitBoY;
+	public static List<Entity>  entities = new ArrayList<Entity>();
 
 	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.model = model;
@@ -22,6 +24,7 @@ public class Entity {
 		this.rotY = rotY;
 		this.rotZ = rotZ;
 		this.scale = scale;
+		entities.add(this);
 	}
 
 	public void increasePosition(float dx, float dy, float dz) {
@@ -82,6 +85,21 @@ public class Entity {
 
 	public void setScale(float scale) {
 		this.scale = scale;
+	}
+	
+	public void destroy(){
+		entities.remove(this);
+	}
+	
+	public Entity colliding(){
+		Entity entity = null;
+		for(Entity col: Entity.entities){
+			if(col != this && Vector2f.sub(new Vector2f(this.getPosition().x,this.getPosition().z ), new Vector2f(col.getPosition().x,col.getPosition().z ), null).length() < 1){
+				entity = col;
+				break;
+			}
+		}
+		return entity;
 	}
 
 }
