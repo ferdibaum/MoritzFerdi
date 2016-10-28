@@ -121,7 +121,6 @@ public class Player extends Entity {
 	}
 
 	public void update() {
-		// printData();
 
 		// ********** SHOOTING ***************
 		if (shooting) {
@@ -178,10 +177,5 @@ public class Player extends Entity {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
-	}
-
-	private void printData() {
-		System.out.println("X: " + this.getPosition().getX() + "  Y: " + this.getPosition().getY() + "  Z: "
-				+ this.getPosition().getZ() + "  Rot: " + this.getRotY());
 	}
 }
