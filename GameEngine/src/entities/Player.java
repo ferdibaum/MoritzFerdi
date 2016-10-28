@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -109,8 +108,6 @@ public class Player extends Entity {
 
 					double angleofTurn2 = Math
 							.acos((currDir.x * dir.x + currDir.y * dir.y) / (dir.length() * currDir.length()));
-
-					System.out.println(angleofTurn + "  " + angleofTurn2);
 
 					if (angleofTurn < angleofTurn2) {
 						oneRot = (float) (-1 * (Math.toDegrees(angleofTurn) / TURNSTEPS));
