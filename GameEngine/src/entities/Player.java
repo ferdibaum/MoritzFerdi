@@ -28,6 +28,7 @@ public class Player extends Entity {
 	private long deltaShoot;
 
 	private int atkSpeed;
+	private int damage;
 
 	private boolean shooting;
 	private boolean moving;
