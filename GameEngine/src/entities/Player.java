@@ -165,7 +165,6 @@ public class Player extends Entity {
 				turnesDone = 0;
 			}
 		}
-		
 		// ********** MOVE ***************
 	}
 
