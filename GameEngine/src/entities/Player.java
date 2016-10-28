@@ -15,7 +15,8 @@ public class Player extends Entity {
 
 	private static final int TURNSTEPS = 3;
 	private static final float MAX_SPEED = 0.2f;
-
+	private static final int HITBOX = 1;
+	
 	// private static final float TERRAIN_HEIGHT = 0;
 	private float speed = 0.2f;
 
@@ -38,12 +39,12 @@ public class Player extends Entity {
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
 	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale,
-			TexturedModel bulletModel) {
-		super(model, position, rotX, rotY, rotZ, scale);
+			TexturedModel bulletModel, int life) {
+		super(model, position, rotX, rotY, rotZ, scale, HITBOX, life);
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
 
-		atkSpeed = 500;
+		atkSpeed = 150;
 		destination.set(this.getPosition());
 		moving = false;
 		turnesDone = 0;
@@ -115,9 +116,7 @@ public class Player extends Entity {
 	public void update() {
 		// ********** COLLIDING ***************
 		
-		if(this.colliding() != null){
-			this.colliding().increasePosition(0, 0.5f, 0);
-		}
+		
 		
 		// ********** COLLIDING ***************
 		
@@ -134,6 +133,7 @@ public class Player extends Entity {
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
+			bullet.update();
 			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 				bullet.destroy();

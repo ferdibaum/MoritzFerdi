@@ -15,15 +15,21 @@ public class Entity {
 	private float rotX, rotY, rotZ;
 	private float scale;
 	
-	public static List<Entity>  entities = new ArrayList<Entity>();
+	private int life;
 
-	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	private int hitBox;
+
+	public static List<Entity> entities = new ArrayList<Entity>();
+
+	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, int hit, int life) {
 		this.model = model;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
 		this.rotZ = rotZ;
 		this.scale = scale;
+		this.hitBox = hit;
+		this.life = life;
 		entities.add(this);
 	}
 
@@ -86,20 +92,36 @@ public class Entity {
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
-	
-	public void destroy(){
+
+	public void destroy() {
 		entities.remove(this);
 	}
 	
-	public Entity colliding(){
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+	public Entity colliding() {
 		Entity entity = null;
-		for(Entity col: Entity.entities){
-			if(col != this && Vector2f.sub(new Vector2f(this.getPosition().x,this.getPosition().z ), new Vector2f(col.getPosition().x,col.getPosition().z ), null).length() < 1){
+		for (Entity col : Entity.entities) {
+			if (col != this
+					&& ((Vector2f
+							.sub(new Vector2f(this.getPosition().x, this.getPosition().z),
+									new Vector2f(col.getPosition().x, col.getPosition().z), null)
+							.length() - this.getHitBox()) - col.getHitBox()) < 1) {
 				entity = col;
 				break;
 			}
 		}
 		return entity;
+	}
+
+	private int getHitBox() {
+		return hitBox;
 	}
 
 }

@@ -7,13 +7,13 @@ import Models.TexturedModel;
 public class Projectile extends Entity{
 	
 	public static float SPEED = 0.4f;
-
 	public static float RANGE = 50;
+	public static final int HITBOX = 0;
 	
 	private Vector3f start = new Vector3f();
 
 	public Projectile(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		super(model, position, rotX, rotY, rotZ, scale);
+		super(model, position, rotX, rotY, rotZ, scale, HITBOX, 0);
 		this.start.x = position.x;
 		this.start.y = position.y;
 		this.start.z = position.z;
@@ -21,6 +21,14 @@ public class Projectile extends Entity{
 	
 	public Vector3f getStart(){
 		return start;
+	}
+	
+	public void update(){
+		if(this.colliding() != null){
+			if(this.colliding().getClass().getName().equals("entities.Enemy")){
+				this.colliding().setLife(this.colliding().getLife() - 1);
+			}
+		}
 	}
 
 	
