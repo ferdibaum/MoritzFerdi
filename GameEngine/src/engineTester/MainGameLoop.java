@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -16,6 +17,8 @@ import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
+import particles.Particle;
+import particles.ParticleMaster;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -52,7 +55,8 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 		 
-		renderer = new MasterRenderer(); 
+		renderer = new MasterRenderer();
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("Untitled")));
@@ -127,6 +131,7 @@ public class MainGameLoop {
 		 *---------------------------*/
 		
 		// Beim Schlieﬂen aufr‰umen
+		ParticleMaster.cleanUp();
 		guiRenderer.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
@@ -139,6 +144,10 @@ public class MainGameLoop {
 		player.move(terrain);
 		player.update();
 		mPicker.update();
+		if(Keyboard.isKeyDown(Keyboard.KEY_Y)){
+			new Particle(new Vector3f(player.getPosition()), new Vector3f(0, 30, 0), 1, 4, 0, 1);
+		}
+		ParticleMaster.update();
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		if (mousePos != null){
 			//System.out.println(mousePos.x + "\t" + mousePos.y + "\t" + mousePos.z);
@@ -154,6 +163,7 @@ public class MainGameLoop {
 		for(Entity entity:allEntities){
 			renderer.processEntity(entity);							
 		}
+		ParticleMaster.renderParticles(camera);
 		guiRenderer.render(guis);
 		DisplayManager.updateDisplay(s);
 	}

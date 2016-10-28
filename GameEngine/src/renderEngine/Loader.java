@@ -41,6 +41,7 @@ public class Loader {
 		return new RawModel(vaoID, positions.length/2);
 	}
 	
+	
 	public int loadTexture(String fileName){
 		Texture texture = null;
 		try {
