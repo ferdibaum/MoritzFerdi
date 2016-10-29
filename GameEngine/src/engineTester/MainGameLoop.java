@@ -58,8 +58,8 @@ public class MainGameLoop {
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
 		renderer = new MasterRenderer();
-		 
-		renderer = new MasterRenderer();
+
+		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		system = new ParticleSystem(50, 25, 0.3f, 4, 1);
 		
