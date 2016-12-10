@@ -60,9 +60,9 @@ public class MainGameLoop {
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleStar"), 1);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
 		
-		system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
+		system = new ParticleSystem(particleTexture, 400, 10, 0.01f, 3.5f, 1);
 		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
