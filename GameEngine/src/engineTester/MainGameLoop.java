@@ -61,7 +61,7 @@ public class MainGameLoop {
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
 		renderer = new MasterRenderer();
-//		
+		
 //		MD5Model md5Meshodel = null;
 //		try {
 //			md5Meshodel = MD5Model.parse("monster.md5mesh");
@@ -89,9 +89,9 @@ public class MainGameLoop {
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("smoke"), 5);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("cosmic"), 4);
 		
-		system = new ParticleSystem(particleTexture, 100, 0.5f, -0.1f, 0.3f, 3);
+		system = new ParticleSystem(particleTexture, 50, 0.5f, -0.1f, 0.3f, 3);
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
