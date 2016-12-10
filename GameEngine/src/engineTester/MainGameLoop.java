@@ -154,7 +154,7 @@ public class MainGameLoop {
 		mPicker.update();
 		player.update();
 		system.generateParticles(player.getPosition());
-		ParticleMaster.update();
+		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		for (int i = 0; i < Enemy.enemies.size(); i++) {
 			Enemy enemy = Enemy.enemies.get(i);
