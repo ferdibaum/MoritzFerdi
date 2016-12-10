@@ -9,6 +9,10 @@ import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
 import engineTester.MainGameLoop;
+import particles.ParticleMaster;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
+import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 
@@ -36,10 +40,12 @@ public class Player extends Entity {
 
 	private float oneRot;
 	private int turnesDone;
+	
+	ParticleSystem pSys;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
-	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale,
+	public Player(TexturedModel model,ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ, float scale,
 			TexturedModel bulletModel, int life) {
 		super(model, position, rotX, rotY, rotZ, scale, HITBOX, life);
 		this.bulletModel = bulletModel;
@@ -49,6 +55,8 @@ public class Player extends Entity {
 		destination.set(0, 0);
 		moving = false;
 		turnesDone = 0;
+		
+		this.pSys = pSys;
 	}
 
 	public void move(Terrain terrain) {
@@ -130,10 +138,12 @@ public class Player extends Entity {
 			speed = MAX_SPEED;
 		}
 		for (int i = 0; i < bullets.size(); i++) {
+			
 			Projectile bullet = bullets.get(i);
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			bullet.increasePosition(dx, 0, dz);
+			pSys.generateParticles(bullet.getPosition());
 			if (bullet.colliding() != null) {
 				if (bullet.colliding().getClass().getName().equals("entities.Enemy")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);

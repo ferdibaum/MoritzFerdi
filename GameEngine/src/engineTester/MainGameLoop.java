@@ -89,9 +89,9 @@ public class MainGameLoop {
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("smoke"), 5);
 		
-		system = new ParticleSystem(particleTexture, 200, 1, -0.3f, 1.5f, 3);
+		system = new ParticleSystem(particleTexture, 100, 0.5f, -0.1f, 0.3f, 3);
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
@@ -105,7 +105,7 @@ public class MainGameLoop {
 
 		camera = new Camera();
 
-		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
+		player = new Player(textModelNova,system, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
 				textModelTree, 100);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
@@ -181,7 +181,7 @@ public class MainGameLoop {
 		player.move(terrain);
 		mPicker.update();
 		player.update();
-		system.generateParticles(player.getPosition());
+		//system.generateParticles(player.getPosition());
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		for (int i = 0; i < Enemy.enemies.size(); i++) {
