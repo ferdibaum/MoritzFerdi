@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -13,12 +12,10 @@ import Models.RawModel;
 import Models.TexturedModel;
 import entities.Camera;
 import entities.Enemy;
-import entities.Entity;
 import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
-import particles.Particle;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import renderEngine.DisplayManager;
@@ -106,7 +103,7 @@ public class MainGameLoop {
 		final double NS = 1000000000 / AMOUNT_OF_TICKS;
 		double delta = 0;
 
-		// Updates und Frames für den Fenstertitel nachhalten
+		// Updates und Frames fuer den Fenstertitel nachhalten
 		long timer = System.currentTimeMillis();
 		int updates = 0;
 		int frames = 0;
@@ -138,7 +135,7 @@ public class MainGameLoop {
 		 * END MAIN GAME LOOP ---------------------------
 		 */
 
-		// Beim Schließen aufräumen
+		// Beim Schliessen aufraeumen
 		ParticleMaster.cleanUp();
 		guiRenderer.cleanUp();
 		renderer.cleanUp();
