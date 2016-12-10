@@ -81,7 +81,7 @@ public class Player extends Entity {
 			if (deltaShoot > atkSpeed) {
 				Vector3f bullletPos = new Vector3f();
 				bullletPos.x = this.getPosition().x;
-				bullletPos.y = this.getPosition().y + 3;
+				bullletPos.y = this.getPosition().y + 5;
 				bullletPos.z = this.getPosition().z;
 				bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(), 1f));
 				deltaShoot = 0;

@@ -60,19 +60,22 @@ public class MainGameLoop {
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 
 
-		system = new ParticleSystem(particleTexture, 50, 0.5f, -0.1f, 0.3f, 3);
-
+		system = new ParticleSystem(particleTexture, 200, 2, -0.1f, 0.3f, 5);
+		system.setLifeError(0.1f);
+		system.setSpeedError(0.25f);
+		system.setScaleError(0.5f);
+		system.randomizeRotation();
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
 
 		TexturedModel textModelEnemy = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("blue")));
 
-		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
-		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
+		RawModel modelTree = OBJLoader.loadObjModel("lavaball", loader);
+		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("lava")));
 
 		light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
 
