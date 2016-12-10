@@ -10,16 +10,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 import Models.RawModel;
 import Models.TexturedModel;
-import anim.AnimGameItem;
 import entities.Camera;
 import entities.Enemy;
 import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
-import md5.MD5AnimModel;
-import md5.MD5Loader;
-import md5.MD5Model;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -45,7 +41,6 @@ public class MainGameLoop {
 	private static String title = "FPS: 0 UPDATES: 0";
 	private static List<GuiTexture> guis;
 	private static ParticleSystem system;
-    private static AnimGameItem monster;
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -61,13 +56,16 @@ public class MainGameLoop {
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
 		renderer = new MasterRenderer();
+		
+		
 
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("smoke"), 5);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
 		
-		system = new ParticleSystem(particleTexture, 100, 0.5f, -0.1f, 0.3f, 3);
+		system = new ParticleSystem(particleTexture, 400, 10, 0.01f, 3.5f, 1);
+		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
@@ -81,7 +79,7 @@ public class MainGameLoop {
 
 		camera = new Camera();
 
-		player = new Player(textModelNova,system, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
+		player = new Player(textModelNova, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
 				textModelTree, 100);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
@@ -157,7 +155,7 @@ public class MainGameLoop {
 		player.move(terrain);
 		mPicker.update();
 		player.update();
-		//system.generateParticles(player.getPosition());
+		system.generateParticles(player.getPosition());
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		for (int i = 0; i < Enemy.enemies.size(); i++) {
