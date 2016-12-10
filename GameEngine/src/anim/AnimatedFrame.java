@@ -2,7 +2,9 @@ package anim;
 
 import java.util.Arrays;
 
-import org.joml.Matrix4f;
+import org.lwjgl.util.vector.Matrix4f;
+
+
 
 public class AnimatedFrame {
 
@@ -33,7 +35,7 @@ public class AnimatedFrame {
     public void setMatrix(int pos, Matrix4f localJointMatrix, Matrix4f invJointMatrix) {
         localJointMatrices[pos] = localJointMatrix;
         Matrix4f mat = new Matrix4f(localJointMatrix);
-        mat.mul(invJointMatrix);
+        mat = Matrix4f.mul(mat, invJointMatrix, null);
         jointMatrices[pos] = mat;
     }
 }

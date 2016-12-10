@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+
+
 
 public class MD5BaseFrame {
 
@@ -52,7 +54,7 @@ public class MD5BaseFrame {
 
         private Vector3f position;
 
-        private Quaternionf orientation;
+        private Vector4f orientation;
 
         public Vector3f getPosition() {
             return position;
@@ -62,7 +64,7 @@ public class MD5BaseFrame {
             this.position = position;
         }
 
-        public Quaternionf getOrientation() {
+        public Vector4f getOrientation() {
             return orientation;
         }
 

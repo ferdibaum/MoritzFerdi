@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+
 
 public class MD5JointInfo {
 
@@ -60,7 +62,7 @@ public class MD5JointInfo {
 
         private Vector3f position;
 
-        private Quaternionf orientation;
+        private Vector4f orientation;
 
         public String getName() {
             return name;
@@ -86,7 +88,7 @@ public class MD5JointInfo {
             this.position = position;
         }
 
-        public Quaternionf getOrientation() {
+        public Vector4f getOrientation() {
             return orientation;
         }
 

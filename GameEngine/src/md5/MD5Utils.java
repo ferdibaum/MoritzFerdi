@@ -1,7 +1,7 @@
 package md5;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class MD5Utils {
 
@@ -12,12 +12,12 @@ public class MD5Utils {
     private MD5Utils() {
     }
 
-    public static Quaternionf calculateQuaternion(Vector3f vec) {
+    public static Vector4f calculateQuaternion(Vector3f vec) {
         return calculateQuaternion(vec.x, vec.y, vec. z);
     }
 
-    public static Quaternionf calculateQuaternion(float x, float y, float z) {
-        Quaternionf orientation = new Quaternionf(x, y, z, 0);
+    public static Vector4f calculateQuaternion(float x, float y, float z) {
+        Vector4f orientation = new Vector4f(x, y, z, 0);
         float temp = 1.0f - (orientation.x * orientation.x) - (orientation.y * orientation.y) - (orientation.z * orientation.z);
         if (temp < 0.0f) {
             orientation.w = 0.0f;

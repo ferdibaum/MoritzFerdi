@@ -1,7 +1,7 @@
 package entities;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Models.Mesh;
 
@@ -15,7 +15,7 @@ public class GameItem {
 
     private float scale;
 
-    private final Quaternionf rotation;
+    private final Vector4f rotation;
 
     private int textPos;
 
@@ -23,7 +23,7 @@ public class GameItem {
         selected = false;
         position = new Vector3f(0, 0, 0);
         scale = 1;
-        rotation = new Quaternionf();
+        rotation = new Vector4f();
         textPos = 0;
     }
 
@@ -63,12 +63,18 @@ public class GameItem {
         this.scale = scale;
     }
 
-    public Quaternionf getRotation() {
+    public Vector4f getRotation() {
         return rotation;
     }
 
-    public final void setRotation(Quaternionf q) {
+    public final void setRotation(Vector4f q) {
         this.rotation.set(q);
+    }
+    
+    public void setRotation(float x, float y, float z) {
+        this.rotation.x = x;
+        this.rotation.y = y;
+        this.rotation.z = z;
     }
 
     public Mesh getMesh() {
