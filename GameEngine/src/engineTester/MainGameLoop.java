@@ -18,6 +18,7 @@ import guis.GuiRenderer;
 import guis.GuiTexture;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -58,7 +59,10 @@ public class MainGameLoop {
 
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
-		system = new ParticleSystem(50, 25, 0.3f, 4, 1);
+		
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleStar"), 1);
+		
+		system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
 		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
