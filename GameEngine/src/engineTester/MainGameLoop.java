@@ -61,30 +61,6 @@ public class MainGameLoop {
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
 		renderer = new MasterRenderer();
-//		
-//		MD5Model md5Meshodel = null;
-//		try {
-//			md5Meshodel = MD5Model.parse("monster.md5mesh");
-//		} catch (Exception e2) {
-//			// TODO Auto-generated catch block
-//			e2.printStackTrace();
-//		}
-//        MD5AnimModel md5AnimModel = null;
-//		try {
-//			md5AnimModel = MD5AnimModel.parse("monster.md5anim");
-//		} catch (Exception e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
-//        try {
-//			monster = MD5Loader.process(md5Meshodel, md5AnimModel, new Vector3f(1, 1, 1));
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        monster.setScale(0.05f);
-//        monster.setRotation(90, 0, 90);
 
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
