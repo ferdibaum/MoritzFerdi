@@ -89,10 +89,9 @@ public class MainGameLoop {
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 		
-		system = new ParticleSystem(particleTexture, 400, 10, 0.01f, 3.5f, 1);
-		
+		system = new ParticleSystem(particleTexture, 200, 1, -0.3f, 1.5f, 3);
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
