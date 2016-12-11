@@ -155,9 +155,9 @@ public class MainGameLoop {
 	// Physikalische Berechnungen etc machen
 	private static void update() {
 		camera.move(player);
+		player.update();
 		player.move(terrain);
 		mPicker.update();
-		player.update();
 		//system.generateParticles(player.getPosition());
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();

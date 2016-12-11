@@ -37,13 +37,13 @@ public class Player extends Entity {
 
 	private float oneRot;
 	private int turnesDone;
-	
+
 	ParticleSystem pSys;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
-	public Player(TexturedModel model,ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ, float scale,
-			TexturedModel bulletModel, int life) {
+	public Player(TexturedModel model, ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ,
+			float scale, TexturedModel bulletModel, int life) {
 		super(model, position, rotX, rotY, rotZ, scale, HITBOX, life);
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
@@ -52,21 +52,42 @@ public class Player extends Entity {
 		destination.set(0, 0);
 		moving = false;
 		turnesDone = 0;
-		
+
 		this.pSys = pSys;
 	}
 
 	public void move(Terrain terrain) {
-		checkInputs();
-		super.increaseRotation(0, currentTurnSpeed, 0);
-		float distance = currentSpeed;
-		float dx = (float) (distance * Math.sin(Math.toRadians(super.getRotY())));
-		float dz = (float) (distance * Math.cos(Math.toRadians(super.getRotY())));
-		super.increasePosition(dx, 0, dz);
-		float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-		if (super.getPosition().y != terrainHeight) {
-			super.getPosition().y = terrainHeight;
+		
+		if (moving) {
+
+			Vector2f pos = new Vector2f();
+			pos.set(this.getPosition().getX(), this.getPosition().getZ());
+			Vector2f dir = Vector2f.sub(destination, pos, null);
+			if (dir.length() > 0.1) {
+
+				if (turnesDone < TURNSTEPS) {
+					this.increaseRotation(0, oneRot, 0);
+					turnesDone++;
+				}
+				
+				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed, this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
+				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
+				System.out.println(terrainHeight);
+				if(terrainHeight < -4){
+					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
+				}
+				
+				terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+				if (super.getPosition().y != terrainHeight) {
+					super.getPosition().y = terrainHeight;
+				}
+
+			} else {
+				moving = false;
+				turnesDone = 0;
+			}
 		}
+		
 	}
 
 	private void checkInputs() {
@@ -127,6 +148,8 @@ public class Player extends Entity {
 
 	public void update() {
 
+		checkInputs();
+		
 		// ********** SHOOTING ***************
 		if (shooting) {
 			speed = MAX_SPEED / 2;
@@ -137,7 +160,8 @@ public class Player extends Entity {
 			Projectile bullet = bullets.get(i);
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
-			pSys.setDirection(new Vector3f ((float)Math.sin(Math.toRadians(bullet.getRotY())), 0, (float)Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
+			pSys.setDirection(new Vector3f((float) Math.sin(Math.toRadians(bullet.getRotY())), 0,
+					(float) Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
 			if (bullet.colliding() != null) {
@@ -156,25 +180,7 @@ public class Player extends Entity {
 
 		// ********** MOVE ***************
 
-		if (moving) {
-
-			Vector2f pos = new Vector2f();
-			pos.set(this.getPosition().getX(), this.getPosition().getZ());
-			Vector2f dir = Vector2f.sub(destination, pos, null);
-			if (dir.length() > 0.1) {
-
-				if (turnesDone < TURNSTEPS) {
-					this.increaseRotation(0, oneRot, 0);
-					turnesDone++;
-				}
-
-				this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
-
-			} else {
-				moving = false;
-				turnesDone = 0;
-			}
-		}
+		
 
 		// ********** MOVE ***************
 	}
