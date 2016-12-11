@@ -58,10 +58,10 @@ public class MainGameLoop {
 		renderer = new MasterRenderer();
 
 		
+
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
-
 
 		system = new ParticleSystem(particleTexture, 50, 0.5f, -0.1f, 0.3f, 3);
 
