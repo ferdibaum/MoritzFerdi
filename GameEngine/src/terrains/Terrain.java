@@ -28,6 +28,7 @@ public class Terrain {
 	private TerrainTexture blendMap;
 
 	private float[][] heights;
+	private String[][] enemys;
 
 	public Terrain(float gridX, float gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap,
 			String heightMap) {
@@ -36,6 +37,7 @@ public class Terrain {
 		this.x = gridX * SIZE;
 		this.z = gridX * SIZE;
 		this.model = generateTerrain(loader, heightMap);
+		enemySpawn("spawn");
 	}
 
 	public float getX() {
@@ -80,6 +82,28 @@ public class Terrain {
 					new Vector2f(xCoord, zCoord));
 		}
 		return erg;
+	}
+
+	private void enemySpawn(String name) {
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(new File("res/" + name + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		int VERTEX_COUNT = image.getHeight();
+		float[][] enemys = new float[VERTEX_COUNT][VERTEX_COUNT];
+		this.enemys = new String[VERTEX_COUNT][VERTEX_COUNT];
+		int count = VERTEX_COUNT * VERTEX_COUNT;
+		for (int i = 0; i < VERTEX_COUNT; i++) {
+			for (int j = 0; j < VERTEX_COUNT; j++) {
+				if (image.getRGB(i, j) == -16777216){
+					this.enemys[i][j] = "rock";
+				}
+				
+
+			}
+		}
 	}
 
 	private RawModel generateTerrain(Loader loader, String heightMap) {
@@ -151,6 +175,10 @@ public class Terrain {
 		height /= MAX_PIXEL_COLOUR / 2f;
 		height *= MAX_HEIGHT;
 		return height;
+	}
+
+	public String[][] getEnemys() {
+		return enemys;
 	}
 
 }

@@ -97,11 +97,15 @@ public class MainGameLoop {
 		// Paar Enemys spawnen
 		
 		Random random = new Random();
-		for (int i = 0; i < 200; i++) {
-			float x = random.nextFloat() * 100 - 50;
-			float z = random.nextFloat() * -300;
-			float y = terrain.getHeightOfTerrain(x, z);
-			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+		for (int i = 0; i < terrain.getEnemys().length; i++) {
+			for (int j = 0; j < terrain.getEnemys().length; j++) {
+				if(terrain.getEnemys()[i][j] != null){				
+					float x = -400f + (float)i*(800f/255f);
+					float z = -400f + (float)j*(800f/255f);
+					float y = terrain.getHeightOfTerrain(x, z);
+					new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+				}
+			}
 		}
 
 		/*----------------------------
