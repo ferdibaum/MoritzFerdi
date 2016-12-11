@@ -63,7 +63,7 @@ public class MainGameLoop {
 		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 
 
-		system = new ParticleSystem(particleTexture, 300, 30, -0.1f, 0.3f, 3);
+		system = new ParticleSystem(particleTexture, 350, 45, -0.3f, 0.3f, 3);
 		system.setLifeError(0.1f);
 		system.setSpeedError(0.25f);
 		system.setScaleError(0.5f);
@@ -72,17 +72,18 @@ public class MainGameLoop {
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
 
-		TexturedModel textModelEnemy = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("blue")));
+		RawModel modelRock = OBJLoader.loadObjModel("Rock", loader);
+		TexturedModel textModelEnemy = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
 
-		RawModel modelTree = OBJLoader.loadObjModel("lavaball", loader);
-		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("lava")));
+		RawModel modelLavaball = OBJLoader.loadObjModel("lavaball", loader);
+		TexturedModel textModelLavaball = new TexturedModel(modelLavaball, new ModelTexture(loader.loadTexture("lava")));
 
 		light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
 
 		camera = new Camera();
 
 		player = new Player(textModelNova,system, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
-				textModelTree, 100);
+				textModelLavaball, 100);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 

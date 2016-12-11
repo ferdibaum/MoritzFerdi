@@ -137,7 +137,7 @@ public class Player extends Entity {
 			Projectile bullet = bullets.get(i);
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
-			pSys.setDirection(new Vector3f ((float)Math.sin(Math.toRadians(bullet.getRotY())), 0, (float)Math.cos(Math.toRadians(bullet.getRotY()))), 0.1f);
+			pSys.setDirection(new Vector3f ((float)Math.sin(Math.toRadians(bullet.getRotY())), 0, (float)Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
 			if (bullet.colliding() != null) {
