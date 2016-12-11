@@ -68,17 +68,17 @@ public class Camera {
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)){
 			pitch-=0.2f;
 		}
-		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
-		System.out.println(Mouse.getDWheel());
 		 ***************************************/
+		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
+
 		
 		int dWheel = Mouse.getDWheel() / 120;
-		if(dWheel < 0){
+		if(dWheel < 0 && position.y <= 450){
 			position.x = position.x + diff1.x * diff2.y * ZOOM_SPEED * dWheel;
 			position.z = position.z + diff1.y * diff2.y * -ZOOM_SPEED * dWheel;
 			position.y = position.y - diff2.x * ZOOM_SPEED * dWheel;
 		}
-		if(dWheel > 0){
+		if(dWheel > 0 && position.y >= 10){
 			position.x = position.x + diff1.x * diff2.y * ZOOM_SPEED * dWheel;
 			position.z = position.z + diff1.y * diff2.y * -ZOOM_SPEED * dWheel;
 			position.y = position.y - diff2.x * ZOOM_SPEED * dWheel;
