@@ -76,7 +76,7 @@ public class Player extends Entity {
 				boolean b = true;
 				for (Entity e : Entity.entities) {
 					if (!e.getClass().toString().equals("class entities.Player")) {
-						if (Vector3f.sub(newPos, e.getPosition(), null).length() < 5)
+						if (Vector3f.sub(newPos, e.getPosition(), null).length() < 3)
 							b = false;
 					}
 				}
