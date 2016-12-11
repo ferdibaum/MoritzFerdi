@@ -47,12 +47,12 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 
 		// Terrain mit Texturen erstellen
-		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
-		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
-		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
-		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("dirt_texture"));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("fire_texture"));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("lava_texture"));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("stone_texture"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
 		renderer = new MasterRenderer();
@@ -61,18 +61,23 @@ public class MainGameLoop {
 
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 
-		system = new ParticleSystem(particleTexture, 50, 0.5f, -0.1f, 0.3f, 3);
 
+
+		system = new ParticleSystem(particleTexture, 300, 30, -0.1f, 0.3f, 3);
+		system.setLifeError(0.1f);
+		system.setSpeedError(0.25f);
+		system.setScaleError(0.5f);
+		system.randomizeRotation();
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
 
 		TexturedModel textModelEnemy = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("blue")));
 
-		RawModel modelTree = OBJLoader.loadObjModel("tree", loader);
-		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("tree")));
+		RawModel modelTree = OBJLoader.loadObjModel("lavaball", loader);
+		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("lava")));
 
 		light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
 
@@ -85,8 +90,8 @@ public class MainGameLoop {
 
 		// GUI
 		guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("path"), new Vector2f(0.5f, 0.5f),
-				new Vector2f(0.25f, 0.25f));
+		GuiTexture gui = new GuiTexture(loader.loadTexture("lava"), new Vector2f(0, -1),
+				new Vector2f(0.5f, 0.3f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
 
@@ -97,7 +102,7 @@ public class MainGameLoop {
 			float x = random.nextFloat() * 100 - 50;
 			float z = random.nextFloat() * -300;
 			float y = terrain.getHeightOfTerrain(x, z);
-			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 0, 1);
+			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 		}
 
 		/*----------------------------
@@ -148,7 +153,7 @@ public class MainGameLoop {
 		DisplayManager.closeDisplay();
 	}
 
-	// Physikalische Berechnungen und den ganzen Kram machen
+	// Physikalische Berechnungen etc machen
 	private static void update() {
 		camera.move(player);
 		player.move(terrain);
