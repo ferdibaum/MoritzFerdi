@@ -89,7 +89,7 @@ public class MainGameLoop {
 		// GUI
 		guis = new ArrayList<GuiTexture>();
 		GuiTexture gui = new GuiTexture(loader.loadTexture("lava"), new Vector2f(0, -1),
-				new Vector2f(0.5f, 0.5f));
+				new Vector2f(0.5f, 0.3f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
 
@@ -100,7 +100,7 @@ public class MainGameLoop {
 			float x = random.nextFloat() * 100 - 50;
 			float z = random.nextFloat() * -300;
 			float y = terrain.getHeightOfTerrain(x, z);
-			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 0, 1);
+			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 		}
 
 		/*----------------------------
