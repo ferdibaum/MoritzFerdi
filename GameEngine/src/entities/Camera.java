@@ -2,6 +2,7 @@ package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
@@ -10,6 +11,7 @@ import renderEngine.DisplayManager;
 public class Camera {
 
 	private static final float SPEED = 0.5f;
+	private static final float ZOOM_SPEED = 2;
 	
 	
 	private Vector3f position = new Vector3f(-38,55,-22);
@@ -20,10 +22,13 @@ public class Camera {
 	public Camera(){}
 	
 	public void move(Player player){
-		Vector3f diff = new Vector3f();
-		diff.x = (float) Math.sin(Math.toRadians(yaw));
-		diff.y = 0; 
-		diff.z = (float) Math.cos(Math.toRadians(yaw));
+		Vector2f diff1 = new Vector2f();
+		diff1.x = (float) Math.sin(Math.toRadians(yaw));
+		diff1.y = (float) Math.cos(Math.toRadians(yaw));
+		
+		Vector2f diff2 = new Vector2f();
+		diff2.x = (float) Math.sin(Math.toRadians(pitch));
+		diff2.y = (float) Math.cos(Math.toRadians(pitch));
 		
 		
 		/* ONLY USE FOR CAMERA ADJUSTMENT
@@ -66,29 +71,39 @@ public class Camera {
 		System.out.println(position.x + "\t" + position.y + "\t" + position.z + "\t" + yaw + "\t" + pitch);
 		System.out.println(Mouse.getDWheel());
 		 ***************************************/
-
-				
+		
+		int dWheel = Mouse.getDWheel() / 120;
+		if(dWheel < 0){
+			position.x = position.x + diff1.x * diff2.y * ZOOM_SPEED * dWheel;
+			position.z = position.z + diff1.y * diff2.y * -ZOOM_SPEED * dWheel;
+			position.y = position.y - diff2.x * ZOOM_SPEED * dWheel;
+		}
+		if(dWheel > 0){
+			position.x = position.x + diff1.x * diff2.y * ZOOM_SPEED * dWheel;
+			position.z = position.z + diff1.y * diff2.y * -ZOOM_SPEED * dWheel;
+			position.y = position.y - diff2.x * ZOOM_SPEED * dWheel;
+		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			Vector3f playerPos = player.getPosition();
 			position.x = playerPos.x - 15;
 			position.z = playerPos.z + 41;
+			position.y = 55;
 		}
-				
 		if(Mouse.getX() < 30){
-			position.x = position.x + diff.z * -SPEED;
-			position.z = position.z + diff.x * -SPEED;
+			position.x = position.x + diff1.y * -SPEED;
+			position.z = position.z + diff1.x * -SPEED;
 		}
 		if(Mouse.getX() > (DisplayManager.WIDTH - 30)){
-			position.x = position.x + diff.z * SPEED;
-			position.z = position.z + diff.x * SPEED;
+			position.x = position.x + diff1.y * SPEED;
+			position.z = position.z + diff1.x * SPEED;
 		}
 		if(Mouse.getY() < 30){
-			position.x = position.x + diff.x * -SPEED;
-			position.z = position.z + diff.z * SPEED;
+			position.x = position.x + diff1.x * -SPEED;
+			position.z = position.z + diff1.y * SPEED;
 		}
 		if(Mouse.getY() > (DisplayManager.HEIGHT - 30)){
-			position.x = position.x + diff.x * SPEED;
-			position.z = position.z + diff.z * -SPEED;
+			position.x = position.x + diff1.x * SPEED;
+			position.z = position.z + diff1.y * -SPEED;
 		}
 	}
 
