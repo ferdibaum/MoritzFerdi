@@ -9,10 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
 import engineTester.MainGameLoop;
-import particles.ParticleMaster;
 import particles.ParticleSystem;
-import particles.ParticleTexture;
-import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 
@@ -132,16 +129,15 @@ public class Player extends Entity {
 
 		// ********** SHOOTING ***************
 		if (shooting) {
-
 			speed = MAX_SPEED / 2;
 		} else {
 			speed = MAX_SPEED;
 		}
 		for (int i = 0; i < bullets.size(); i++) {
-			
 			Projectile bullet = bullets.get(i);
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
+			pSys.setDirection(new Vector3f ((float)Math.sin(Math.toRadians(bullet.getRotY())), 0, (float)Math.cos(Math.toRadians(bullet.getRotY()))), 0.1f);
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
 			if (bullet.colliding() != null) {
