@@ -172,7 +172,7 @@ public class Player extends Entity {
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
 			if (bullet.colliding() != null) {
-				if (bullet.colliding().getClass().getName().equals("entities.Enemy")) {
+				if (bullet.colliding().getClass().getName().equals("entities.Rock")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
 					bullets.remove(bullet);
 					bullet.destroy();

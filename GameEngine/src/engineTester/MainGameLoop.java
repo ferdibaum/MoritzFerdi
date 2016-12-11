@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import Models.RawModel;
 import Models.TexturedModel;
 import entities.Camera;
-import entities.Enemy;
+import entities.Rock;
 import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
@@ -40,7 +40,8 @@ public class MainGameLoop {
 	private static MousePicker mPicker;
 	private static String title = "FPS: 0 UPDATES: 0";
 	private static List<GuiTexture> guis;
-	private static ParticleSystem system;
+	private static ParticleSystem pSysFireball;
+	private static ParticleSystem pSysRock;
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -61,19 +62,22 @@ public class MainGameLoop {
 
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 
-		system = new ParticleSystem(particleTexture, 350, 43, -0.3f, 0.3f, 3);
-		system.setLifeError(0.1f);
-		system.setSpeedError(0.25f);
-		system.setScaleError(0.5f);
-		system.randomizeRotation();
+		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
+		pSysFireball = new ParticleSystem(pTexFire, 350, 43, -0.3f, 0.3f, 3);
+		pSysFireball.setLifeError(0.1f);
+		pSysFireball.setSpeedError(0.25f);
+		pSysFireball.setScaleError(0.5f);
+		pSysFireball.randomizeRotation();
+
+		ParticleTexture pTexRock = new ParticleTexture(loader.loadTexture("rock_particle"), 4);
+		pSysRock = new ParticleSystem(pTexRock, 200, 20, 0.5f, 0.4f, 2);
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
 
 		RawModel modelRock = OBJLoader.loadObjModel("Rock", loader);
-		TexturedModel textModelEnemy = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
+		TexturedModel textModelRock = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
 
 		RawModel modelLavaball = OBJLoader.loadObjModel("lavaball", loader);
 		TexturedModel textModelLavaball = new TexturedModel(modelLavaball, new ModelTexture(loader.loadTexture("lava")));
@@ -82,7 +86,7 @@ public class MainGameLoop {
 
 		camera = new Camera();
 
-		player = new Player(textModelNova,system, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
+		player = new Player(textModelNova,pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0, 0, 1,
 				textModelLavaball, 100);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
@@ -94,14 +98,14 @@ public class MainGameLoop {
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
 
-		// Paar Enemys spawnen
+		// Paar Sachen spawnen
 		
 		Random random = new Random();
 		for (int i = 0; i < 200; i++) {
 			float x = random.nextFloat() * 100 - 50;
 			float z = random.nextFloat() * -300;
 			float y = terrain.getHeightOfTerrain(x, z);
-			new Enemy(textModelEnemy, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+			new Rock(textModelRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 		}
 
 		/*----------------------------
@@ -161,9 +165,9 @@ public class MainGameLoop {
 		//system.generateParticles(player.getPosition());
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
-		for (int i = 0; i < Enemy.enemies.size(); i++) {
-			Enemy enemy = Enemy.enemies.get(i);
-			enemy.update();
+		for (int i = 0; i < Rock.rocks.size(); i++) {
+			Rock rock = Rock.rocks.get(i);
+			rock.update();
 		}
 		if (mousePos != null) {
 //			 System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
@@ -177,9 +181,9 @@ public class MainGameLoop {
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer);
-		for (int i = 0; i < Enemy.enemies.size(); i++) {
-			Enemy enemy = Enemy.enemies.get(i);
-			renderer.processEntity(enemy);
+		for (int i = 0; i < Rock.rocks.size(); i++) {
+			Rock rock = Rock.rocks.get(i);
+			renderer.processEntity(rock);
 		}
 		ParticleMaster.renderParticles(camera);
 		guiRenderer.render(guis);
