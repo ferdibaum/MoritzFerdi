@@ -65,7 +65,6 @@ public class MainGameLoop {
 
 
 		system = new ParticleSystem(particleTexture, 350, 45, -0.3f, 0.3f, 3);
-
 		system.setLifeError(0.1f);
 		system.setSpeedError(0.25f);
 		system.setScaleError(0.5f);
