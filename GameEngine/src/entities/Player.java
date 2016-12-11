@@ -57,7 +57,7 @@ public class Player extends Entity {
 	}
 
 	public void move(Terrain terrain) {
-		
+
 		if (moving) {
 
 			Vector2f pos = new Vector2f();
@@ -69,13 +69,21 @@ public class Player extends Entity {
 					this.increaseRotation(0, oneRot, 0);
 					turnesDone++;
 				}
-				
-				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed, this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
+
+				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed,
+						this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
-				if(terrainHeight < -4.5){
+				boolean b = true;
+				for (Entity e : Entity.entities) {
+					if (!e.getClass().toString().equals("class entities.Player")) {
+						if (Vector3f.sub(newPos, e.getPosition(), null).length() < 5)
+							b = false;
+					}
+				}
+				if (terrainHeight < -4.5 && b) {
 					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
 				}
-				
+
 				terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 				if (super.getPosition().y != terrainHeight) {
 					super.getPosition().y = terrainHeight;
@@ -86,7 +94,7 @@ public class Player extends Entity {
 				turnesDone = 0;
 			}
 		}
-		
+
 	}
 
 	private void checkInputs() {
@@ -148,7 +156,7 @@ public class Player extends Entity {
 	public void update() {
 
 		checkInputs();
-		
+
 		// ********** SHOOTING ***************
 		if (shooting) {
 			speed = MAX_SPEED / 2;
@@ -178,8 +186,6 @@ public class Player extends Entity {
 		// ********** SHOOTING ***************
 
 		// ********** MOVE ***************
-
-		
 
 		// ********** MOVE ***************
 	}
