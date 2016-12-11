@@ -9,7 +9,5 @@
 	<classpathentry kind="lib" path="lib/jars/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="lib/jars/lwjgl.jar" sourcepath="C:/Users/Ferdinand/Downloads/lwjgl-source-2.9.1.zip"/>
 	<classpathentry kind="lib" path="lib/jars/slick-util.jar"/>
-	<classpathentry kind="lib" path="lib/jars/joml-1.9.0.jar" sourcepath="/home/ferdinand/Downloads/JOML-master.zip"/>
-	<classpathentry kind="lib" path="lib/jars/PNGDecoder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
