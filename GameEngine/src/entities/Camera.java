@@ -67,8 +67,7 @@ public class Camera {
 		System.out.println(Mouse.getDWheel());
 		 ***************************************/
 
-		
-		
+				
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			Vector3f playerPos = player.getPosition();
 			position.x = playerPos.x - 15;
