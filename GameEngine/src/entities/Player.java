@@ -72,8 +72,7 @@ public class Player extends Entity {
 				
 				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed, this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
-				System.out.println(terrainHeight);
-				if(terrainHeight < -4){
+				if(terrainHeight < -4.5){
 					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
 				}
 				
