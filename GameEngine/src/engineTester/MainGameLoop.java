@@ -58,12 +58,14 @@ public class MainGameLoop {
 		renderer = new MasterRenderer();
 
 		
+
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
 
 
 		system = new ParticleSystem(particleTexture, 350, 45, -0.3f, 0.3f, 3);
+
 		system.setLifeError(0.1f);
 		system.setSpeedError(0.25f);
 		system.setScaleError(0.5f);
