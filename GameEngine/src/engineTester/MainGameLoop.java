@@ -68,7 +68,12 @@ public class MainGameLoop {
 		pSysFireball.randomizeRotation();
 
 		ParticleTexture pTexRock = new ParticleTexture(loader.loadTexture("rock_particle"), 4);
-		pSysRock = new ParticleSystem(pTexRock, 1000, 50, -1f, 0.1f, 2);
+		pSysRock = new ParticleSystem(pTexRock, 3000, 30, 1, 0.2f, 1);
+		pSysRock.setDirection(new Vector3f(0,1,0), 0.2f);
+		pSysRock.setScaleError(0.5f);
+		pSysRock.setLifeError(0.2f);
+		pSysRock.setSpeedError(0.2f);
+		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
