@@ -68,7 +68,7 @@ public class MainGameLoop {
 		pSysFireball.randomizeRotation();
 
 		ParticleTexture pTexRock = new ParticleTexture(loader.loadTexture("rock_particle"), 4);
-		pSysRock = new ParticleSystem(pTexRock, 200, 20, 0.5f, 0.4f, 2);
+		pSysRock = new ParticleSystem(pTexRock, 1000, 50, -1f, 0.1f, 2);
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
@@ -104,7 +104,7 @@ public class MainGameLoop {
 					float x = -400f + (float) i * (800f / 255f);
 					float z = -400f + (float) j * (800f / 255f);
 					float y = terrain.getHeightOfTerrain(x, z);
-					new Rock(textModelRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+					new Rock(textModelRock, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 				}
 			}
 		}

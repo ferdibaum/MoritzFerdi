@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import Models.TexturedModel;
+import particles.ParticleSystem;
 
 public class Entity {
 
@@ -18,6 +19,8 @@ public class Entity {
 	private int life;
 
 	private int hitBox;
+	
+	protected ParticleSystem pSys;
 
 	public static List<Entity> entities = new ArrayList<Entity>();
 
