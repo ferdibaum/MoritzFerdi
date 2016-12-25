@@ -19,7 +19,7 @@ public class OBJLoader {
 		try {
 			fr = new FileReader(new File("res/" + fileName + ".obj"));
 		} catch (FileNotFoundException e) {
-			System.err.println("Could not lead file!");
+			System.err.println("Could not read file!");
 			e.printStackTrace();
 		}
 		BufferedReader reader = new BufferedReader(fr);
