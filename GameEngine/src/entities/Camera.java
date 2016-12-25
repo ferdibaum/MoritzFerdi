@@ -22,6 +22,7 @@ public class Camera {
 	public Camera(){}
 	
 	public void move(Player player){
+		
 		Vector2f diff1 = new Vector2f();
 		diff1.x = (float) Math.sin(Math.toRadians(yaw));
 		diff1.y = (float) Math.cos(Math.toRadians(yaw));
@@ -32,6 +33,11 @@ public class Camera {
 		
 		
 		/* ONLY USE FOR CAMERA ADJUSTMENT
+		Vector3f diff = new Vector3f();
+		diff.x = (float) Math.sin(Math.toRadians(yaw));
+		diff.z = (float) Math.cos(Math.toRadians(yaw)); 
+		diff.y = (float) position.y;
+		
 		if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 			position.x = position.x + diff.x * SPEED;
 			position.z = position.z + diff.z * -SPEED;
