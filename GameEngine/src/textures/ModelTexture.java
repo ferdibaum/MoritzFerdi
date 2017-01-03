@@ -33,7 +33,7 @@ public class ModelTexture {
 		this.hasTransparency = hasTransparency;
 	}
 
-	public int  getID(){
+	public int getID(){
 		return textureID;
 	}
 
