@@ -36,12 +36,12 @@ public class MainGameLoop {
 	private static Camera camera;
 	private static GuiRenderer guiRenderer;
 	private static MasterRenderer renderer;
-	private static Light light;
 	private static MousePicker mPicker;
 	private static String title = "FPS: 0 UPDATES: 0";
 	private static List<GuiTexture> guis;
 	private static ParticleSystem pSysFireball;
 	private static ParticleSystem pSysRock;
+	private static List<Light> lights = new ArrayList<Light>();
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -85,7 +85,9 @@ public class MainGameLoop {
 		TexturedModel textModelLavaball = new TexturedModel(modelLavaball,
 				new ModelTexture(loader.loadTexture("lava")));
 
-		light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
+		Light light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
+		
+		lights.add(light);
 
 		camera = new Camera();
 
@@ -183,7 +185,7 @@ public class MainGameLoop {
 
 	// Alles rendern und anzeigen
 	private static void render(String s) {
-		renderer.render(light, camera);
+		renderer.render(lights, camera);
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer);
