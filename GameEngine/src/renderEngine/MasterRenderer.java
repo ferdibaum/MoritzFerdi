@@ -14,11 +14,8 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
-import renderer.AnimatedModelRenderer;
-import scene.Scene;
 import shaders.StaticShader;
 import shaders.TerrainShader;
-import skybox.SkyboxRenderer;
 import terrains.Terrain;
 
 public class MasterRenderer {
@@ -35,18 +32,14 @@ public class MasterRenderer {
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
 	
-	private SkyboxRenderer skyRenderer;
-	private AnimatedModelRenderer animRenderer;
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
-	public MasterRenderer(AnimatedModelRenderer animRenderer,  SkyboxRenderer skyRenderer){
+	public MasterRenderer(){
 		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader,projectionMatrix);
-		this.skyRenderer = skyRenderer;
-		this.animRenderer = animRenderer;
 		terrainRenderer = new TerrainRenderer(terrainShader,projectionMatrix);
 	}
 	
@@ -81,11 +74,6 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
-	protected void renderScene(Scene scene) {
-		prepare();
-		animRenderer.render(scene.getAnimatedModel(), scene.getCamera(), scene.getLightDirection());
-		skyRenderer.render(scene.getCamera());
-	}
 	
 	public void processTerrain(Terrain terrain){
 		terrains.add(terrain);
@@ -104,8 +92,7 @@ public class MasterRenderer {
 	}
 	
 	public void cleanUp(){
-		skyRenderer.cleanUp();
-		animRenderer.cleanUp();
+
 		shader.cleanUp();
 		terrainShader.cleanUp();
 	}
