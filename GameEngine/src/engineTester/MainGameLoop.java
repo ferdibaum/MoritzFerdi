@@ -11,9 +11,9 @@ import org.lwjgl.util.vector.Vector3f;
 import Models.RawModel;
 import Models.TexturedModel;
 import entities.Camera;
-import entities.Rock;
 import entities.Light;
 import entities.Player;
+import entities.Rock;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import particles.ParticleMaster;
@@ -23,6 +23,10 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
+import renderEngine.RenderEngine;
+import renderer.AnimatedModelRenderer;
+import scene.Scene;
+import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
@@ -56,7 +60,11 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
-		renderer = new MasterRenderer();
+		SkyboxRenderer skyRenderer = new SkyboxRenderer();
+		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
+		renderer = new MasterRenderer(entityRenderer, skyRenderer);
+		//RenderEngine engine = RenderEngine.init();
+		//Scene scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
