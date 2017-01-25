@@ -111,6 +111,11 @@ public class Camera {
 			position.z = position.z + diff1.y * -SPEED;
 		}
 	}
+	
+	public void invPitch(){
+		this.pitch = -pitch;
+	}
+	
 
 	public Vector3f getPosition() {
 		return position;

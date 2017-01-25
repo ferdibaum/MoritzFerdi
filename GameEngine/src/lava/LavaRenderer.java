@@ -3,6 +3,7 @@ package lava;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
@@ -17,12 +18,23 @@ import models.RawModel;
 
 public class LavaRenderer {
 
+	private static final String DUDV_MAP = "lavaDUDV";
+	private static final float MOVE_SPEED = 0.01f;
+	
 	private RawModel quad;
 	private LavaShader shader;
+	private LavaFrameBuffers fbos;
+	
+	private float moveFact = 0;
+	
+	private int dudvTexture;
 
-	public LavaRenderer(Loader loader, LavaShader shader, Matrix4f projectionMatrix) {
+	public LavaRenderer(Loader loader, LavaShader shader, Matrix4f projectionMatrix, LavaFrameBuffers fbos) {
 		this.shader = shader;
+		this.fbos = fbos;
+		dudvTexture = loader.loadTexture(DUDV_MAP);
 		shader.start();
+		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
 		setUpVAO(loader);
@@ -43,8 +55,17 @@ public class LavaRenderer {
 	private void prepareRender(Camera camera){
 		shader.start();
 		shader.loadViewMatrix(camera);
+		moveFact += MOVE_SPEED * DisplayManager.getFrameTimeSeconds();
+		moveFact %= 1;
+		shader.loadMoveFact(moveFact);
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getReflectionTexture());
+		GL13.glActiveTexture(GL13.GL_TEXTURE1);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getRefractionTexture());
+		GL13.glActiveTexture(GL13.GL_TEXTURE2);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dudvTexture);
 	}
 	
 	private void unbind(){

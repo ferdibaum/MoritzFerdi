@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
@@ -25,6 +26,7 @@ public class StaticShader extends ShaderProgram {
 	private int location_shineDamper;
 	private int location_reflectivity;
 	private int location_useFakeLighting;
+	private int location_plane;
 
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -45,7 +47,8 @@ public class StaticShader extends ShaderProgram {
 		location_shineDamper = super.getUniformLocation("shineDamper");
 		location_reflectivity = super.getUniformLocation("reflectivity");
 		location_useFakeLighting = super.getUniformLocation("useFakeLighting");
-
+		location_plane = super.getUniformLocation("plane");
+		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
 		location_attenuation = new int[MAX_LIGHTS];
@@ -56,6 +59,10 @@ public class StaticShader extends ShaderProgram {
 		}
 	}
 
+	public void loadClipPlane(Vector4f plane){
+		super.load4DVector(location_plane, plane);
+	}
+	
 	public void loadFakeLightingVariable(boolean useFake) {
 		super.loadBoolean(location_useFakeLighting, useFake);
 	}

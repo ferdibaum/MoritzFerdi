@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
@@ -14,6 +17,7 @@ import entities.Player;
 import entities.Rock;
 import guis.GuiRenderer;
 import guis.GuiTexture;
+import lava.LavaFrameBuffers;
 import lava.LavaRenderer;
 import lava.LavaShader;
 import lava.LavaTile;
@@ -51,6 +55,8 @@ public class MainGameLoop {
 	private static List<Light> lights = new ArrayList<Light>();
 	private static LavaRenderer lavaRenderer; 
 	private static List<LavaTile> lavas;
+	private static LavaFrameBuffers buffers;
+	private static LavaTile lava;
 	
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
@@ -73,11 +79,12 @@ public class MainGameLoop {
 
 		//Lava 
 		
+		buffers = new LavaFrameBuffers();
 		LavaShader lavaShader = new LavaShader();
-		lavaRenderer = new LavaRenderer(loader, lavaShader, renderer.getProjectionMatrix());
+		lavaRenderer = new LavaRenderer(loader, lavaShader, renderer.getProjectionMatrix(), buffers);
 		lavas = new ArrayList<LavaTile>();
-		lavas.add(new LavaTile(20, -300, 10));
-		
+		lava = new LavaTile(20, -200, 10);
+		lavas.add(lava);
 		
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
@@ -122,9 +129,14 @@ public class MainGameLoop {
 		GuiTexture gui = new GuiTexture(loader.loadTexture("lava"), new Vector2f(0, -1), new Vector2f(0.5f, 0.3f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
+		//TEST
+		GuiTexture lavaRefra = new GuiTexture(buffers.getReflectionTexture(), new Vector2f(-0.5f,0.5f), new Vector2f(0.25f,0.25f));
+		GuiTexture lavaRefle = new GuiTexture(buffers.getRefractionTexture(), new Vector2f(0.5f,0.5f), new Vector2f(0.25f,0.25f));
+		guis.add(lavaRefra);
+		guis.add(lavaRefle);
 
+		
 		// Paar Sachen spawnen
-
 		Random random = new Random();
 		for (int i = 0; i < terrain.getEnemys().length; i++) {
 			for (int j = 0; j < terrain.getEnemys().length; j++) {
@@ -161,6 +173,7 @@ public class MainGameLoop {
 				updates++;
 				delta--;
 			}
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			// Alles rendern
 			render(title);
 
@@ -179,6 +192,7 @@ public class MainGameLoop {
 
 		// Beim Schliessen aufraeumen
 		ParticleMaster.cleanUp();
+		buffers.cleanUp();
 		guiRenderer.cleanUp();
 		renderer.cleanUp();
 		lavaShader.cleanUp();
@@ -203,11 +217,12 @@ public class MainGameLoop {
 			// System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
 			// mousePos.z);
 		}
-	}
-
-	// Alles rendern und anzeigen
-	private static void render(String s) {
-		renderer.render(lights, camera);
+		//noch ordentlich machen nur für lava
+		buffers.bindReflectionFrameBuffer();
+		float distance = 2* (camera.getPosition().y - lava.getHeight());
+		camera.getPosition().y -= distance;
+		camera.invPitch();
+		renderer.render(lights, camera, new Vector4f(0, 1, 0, -lava.getHeight()));
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer);
@@ -215,8 +230,36 @@ public class MainGameLoop {
 			Rock rock = Rock.rocks.get(i);
 			renderer.processEntity(rock);
 		}
-		lavaRenderer.render(lavas, camera);
 		ParticleMaster.renderParticles(camera);
+		camera.getPosition().y += distance;
+		camera.invPitch();
+		//fbos.unbindCurrentFrameBuffer();
+		
+		buffers.bindRefractionFrameBuffer();
+		renderer.render(lights, camera, new Vector4f(0, -1, 0, lava.getHeight()));
+		renderer.processEntity(player);
+		renderer.processTerrain(terrain);
+		player.render(renderer);
+		for (int i = 0; i < Rock.rocks.size(); i++) {
+			Rock rock = Rock.rocks.get(i);
+			renderer.processEntity(rock);
+		}
+		ParticleMaster.renderParticles(camera);
+		buffers.unbindCurrentFrameBuffer();
+	}
+
+	// Alles rendern und anzeigen
+	private static void render(String s) {
+		renderer.render(lights, camera, new Vector4f(0, -1, 0, 10000));
+		renderer.processEntity(player);
+		renderer.processTerrain(terrain);
+		player.render(renderer);
+		for (int i = 0; i < Rock.rocks.size(); i++) {
+			Rock rock = Rock.rocks.get(i);
+			renderer.processEntity(rock);
+		}
+		ParticleMaster.renderParticles(camera);
+		lavaRenderer.render(lavas, camera);
 		guiRenderer.render(guis);
 		DisplayManager.updateDisplay(s);
 	}
