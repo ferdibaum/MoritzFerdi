@@ -1,20 +1,20 @@
-package water;
+package lava;
 
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.ShaderProgram;
 import toolbox.Maths;
 import entities.Camera;
 
-public class WaterShader extends ShaderProgram {
+public class LavaShader extends ShaderProgram {
 
-	private final static String VERTEX_FILE = "src/water/waterVertex.txt";
-	private final static String FRAGMENT_FILE = "src/water/waterFragment.txt";
+	private final static String VERTEX_FILE = "src/lava/lavaVertex.txt";
+	private final static String FRAGMENT_FILE = "src/lava/lavaFragment.txt";
 
 	private int location_modelMatrix;
 	private int location_viewMatrix;
 	private int location_projectionMatrix;
 
-	public WaterShader() {
+	public LavaShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 

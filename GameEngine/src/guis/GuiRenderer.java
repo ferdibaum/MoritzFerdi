@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import Models.RawModel;
+import models.RawModel;
 import renderEngine.Loader;
 import toolbox.Maths;
 

@@ -8,14 +8,17 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.RawModel;
-import Models.TexturedModel;
 import entities.Camera;
 import entities.Light;
 import entities.Player;
 import entities.Rock;
 import guis.GuiRenderer;
 import guis.GuiTexture;
+import lava.LavaRenderer;
+import lava.LavaShader;
+import lava.LavaTile;
+import models.RawModel;
+import models.TexturedModel;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -46,7 +49,9 @@ public class MainGameLoop {
 	private static ParticleSystem pSysFireball;
 	private static ParticleSystem pSysRock;
 	private static List<Light> lights = new ArrayList<Light>();
-
+	private static LavaRenderer lavaRenderer; 
+	private static List<LavaTile> lavas;
+	
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
 		Loader loader = new Loader();
@@ -66,6 +71,15 @@ public class MainGameLoop {
 		//RenderEngine engine = RenderEngine.init();
 		//Scene scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 
+		//Lava 
+		
+		LavaShader lavaShader = new LavaShader();
+		lavaRenderer = new LavaRenderer(loader, lavaShader, renderer.getProjectionMatrix());
+		lavas = new ArrayList<LavaTile>();
+		lavas.add(new LavaTile(20, -300, 10));
+		
+		
+		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
@@ -81,7 +95,6 @@ public class MainGameLoop {
 		pSysRock.setScaleError(0.5f);
 		pSysRock.setLifeError(0.2f);
 		pSysRock.setSpeedError(0.2f);
-		
 
 		RawModel modelNova = OBJLoader.loadObjModel("Nova", loader);
 		TexturedModel textModelNova = new TexturedModel(modelNova, new ModelTexture(loader.loadTexture("pink")));
@@ -168,6 +181,7 @@ public class MainGameLoop {
 		ParticleMaster.cleanUp();
 		guiRenderer.cleanUp();
 		renderer.cleanUp();
+		lavaShader.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 	}
@@ -201,6 +215,7 @@ public class MainGameLoop {
 			Rock rock = Rock.rocks.get(i);
 			renderer.processEntity(rock);
 		}
+		lavaRenderer.render(lavas, camera);
 		ParticleMaster.renderParticles(camera);
 		guiRenderer.render(guis);
 		DisplayManager.updateDisplay(s);

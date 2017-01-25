@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.TexturedModel;
+import models.TexturedModel;
 import particles.ParticleSystem;
 
 public class Entity {

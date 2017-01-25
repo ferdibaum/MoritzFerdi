@@ -2,7 +2,7 @@ package entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.TexturedModel;
+import models.TexturedModel;
 
 public class Projectile extends Entity{
 	

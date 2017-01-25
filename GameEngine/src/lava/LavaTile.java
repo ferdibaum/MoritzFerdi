@@ -1,13 +1,13 @@
-package water;
+package lava;
 
-public class WaterTile {
+public class LavaTile {
 	
 	public static final float TILE_SIZE = 60;
 	
 	private float height;
 	private float x,z;
 	
-	public WaterTile(float centerX, float centerZ, float height){
+	public LavaTile(float centerX, float centerZ, float height){
 		this.x = centerX;
 		this.z = centerZ;
 		this.height = height;

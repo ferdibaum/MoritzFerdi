@@ -7,8 +7,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import Models.TexturedModel;
 import engineTester.MainGameLoop;
+import models.TexturedModel;
 import particles.ParticleSystem;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
