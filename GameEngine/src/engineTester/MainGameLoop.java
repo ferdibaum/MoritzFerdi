@@ -54,6 +54,7 @@ public class MainGameLoop {
 	private static LavaFrameBuffers buffers;
 	private static LavaTile lava;
 	
+	
 	public static void main(String[] args) {
 		DisplayManager.createDisplay(); // Fenster erzeugen
 		Loader loader = new Loader();
