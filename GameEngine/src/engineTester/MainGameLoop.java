@@ -26,10 +26,6 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.RenderEngine;
-import renderer.AnimatedModelRenderer;
-import scene.Scene;
-import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
@@ -65,12 +61,8 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
-		SkyboxRenderer skyRenderer = new SkyboxRenderer();
-		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
-		renderer = new MasterRenderer(entityRenderer, skyRenderer);
-		//RenderEngine engine = RenderEngine.init();
-		//Scene scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 
+		renderer = new MasterRenderer();
 		//Lava 
 		
 		LavaShader lavaShader = new LavaShader();
