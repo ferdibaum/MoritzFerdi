@@ -106,13 +106,15 @@ public class MainGameLoop {
 		TexturedModel textModelLavaball = new TexturedModel(modelLavaball,
 				new ModelTexture(loader.loadTexture("lava")));
 
-		Light light = new Light(new Vector3f(3000, 2000, 2000), new Vector3f(1, 1, 1));
+		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.3f, 0.3f, 0.3f));
+		Light pLight = new Light(new Vector3f(0, 10, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f));
 		
 		lights.add(light);
+		lights.add(pLight);
 
 		camera = new Camera();
 
-		player = new Player(textModelNova, pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, -50), -50), 0, 0,
+		player = new Player(textModelNova, pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, 0), 0), 0, 0,
 				0, 1, textModelLavaball, 100);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
