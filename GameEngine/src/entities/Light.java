@@ -7,7 +7,7 @@ public class Light {
 	private Vector3f position; 
 	private Vector3f colour;
 	private Vector3f attenuation = new Vector3f(0.7f,0,0);
-	//attenFac = x + y*d + z * d^2 -> lightBright/attenFac
+	//attenFac = x + y*d + z * d^2 -> lightBright/attenFac | d - distance
 	
 	public Light(Vector3f position, Vector3f colour) {
 		this.position = position;

@@ -181,7 +181,7 @@ public class MainGameLoop {
 				frames = 0;
 				updates = 0;
 			}
-			System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
+			//System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
 		}
 		/*
 		 * END MAIN GAME LOOP ---------------------------
@@ -214,7 +214,7 @@ public class MainGameLoop {
 			// System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
 			// mousePos.z);
 		}
-		//noch ordentlich machen nur für lava
+		//noch ordentlich machen nur für lava TODO
 		buffers.bindReflectionFrameBuffer();
 		float distance = 2* (camera.getPosition().y - lava.getHeight());
 		camera.getPosition().y -= distance;
