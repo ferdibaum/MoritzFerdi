@@ -30,6 +30,10 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
+import renderEngine.RenderEngine;
+import renderer.AnimatedModelRenderer;
+import scene.Scene;
+import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
@@ -53,6 +57,8 @@ public class MainGameLoop {
 	private static List<LavaTile> lavas;
 	private static LavaFrameBuffers buffers;
 	private static LavaTile lava;
+	private static RenderEngine engine;
+	private static Scene scene;
 	
 	
 	public static void main(String[] args) {
@@ -68,8 +74,11 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
 		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
 
-
-		renderer = new MasterRenderer();
+		engine = RenderEngine.init();
+		SkyboxRenderer skyRenderer = new SkyboxRenderer();
+		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
+		renderer = new MasterRenderer(entityRenderer, skyRenderer);
+		scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 		
 		//Lava 
 		buffers = new LavaFrameBuffers();
@@ -258,6 +267,12 @@ public class MainGameLoop {
 		ParticleMaster.renderParticles(camera);
 		lavaRenderer.render(lavas, camera);
 		guiRenderer.render(guis);
+		
+		scene.getCamera().move();
+		scene.getAnimatedModel().update();
+		engine.renderScene(scene);
+		engine.update();
+		
 		DisplayManager.updateDisplay(s);
 	}
 
