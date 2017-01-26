@@ -64,12 +64,11 @@ public class Player extends Entity {
 			pos.set(this.getPosition().getX(), this.getPosition().getZ());
 			Vector2f dir = Vector2f.sub(destination, pos, null);
 			if (dir.length() > 0.1) {
-
 				if (turnesDone < TURNSTEPS) {
 					this.increaseRotation(0, oneRot, 0);
 					turnesDone++;
 				}
-
+				
 				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed,
 						this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
@@ -80,7 +79,8 @@ public class Player extends Entity {
 							b = false;
 					}
 				}
-				if (terrainHeight < -4.5 && b) {
+				//collision height here
+				if (terrainHeight > 0.05 && b) {
 					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
 				}
 

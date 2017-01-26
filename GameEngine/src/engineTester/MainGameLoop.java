@@ -70,13 +70,13 @@ public class MainGameLoop {
 
 
 		renderer = new MasterRenderer();
-		//Lava 
 		
+		//Lava 
 		buffers = new LavaFrameBuffers();
 		LavaShader lavaShader = new LavaShader();
 		lavaRenderer = new LavaRenderer(loader, lavaShader, renderer.getProjectionMatrix(), buffers);
 		lavas = new ArrayList<LavaTile>();
-		lava = new LavaTile(20, -200, 10);
+		lava = new LavaTile(0, 0, 0);
 		lavas.add(lava);
 		
 		
@@ -122,12 +122,13 @@ public class MainGameLoop {
 		GuiTexture gui = new GuiTexture(loader.loadTexture("lava"), new Vector2f(0, -1), new Vector2f(0.5f, 0.3f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
-		//TEST
+		
+		/**TEST
 		GuiTexture lavaRefra = new GuiTexture(buffers.getReflectionTexture(), new Vector2f(-0.5f,0.5f), new Vector2f(0.25f,0.25f));
 		GuiTexture lavaRefle = new GuiTexture(buffers.getRefractionTexture(), new Vector2f(0.5f,0.5f), new Vector2f(0.25f,0.25f));
 		guis.add(lavaRefra);
 		guis.add(lavaRefle);
-
+		*/
 		
 		// Paar Sachen spawnen
 		Random random = new Random();
@@ -178,6 +179,7 @@ public class MainGameLoop {
 				frames = 0;
 				updates = 0;
 			}
+			System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
 		}
 		/*
 		 * END MAIN GAME LOOP ---------------------------

@@ -13,7 +13,6 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import toolbox.Maths;
 import entities.Camera;
-import entities.Light;
 import models.RawModel;
 
 public class LavaRenderer {
@@ -76,7 +75,8 @@ public class LavaRenderer {
 
 	private void setUpVAO(Loader loader) {
 		// Just x and z vectex positions here, y is set to 0 in v.shader
-		float[] vertices = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
+		int x = 3;
+		float[] vertices = { -x, -x, -x, x, x, -x, x, -x, -x, x, x, x};
 		quad = loader.loadToVAO(vertices);
 	}
 

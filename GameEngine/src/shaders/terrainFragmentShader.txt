@@ -1,8 +1,10 @@
 #version 330 core
 
+const int l = 9;
+
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
-in vec3 toLightVector[4];
+in vec3 toLightVector[l];
 in vec3 toCameraVector;
 
 out vec4 out_Color;
@@ -14,8 +16,8 @@ uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 
 uniform sampler2D textureSampler;
-uniform vec3 lightColour[4];
-uniform vec3 attenuation[4];
+uniform vec3 lightColour[l];
+uniform vec3 attenuation[l];
 uniform float shineDamper;
 uniform float reflectivity;
 
@@ -37,7 +39,7 @@ void main(void){
 	vec3 totalSpecular = vec3(0.0);
 	vec4 totalColour = vec4(0.0);
 	
-	for(int i = 0; i < 4; i++){
+	for(int i = 0; i < l; i++){
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);
