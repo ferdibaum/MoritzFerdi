@@ -72,7 +72,7 @@ public class MainGameLoop {
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("stone_texture"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
-		terrain = new Terrain(-0.5f, 0, loader, texturePack, blendMap, "heightMapTest");
+		terrain = new Terrain(-0.5f, -0.5f, loader, texturePack, blendMap, "heightMapTest");
 
 		engine = RenderEngine.init();
 		SkyboxRenderer skyRenderer = new SkyboxRenderer();

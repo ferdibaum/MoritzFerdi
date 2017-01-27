@@ -35,7 +35,7 @@ public class Terrain {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
-		this.z = gridX * SIZE;
+		this.z = gridZ * SIZE;
 		this.model = generateTerrain(loader, heightMap);
 		enemySpawn("spawn");
 	}
