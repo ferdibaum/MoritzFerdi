@@ -10,12 +10,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
+import animatedModel.AnimatedModel;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
 import renderer.AnimatedModelRenderer;
-import scene.Scene;
 import shaders.StaticShader;
 import shaders.TerrainShader;
 import skybox.SkyboxRenderer;
@@ -82,9 +82,9 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
-	protected void renderScene(Scene scene) {
+	protected void renderAnim(AnimatedModel model, Camera camera, Light light) {
 		//prepare();
-		animRenderer.render(scene.getAnimatedModel(), scene.getCamera(), scene.getLightDirection());
+		animRenderer.render(model, camera, light.getPosition());
 		//skyRenderer.render(scene.getCamera());
 	}
 	
@@ -135,4 +135,7 @@ public class MasterRenderer {
 		projectionMatrix.m33 = 0;
 	}
 	
+	public AnimatedModelRenderer getAnimRenderer(){
+		return animRenderer;
+	}
 }

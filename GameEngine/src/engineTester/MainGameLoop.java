@@ -11,6 +11,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import animatedModel.AnimatedModel;
+import animation.Animation;
 import entities.Camera;
 import entities.Light;
 import entities.Player;
@@ -21,6 +23,8 @@ import lava.LavaFrameBuffers;
 import lava.LavaRenderer;
 import lava.LavaShader;
 import lava.LavaTile;
+import loaders.AnimatedModelLoader;
+import loaders.AnimationLoader;
 import models.RawModel;
 import models.TexturedModel;
 import particles.ParticleMaster;
@@ -30,15 +34,14 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
-import renderEngine.RenderEngine;
 import renderer.AnimatedModelRenderer;
-import scene.Scene;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.MousePicker;
+import utils.MyFile;
 
 public class MainGameLoop {
 
@@ -57,8 +60,8 @@ public class MainGameLoop {
 	private static List<LavaTile> lavas;
 	private static LavaFrameBuffers buffers;
 	private static LavaTile lava;
-	private static RenderEngine engine;
-	private static Scene scene;
+	//private static RenderEngine engine;
+	//private static Scene scene;
 	
 	
 	public static void main(String[] args) {
@@ -74,11 +77,16 @@ public class MainGameLoop {
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
 		terrain = new Terrain(-0.5f, -0.5f, loader, texturePack, blendMap, "heightMapTest");
 
-		engine = RenderEngine.init();
 		SkyboxRenderer skyRenderer = new SkyboxRenderer();
 		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
 		renderer = new MasterRenderer(entityRenderer, skyRenderer);
-		scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
+		
+		AnimatedModel animmodel = AnimatedModelLoader.loadEntity(new MyFile("res", GeneralSettings.MODEL_FILE),
+				new MyFile("res", GeneralSettings.DIFFUSE_FILE));
+		Animation animation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.ANIM_FILE));
+		animmodel.doAnimation(animation);
+		
+		//scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 		
 		//Lava 
 		buffers = new LavaFrameBuffers();
@@ -124,7 +132,7 @@ public class MainGameLoop {
 		camera = new Camera();
 
 		player = new Player(textModelNova, pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, 0), 0), 0, 0,
-				0, 1, textModelLavaball, 100);
+				0, 1, textModelLavaball, 100, animmodel);
 
 		mPicker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 
@@ -231,7 +239,7 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, 1, 0, -lava.getHeight()));
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
-		player.render(renderer);
+		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {
 			Rock rock = Rock.rocks.get(i);
 			renderer.processEntity(rock);
@@ -245,7 +253,7 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, lava.getHeight()));
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
-		player.render(renderer);
+		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {
 			Rock rock = Rock.rocks.get(i);
 			renderer.processEntity(rock);
@@ -259,7 +267,7 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, 10000));
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
-		player.render(renderer);
+		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {
 			Rock rock = Rock.rocks.get(i);
 			renderer.processEntity(rock);
@@ -267,11 +275,6 @@ public class MainGameLoop {
 		ParticleMaster.renderParticles(camera);
 		lavaRenderer.render(lavas, camera);
 		guiRenderer.render(guis);
-		
-		scene.getCamera().move();
-		scene.getAnimatedModel().update();
-		engine.renderScene(scene);
-		engine.update();
 		
 		DisplayManager.updateDisplay(s);
 	}

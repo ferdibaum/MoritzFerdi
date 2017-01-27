@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import animatedModel.AnimatedModel;
 import engineTester.MainGameLoop;
 import models.TexturedModel;
 import particles.ParticleSystem;
@@ -40,10 +41,12 @@ public class Player extends Entity {
 
 	ParticleSystem pSys;
 
+	private AnimatedModel animModel;
+	
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
 	public Player(TexturedModel model, ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ,
-			float scale, TexturedModel bulletModel, int life) {
+			float scale, TexturedModel bulletModel, int life, AnimatedModel animModel) {
 		super(model, position, rotX, rotY, rotZ, scale, HITBOX, life);
 		this.bulletModel = bulletModel;
 		lastShoot = System.currentTimeMillis();
@@ -54,6 +57,8 @@ public class Player extends Entity {
 		turnesDone = 0;
 
 		this.pSys = pSys;
+		
+		this.animModel = animModel;
 	}
 
 	public void move(Terrain terrain) {
@@ -185,12 +190,11 @@ public class Player extends Entity {
 		}
 		// ********** SHOOTING ***************
 
-		// ********** MOVE ***************
-
-		// ********** MOVE ***************
+		animModel.update();
 	}
 
-	public void render(MasterRenderer renderer) {
+	public void render(MasterRenderer renderer, Camera camera) {
+		renderer.getAnimRenderer().render(animModel, camera, new Vector3f(0,-1,0));
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}

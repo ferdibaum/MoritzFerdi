@@ -2,8 +2,8 @@ package skybox;
 
 import org.lwjgl.opengl.GL11;
 
+import entities.Camera;
 import openglObjects.Vao;
-import scene.ICamera;
 import utils.OpenGlUtils;
 
 public class SkyboxRenderer {
@@ -24,7 +24,7 @@ public class SkyboxRenderer {
 	 * @param camera
 	 *            - the scene's camera.
 	 */
-	public void render(ICamera camera) {
+	public void render(Camera camera) {
 		prepare(camera);
 		box.bind(0);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, box.getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
@@ -47,7 +47,7 @@ public class SkyboxRenderer {
 	 * @param camera
 	 *            - the scene's camera.
 	 */
-	private void prepare(ICamera camera) {
+	private void prepare(Camera camera) {
 		shader.start();
 		shader.projectionViewMatrix.loadMatrix(camera.getProjectionViewMatrix());
 		OpenGlUtils.disableBlending();
