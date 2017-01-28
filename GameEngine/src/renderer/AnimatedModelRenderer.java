@@ -1,10 +1,12 @@
 package renderer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import animatedModel.AnimatedModel;
 import entities.Camera;
+import toolbox.Maths;
 import utils.OpenGlUtils;
 
 /**
@@ -40,8 +42,8 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	public void render(AnimatedModel entity, Camera camera, Vector3f lightDir) {
-		prepare(camera, lightDir);
+	public void render(AnimatedModel entity, Camera camera, Vector3f lightDir, Matrix4f pMatrix) {
+		prepare(camera, lightDir, pMatrix);
 		entity.getTexture().bindToUnit(0);
 		entity.getModel().bind(0, 1, 2, 3, 4);
 		shader.jointTransforms.loadMatrixArray(entity.getJointTransforms());
@@ -67,9 +69,9 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	private void prepare(Camera camera, Vector3f lightDir) {
+	private void prepare(Camera camera, Vector3f lightDir, Matrix4f pMatrix) {
 		shader.start();
-		shader.projectionViewMatrix.loadMatrix(camera.getProjectionViewMatrix());
+		shader.projectionViewMatrix.loadMatrix(Matrix4f.mul(pMatrix, Maths.createViewMatrix(camera), null));
 		shader.lightDirection.loadVec3(lightDir);
 		OpenGlUtils.antialias(true);
 		OpenGlUtils.disableBlending();

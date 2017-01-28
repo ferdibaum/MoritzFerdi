@@ -84,7 +84,7 @@ public class MasterRenderer {
 	
 	protected void renderAnim(AnimatedModel model, Camera camera, Light light) {
 		//prepare();
-		animRenderer.render(model, camera, light.getPosition());
+		animRenderer.render(model, camera, light.getPosition(), projectionMatrix);
 		//skyRenderer.render(scene.getCamera());
 	}
 	

@@ -194,7 +194,7 @@ public class Player extends Entity {
 	}
 
 	public void render(MasterRenderer renderer, Camera camera) {
-		renderer.getAnimRenderer().render(animModel, camera, new Vector3f(0,-1,0));
+		renderer.getAnimRenderer().render(animModel, camera, new Vector3f(0,-1,0), renderer.getProjectionMatrix());
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
