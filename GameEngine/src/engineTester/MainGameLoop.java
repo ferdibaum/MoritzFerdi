@@ -124,7 +124,7 @@ public class MainGameLoop {
 				new ModelTexture(loader.loadTexture("lava")));
 
 		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.3f, 0.3f, 0.3f));
-		Light pLight = new Light(new Vector3f(0, 10, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f));
+		Light pLight = new Light(new Vector3f(105, 7, -115), new Vector3f(2, 0, 0), new Vector3f(1, 0.0001f, 0.00001f));
 		
 		lights.add(light);
 		lights.add(pLight);
@@ -198,7 +198,7 @@ public class MainGameLoop {
 				frames = 0;
 				updates = 0;
 			}
-			//System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
+			System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
 		}
 		/*
 		 * END MAIN GAME LOOP ---------------------------
