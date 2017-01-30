@@ -92,9 +92,9 @@ public class Terrain {
 			e.printStackTrace();
 		}
 		int VERTEX_COUNT = image.getHeight();
-		float[][] enemys = new float[VERTEX_COUNT][VERTEX_COUNT];
+		//float[][] enemys = new float[VERTEX_COUNT][VERTEX_COUNT];
 		this.enemys = new String[VERTEX_COUNT][VERTEX_COUNT];
-		int count = VERTEX_COUNT * VERTEX_COUNT;
+		//int count = VERTEX_COUNT * VERTEX_COUNT;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
 				if (image.getRGB(i, j) == -16777216){
