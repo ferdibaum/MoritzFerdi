@@ -18,7 +18,7 @@ import models.RawModel;
 public class LavaRenderer {
 
 	private static final String DUDV_MAP = "lavaDUDV";
-	private static final float MOVE_SPEED = 0.0025f;
+	private static final float MOVE_SPEED = 0.03f;
 	
 	private RawModel quad;
 	private LavaShader shader;
