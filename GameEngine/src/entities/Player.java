@@ -42,7 +42,7 @@ public class Player extends Entity {
 	ParticleSystem pSys;
 
 	private AnimatedModel animModel;
-	
+
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
 	public Player(TexturedModel model, ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ,
@@ -57,7 +57,7 @@ public class Player extends Entity {
 		turnesDone = 0;
 
 		this.pSys = pSys;
-		
+
 		this.animModel = animModel;
 	}
 
@@ -73,7 +73,7 @@ public class Player extends Entity {
 					this.increaseRotation(0, oneRot, 0);
 					turnesDone++;
 				}
-				
+
 				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed,
 						this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
@@ -84,7 +84,7 @@ public class Player extends Entity {
 							b = false;
 					}
 				}
-				//collision height here
+				// collision height here
 				if (terrainHeight > 0.05 && b) {
 					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
 				}
@@ -189,12 +189,13 @@ public class Player extends Entity {
 			}
 		}
 		// ********** SHOOTING ***************
-
-		animModel.update();
+		if (moving)
+			animModel.update();
 	}
 
 	public void render(MasterRenderer renderer, Camera camera) {
-		renderer.getAnimRenderer().render(animModel, camera, new Vector3f(0,-1,0), renderer.getProjectionMatrix());
+		renderer.getAnimRenderer().render(animModel, camera, new Vector3f(0, -1, 0), renderer.getProjectionMatrix(),
+				this);
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}

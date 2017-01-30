@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import animatedModel.AnimatedModel;
 import entities.Camera;
+import entities.Entity;
 import toolbox.Maths;
 import utils.OpenGlUtils;
 
@@ -42,13 +43,14 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	public void render(AnimatedModel entity, Camera camera, Vector3f lightDir, Matrix4f pMatrix) {
+	public void render(AnimatedModel model, Camera camera, Vector3f lightDir, Matrix4f pMatrix, Entity entity) {
 		prepare(camera, lightDir, pMatrix);
-		entity.getTexture().bindToUnit(0);
-		entity.getModel().bind(0, 1, 2, 3, 4);
-		shader.jointTransforms.loadMatrixArray(entity.getJointTransforms());
-		GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
-		entity.getModel().unbind(0, 1, 2, 3, 4);
+		model.getTexture().bindToUnit(0);
+		model.getModel().bind(0, 1, 2, 3, 4);
+		shader.jointTransforms.loadMatrixArray(model.getJointTransforms());
+		prepareInstance(entity);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
+		model.getModel().unbind(0, 1, 2, 3, 4);
 		finish();
 	}
 
@@ -83,6 +85,12 @@ public class AnimatedModelRenderer {
 	 */
 	private void finish() {
 		shader.stop();
+	}
+	
+	private void prepareInstance(Entity entity){
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
+				entity.getRotY(), entity.getRotZ(), entity.getScale());
+		shader.loadTransformationMatrix(transformationMatrix);
 	}
 
 }

@@ -237,7 +237,7 @@ public class MainGameLoop {
 		camera.getPosition().y -= distance;
 		camera.invPitch();
 		renderer.render(lights, camera, new Vector4f(0, 1, 0, -lava.getHeight()));
-		renderer.processEntity(player);
+		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {
@@ -251,7 +251,7 @@ public class MainGameLoop {
 		
 		buffers.bindRefractionFrameBuffer();
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, lava.getHeight()));
-		renderer.processEntity(player);
+		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {
@@ -265,7 +265,7 @@ public class MainGameLoop {
 	// Alles rendern und anzeigen
 	private static void render(String s) {
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, 10000));
-		renderer.processEntity(player);
+		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Rock.rocks.size(); i++) {

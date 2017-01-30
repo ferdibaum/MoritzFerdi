@@ -82,9 +82,9 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
-	protected void renderAnim(AnimatedModel model, Camera camera, Light light) {
+	protected void renderAnim(AnimatedModel model, Camera camera, Light light, Entity entity) {
 		//prepare();
-		animRenderer.render(model, camera, light.getPosition(), projectionMatrix);
+		animRenderer.render(model, camera, light.getPosition(), projectionMatrix, entity);
 		//skyRenderer.render(scene.getCamera());
 	}
 	

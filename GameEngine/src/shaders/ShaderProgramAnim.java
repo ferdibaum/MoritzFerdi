@@ -1,13 +1,19 @@
 package shaders;
 
 import java.io.BufferedReader;
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+
 import utils.MyFile;
 
 public class ShaderProgramAnim {
 
 	private int programID;
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	public ShaderProgramAnim(MyFile vertexFile, MyFile fragmentFile, String... inVariables) {
 		int vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
@@ -74,5 +80,13 @@ public class ShaderProgramAnim {
 		return shaderID;
 	}
 
-
+	protected void loadMatrix(int location, Matrix4f matrix){
+		matrix.store(matrixBuffer);
+		matrixBuffer.flip();
+		GL20.glUniformMatrix4(location, false, matrixBuffer);
+	}
+	
+	protected int getUniformLocation(String uniformName){
+		return GL20.glGetUniformLocation(programID, uniformName);
+	}
 }

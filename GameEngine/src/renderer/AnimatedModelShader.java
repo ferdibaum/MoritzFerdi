@@ -1,5 +1,7 @@
 package renderer;
 
+import org.lwjgl.util.vector.Matrix4f;
+
 import shaders.ShaderProgramAnim;
 import shaders.UniformMat4Array;
 import shaders.UniformMatrix;
@@ -15,6 +17,9 @@ public class AnimatedModelShader extends ShaderProgramAnim {
 	private static final MyFile VERTEX_SHADER = new MyFile("renderer", "animatedEntityVertex.glsl");
 	private static final MyFile FRAGMENT_SHADER = new MyFile("renderer", "animatedEntityFragment.glsl");
 
+	
+	private int location_transformationMatrix;
+	
 	protected UniformMatrix projectionViewMatrix = new UniformMatrix("projectionViewMatrix");
 	protected UniformVec3 lightDirection = new UniformVec3("lightDirection");
 	protected UniformMat4Array jointTransforms = new UniformMat4Array("jointTransforms", MAX_JOINTS);
@@ -31,6 +36,7 @@ public class AnimatedModelShader extends ShaderProgramAnim {
 				"in_weights");
 		super.storeAllUniformLocations(projectionViewMatrix, diffuseMap, lightDirection, jointTransforms);
 		connectTextureUnits();
+		location_transformationMatrix = super.getUniformLocation("transfomationMatrix");
 	}
 
 	/**
@@ -40,6 +46,10 @@ public class AnimatedModelShader extends ShaderProgramAnim {
 		super.start();
 		diffuseMap.loadTexUnit(DIFFUSE_TEX_UNIT);
 		super.stop();
+	}
+	
+	public void loadTransformationMatrix(Matrix4f matrix) {
+		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 
 }
