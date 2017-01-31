@@ -118,17 +118,20 @@ public class MainGameLoop {
 
 		RawModel modelRock = OBJLoader.loadObjModel("Rock", loader);
 		TexturedModel textModelRock = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
+		
+		RawModel modelTree = OBJLoader.loadObjModel("Tree", loader);
+		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("rock")));
 
 		RawModel modelLavaball = OBJLoader.loadObjModel("lavaball", loader);
 		TexturedModel textModelLavaball = new TexturedModel(modelLavaball,
 				new ModelTexture(loader.loadTexture("lava")));
 
-		
+		//lights
 		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.3f, 0.3f, 0.3f));
 		Light pLight = new Light(new Vector3f(0, 7, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.0001f, 0.00001f));
 		
 		lights.add(light);
-		lights.add(pLight);
+		//lights.add(pLight);
 
 		camera = new Camera();
 
@@ -154,11 +157,16 @@ public class MainGameLoop {
 		Random random = new Random();
 		for (int i = 0; i < terrain.getEnemys().length; i++) {
 			for (int j = 0; j < terrain.getEnemys().length; j++) {
-				if (terrain.getEnemys()[i][j] != null) {
+				if (terrain.getEnemys()[i][j] == "rock") {
 					float x = -200f + (float) i * (400f / 255f);
 					float z = -200f + (float) j * (400f / 255f);
 					float y = terrain.getHeightOfTerrain(x, z);
 					new Rock(textModelRock, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+				} else if (terrain.getEnemys()[i][j] == "tree") {
+					float x = -200f + (float) i * (400f / 255f);
+					float z = -200f + (float) j * (400f / 255f);
+					float y = terrain.getHeightOfTerrain(x, z);
+					new Rock(textModelTree, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 				}
 			}
 		}
