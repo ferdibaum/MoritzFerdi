@@ -100,7 +100,10 @@ public class Terrain {
 				if (image.getRGB(i, j) == -16777216){
 					this.enemys[i][j] = "rock";
 				}
-				
+				else if (image.getRGB(i, j) == -65536){
+					this.enemys[i][j] = "tree";
+				}
+				//System.out.println(image.getRGB(i, j));
 
 			}
 		}
