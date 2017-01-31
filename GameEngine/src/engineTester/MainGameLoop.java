@@ -199,7 +199,7 @@ public class MainGameLoop {
 				frames = 0;
 				updates = 0;
 			}
-			System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
+			//System.out.println(player.getPosition().x + "\t" + player.getPosition().y + "\t" + player.getPosition().z);
 		}
 		/*
 		 * END MAIN GAME LOOP ---------------------------

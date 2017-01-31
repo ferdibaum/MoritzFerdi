@@ -3,10 +3,12 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import abilitys.Wall;
 import animatedModel.AnimatedModel;
 import engineTester.MainGameLoop;
 import models.TexturedModel;
@@ -43,6 +45,11 @@ public class Player extends Entity {
 
 	private AnimatedModel animModel;
 
+	private Wall wall;
+	boolean wallBool = false;
+	Vector2f wall1 = new Vector2f(0, 0);
+	Vector2f wall2 = new Vector2f(0, 0);
+
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
 	public Player(TexturedModel model, ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ,
@@ -59,6 +66,7 @@ public class Player extends Entity {
 		this.pSys = pSys;
 
 		this.animModel = animModel;
+		wall = null;
 	}
 
 	public void move(Terrain terrain) {
@@ -105,20 +113,35 @@ public class Player extends Entity {
 	private void checkInputs() {
 
 		if (Mouse.isButtonDown(0)) {
-			shooting = true;
-			long now = System.currentTimeMillis();
-			deltaShoot = now - lastShoot;
-			if (deltaShoot > atkSpeed) {
-				Vector3f bullletPos = new Vector3f();
-				bullletPos.x = this.getPosition().x;
-				bullletPos.y = this.getPosition().y + 5;
-				bullletPos.z = this.getPosition().z;
-				bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(), 1f));
-				deltaShoot = 0;
-				lastShoot = now;
+			if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
+				if (!wallBool) {
+					wallBool = true;
+					wall1.setX(MainGameLoop.getMPicker().getCurrentTerrainPoint().x);
+					wall1.setY(MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
+				}
+			} else {
+				shooting = true;
+				long now = System.currentTimeMillis();
+				deltaShoot = now - lastShoot;
+				if (deltaShoot > atkSpeed) {
+					Vector3f bullletPos = new Vector3f();
+					bullletPos.x = this.getPosition().x;
+					bullletPos.y = this.getPosition().y + 5;
+					bullletPos.z = this.getPosition().z;
+					bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(), 1f));
+					deltaShoot = 0;
+					lastShoot = now;
+				}
 			}
 		} else {
 			shooting = false;
+			if (wallBool) {
+				wall2.setX(MainGameLoop.getMPicker().getCurrentTerrainPoint().x);
+				wall2.setY(MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
+				wall = new Wall(wall1, wall2);
+				wallBool = false;
+
+			}
 		}
 
 		if (Mouse.isButtonDown(1)) {
@@ -191,6 +214,8 @@ public class Player extends Entity {
 		// ********** SHOOTING ***************
 		if (moving)
 			animModel.update();
+		if (wall != null)
+			wall.update();
 	}
 
 	public void render(MasterRenderer renderer, Camera camera) {
