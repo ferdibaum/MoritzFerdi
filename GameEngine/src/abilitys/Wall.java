@@ -20,7 +20,6 @@ public class Wall {
 		pos2 = wall2;
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
 		pSys = new ParticleSystem(pTexFire, 400, 10, -0.1f, 0.3f, 3);
-		sdfög
 	}
 
 
