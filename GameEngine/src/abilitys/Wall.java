@@ -11,6 +11,7 @@ public class Wall {
 	
 	private Vector2f pos1;
 	private Vector2f pos2;
+	private Vector2f vec;
 	private ParticleSystem pSys;
 	
 	
@@ -18,6 +19,7 @@ public class Wall {
 		Loader loader = new Loader();
 		pos1 = wall1;
 		pos2 = wall2;
+		vec = Vector2f.sub(pos1, pos2, null);
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
 		pSys = new ParticleSystem(pTexFire, 400, 10, -0.1f, 0.3f, 3);
 	}
@@ -44,8 +46,11 @@ public class Wall {
 
 
 	public void update() {
+		float abstand = vec.length()/10;
 		pSys.generateParticles(new Vector3f( pos1.x, 0,pos1.y));
 		pSys.generateParticles(new Vector3f( pos2.x, 0,pos2.y));
-		
+		for(float i = 0; i<vec.length();i+=abstand){
+			pSys.generateParticles();
+		}
 	}
 }
