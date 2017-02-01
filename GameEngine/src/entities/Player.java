@@ -199,6 +199,15 @@ public class Player extends Entity {
 					(float) Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
+			
+			if(wall  !=null){
+				
+				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPosition());
+				if(diffWall<2f){
+					bullet.setRotY(bullet.getRotY()+180);
+				}
+			}
+			
 			if (bullet.colliding() != null) {
 				if (bullet.colliding().getClass().getName().equals("entities.Rock")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
@@ -216,6 +225,40 @@ public class Player extends Entity {
 			animModel.update();
 		if (wall != null)
 			wall.update();
+	}
+
+	private float calcDiffWall(Vector2f pos1, Vector2f pos2, Vector3f position) {
+		Vector2f posB = new Vector2f(position.x,position.z);
+		Vector2f dir = Vector2f.sub(pos1, pos2, null);
+		Vector2f start = new Vector2f(pos1);
+		dir = dir.normalise(dir);
+		float abstand1 = Vector2f.sub(start, posB, null).length();
+		float abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
+		if(abstand1>abstand2){
+			while(abstand1>abstand2){
+				start = Vector2f.sub(start, dir, null);
+				abstand1 = Vector2f.sub(start, posB, null).length();
+				abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
+			}
+		}else{
+			while(abstand1<abstand2){
+				start = Vector2f.add(start, dir, null);
+				abstand1 = Vector2f.sub(start, posB, null).length();
+				abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
+			}
+		}
+		
+		if((Vector2f.sub(start, pos1, null).length()<Vector2f.sub(pos1, pos2, null).length())&&(Vector2f.sub(start, pos2, null).length()<Vector2f.sub(pos1, pos2, null).length())){
+			return Vector2f.sub(start, posB, null).length();
+		}else if(Vector2f.sub(start, pos1, null).length()<Vector2f.sub(start, pos2, null).length()){
+			return Vector2f.sub(pos1, posB, null).length();
+		}else{
+			return Vector2f.sub(pos2, posB, null).length();
+		}
+		
+		
+		
+		
 	}
 
 	public void render(MasterRenderer renderer, Camera camera) {
