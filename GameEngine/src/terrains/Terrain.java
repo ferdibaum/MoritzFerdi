@@ -17,27 +17,28 @@ import toolbox.Maths;
 
 public class Terrain {
 
-	private static final float SIZE = 400;
 	private static final float MAX_HEIGHT = 5;
 	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
 	private float x;
 	private float z;
+	private float size;
 	private RawModel model;
 	private TerrainTexturePack texturePack;
 	private TerrainTexture blendMap;
 
 	private float[][] heights;
-	private String[][] enemys;
+	private String[][] objects;
 
-	public Terrain(float gridX, float gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap,
+	public Terrain(float gridX, float gridZ, float size, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap,
 			String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
+		this.size = size;
+		this.x = gridX * size;
+		this.z = gridZ * size;
 		this.model = generateTerrain(loader, heightMap);
-		enemySpawn("spawn");
+		objectSpawn("spawn");
 	}
 
 	public float getX() {
@@ -63,7 +64,7 @@ public class Terrain {
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
-		float gridSquareSize = SIZE / ((float) heights.length - 1);
+		float gridSquareSize = size / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
@@ -84,7 +85,7 @@ public class Terrain {
 		return erg;
 	}
 
-	private void enemySpawn(String name) {
+	private void objectSpawn(String name) {
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File("res/" + name + ".png"));
@@ -93,15 +94,15 @@ public class Terrain {
 		}
 		int VERTEX_COUNT = image.getHeight();
 		//float[][] enemys = new float[VERTEX_COUNT][VERTEX_COUNT];
-		this.enemys = new String[VERTEX_COUNT][VERTEX_COUNT];
+		this.objects = new String[VERTEX_COUNT][VERTEX_COUNT];
 		//int count = VERTEX_COUNT * VERTEX_COUNT;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
 				if (image.getRGB(i, j) == -16777216){
-					this.enemys[i][j] = "rock";
+					this.objects[i][j] = "rock";
 				}
 				else if (image.getRGB(i, j) == -65536){
-					this.enemys[i][j] = "tree";
+					this.objects[i][j] = "tree";
 				}
 				//System.out.println(image.getRGB(i, j));
 
@@ -127,11 +128,11 @@ public class Terrain {
 		int vertexPointer = 0;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * size;
 				float height = getHeight(j, i, image);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * size;
 				Vector3f normal = calculateNormal(j, i, image);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;
@@ -181,7 +182,7 @@ public class Terrain {
 	}
 
 	public String[][] getEnemys() {
-		return enemys;
+		return objects;
 	}
 
 }

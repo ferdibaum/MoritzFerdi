@@ -14,6 +14,7 @@ import org.lwjgl.util.vector.Vector4f;
 import animatedModel.AnimatedModel;
 import animation.Animation;
 import entities.Camera;
+import entities.Entity;
 import entities.Light;
 import entities.Player;
 import entities.Object;
@@ -47,6 +48,7 @@ public class MainGameLoop {
 
 	private static Player player;
 	private static Terrain terrain;
+	private static Terrain bTerrain;
 	private static Camera camera;
 	private static GuiRenderer guiRenderer;
 	private static MasterRenderer renderer;
@@ -61,6 +63,7 @@ public class MainGameLoop {
 	private static LavaFrameBuffers buffers;
 	private static LavaTile lava;
 	private static List<TexturedModel> trees;
+
 	//private static RenderEngine engine;
 	//private static Scene scene;
 	
@@ -76,8 +79,11 @@ public class MainGameLoop {
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("stone_texture"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
-		terrain = new Terrain(-0.5f, -0.5f, loader, texturePack, blendMap, "heightMap");
+		TerrainTexture blendMapBG = new TerrainTexture(loader.loadTexture("blendMapBG"));
+		terrain = new Terrain(-0.5f, -0.5f, 400, loader, texturePack, blendMap, "heightMap");
 
+		bTerrain = new Terrain(-0.5f, -0.5f, 600, loader, texturePack, blendMapBG, "heightMapBG");
+		
 		SkyboxRenderer skyRenderer = new SkyboxRenderer();
 		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
 		renderer = new MasterRenderer(entityRenderer, skyRenderer);
@@ -89,6 +95,7 @@ public class MainGameLoop {
 		
 		//scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 		
+		
 		//Lava 
 		buffers = new LavaFrameBuffers();
 		LavaShader lavaShader = new LavaShader();
@@ -97,7 +104,7 @@ public class MainGameLoop {
 		lava = new LavaTile(0, 0, 0);
 		lavas.add(lava);
 		
-		
+		//particleSystems
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
@@ -121,9 +128,7 @@ public class MainGameLoop {
 		TexturedModel textModelRock = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
 		
 		RawModel modelLavaball = OBJLoader.loadObjModel("lavaball", loader);
-		TexturedModel textModelLavaball = new TexturedModel(modelLavaball,
-		new ModelTexture(loader.loadTexture("lava")));
-
+		TexturedModel textModelLavaball = new TexturedModel(modelLavaball, new ModelTexture(loader.loadTexture("lava")));
 
 		//trees
 		RawModel modelTree01 = OBJLoader.loadObjModel("Tree01", loader);
@@ -149,12 +154,14 @@ public class MainGameLoop {
 		trees.add(textModelTree05);
 		
 		//lights
-		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.3f, 0.3f, 0.3f));
+		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.4f, 0.4f, 0.4f));
 		Light pLight = new Light(new Vector3f(0, 7, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.0001f, 0.00001f));
 		
 		lights.add(light);
 		//lights.add(pLight);
 
+		
+		//rest
 		camera = new Camera();
 
 		player = new Player(textModelNova, pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, 0), 0), 0, 0,
@@ -258,13 +265,14 @@ public class MainGameLoop {
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
 		for (int i = 0; i < Object.objects.size(); i++) {
-			Object rock = Object.objects.get(i);
-			rock.update();
+			Object objc = Object.objects.get(i);
+			objc.update();
 		}
 		if (mousePos != null) {
 			// System.out.println(mousePos.x + "\t" + mousePos.y + "\t" +
 			// mousePos.z);
 		}
+		
 		//noch ordentlich machen nur für lava TODO
 		buffers.bindReflectionFrameBuffer();
 		float distance = 2* (camera.getPosition().y - lava.getHeight());
@@ -273,10 +281,11 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, 1, 0, -lava.getHeight()));
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
+		renderer.processTerrain(bTerrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Object.objects.size(); i++) {
-			Object rock = Object.objects.get(i);
-			renderer.processEntity(rock);
+			Object objc = Object.objects.get(i);
+			renderer.processEntity(objc);
 		}
 		ParticleMaster.renderParticles(camera);
 		camera.getPosition().y += distance;
@@ -287,10 +296,11 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, lava.getHeight()));
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
+		renderer.processTerrain(bTerrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Object.objects.size(); i++) {
-			Object rock = Object.objects.get(i);
-			renderer.processEntity(rock);
+			Object objc = Object.objects.get(i);
+			renderer.processEntity(objc);
 		}
 		ParticleMaster.renderParticles(camera);
 		buffers.unbindCurrentFrameBuffer();
@@ -301,10 +311,11 @@ public class MainGameLoop {
 		renderer.render(lights, camera, new Vector4f(0, -1, 0, 10000));
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
+		renderer.processTerrain(bTerrain);
 		player.render(renderer, camera);
 		for (int i = 0; i < Object.objects.size(); i++) {
-			Object rock = Object.objects.get(i);
-			renderer.processEntity(rock);
+			Object objc = Object.objects.get(i);
+			renderer.processEntity(objc);
 		}
 		ParticleMaster.renderParticles(camera);
 		lavaRenderer.render(lavas, camera);

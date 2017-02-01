@@ -76,7 +76,7 @@ public class LavaRenderer {
 	private void setUpVAO(Loader loader) {
 		// Just x and z vectex positions here, y is set to 0 in v.shader
 		int x = 3;
-		float[] vertices = { -x, -x, -x, x, x, -x, x, -x, -x, x, x, x};
+		float[] vertices = {-x, -x, -x, x, x, -x, x, -x, -x, x, x, x};
 		quad = loader.loadToVAO(vertices);
 	}
 

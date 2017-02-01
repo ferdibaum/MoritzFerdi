@@ -20,7 +20,7 @@ public class Object extends Entity {
 	}
 
 	public void update() {
-		if (this.getLife() <= 0) {
+		if (this.getLife() == 0) {
 			objects.remove(this);
 			Vector3f pos = this.getPosition();
 			pos.y += 2;
