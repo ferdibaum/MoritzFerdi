@@ -107,11 +107,11 @@ public class Camera {
 			position.z = playerPos.z + 41;
 			position.y = 55;
 		}
-		if (Mouse.getX() < 30 && position.x >= -180) {
+		if (Mouse.getX() < 30 && position.x >= -150) {
 			position.x = position.x + diff1.y * -SPEED;
 			position.z = position.z + diff1.x * -SPEED;
 		}
-		if (Mouse.getX() > (DisplayManager.WIDTH - 30) && position.x <= 180) {
+		if (Mouse.getX() > (DisplayManager.WIDTH - 30) && position.x <= 150) {
 			position.x = position.x + diff1.y * SPEED;
 			position.z = position.z + diff1.x * SPEED;
 		}
