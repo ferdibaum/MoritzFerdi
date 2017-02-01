@@ -193,6 +193,7 @@ public class Player extends Entity {
 		}
 		for (int i = 0; i < bullets.size(); i++) {
 			Projectile bullet = bullets.get(i);
+			if(bullet.delta > 0) bullet.delta--;
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			pSys.setDirection(new Vector3f((float) Math.sin(Math.toRadians(bullet.getRotY())), 0,
@@ -203,11 +204,12 @@ public class Player extends Entity {
 			if(wall  !=null){
 				
 				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPosition());
-				if(diffWall<2f){
+				if(diffWall<2f && bullet.delta < 30){
 					bullet.setRotY(bullet.getRotY()+180);
+					bullet.delta = 60;
 				}
 			}
-			
+			 
 			if (bullet.colliding() != null) {
 				if (bullet.colliding().getClass().getName().equals("entities.Object")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
