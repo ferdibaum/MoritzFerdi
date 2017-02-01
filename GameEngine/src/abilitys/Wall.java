@@ -13,7 +13,7 @@ public class Wall {
 	private Vector2f pos2;
 	private Vector2f vec;
 	private ParticleSystem pSys;
-	
+	private int densityfactor = 4;
 	
 	public Wall(Vector2f wall1, Vector2f wall2) {
 		Loader loader = new Loader();
@@ -46,11 +46,11 @@ public class Wall {
 
 
 	public void update() {
-		float abstand = vec.length()/10;
-		pSys.generateParticles(new Vector3f( pos1.x, 0,pos1.y));
-		pSys.generateParticles(new Vector3f( pos2.x, 0,pos2.y));
-		for(float i = 0; i<vec.length();i+=abstand){
-			pSys.generateParticles();
+		float density  = vec.length()/densityfactor;
+//		pSys.generateParticles(new Vector3f( pos1.x, 0,pos1.y));
+//		pSys.generateParticles(new Vector3f( pos2.x, 0,pos2.y));
+		for(int i = 0; i<density;i++){
+			pSys.generateParticles(Vector3f.sub(new Vector3f( pos1.x, 0,pos1.y), new Vector3f(i*(vec.x/density), 0,i*(vec.y/density)), null));
 		}
 	}
 }
