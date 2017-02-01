@@ -209,7 +209,7 @@ public class Player extends Entity {
 			}
 			
 			if (bullet.colliding() != null) {
-				if (bullet.colliding().getClass().getName().equals("entities.Rock")) {
+				if (bullet.colliding().getClass().getName().equals("entities.Object")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
 					bullets.remove(bullet);
 					bullet.destroy();

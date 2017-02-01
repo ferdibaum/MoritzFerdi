@@ -16,7 +16,7 @@ import animation.Animation;
 import entities.Camera;
 import entities.Light;
 import entities.Player;
-import entities.Rock;
+import entities.Object;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import lava.LavaFrameBuffers;
@@ -60,6 +60,7 @@ public class MainGameLoop {
 	private static List<LavaTile> lavas;
 	private static LavaFrameBuffers buffers;
 	private static LavaTile lava;
+	private static List<TexturedModel> trees;
 	//private static RenderEngine engine;
 	//private static Scene scene;
 	
@@ -75,7 +76,7 @@ public class MainGameLoop {
 		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("stone_texture"));
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("lavaMap"));
-		terrain = new Terrain(-0.5f, -0.5f, loader, texturePack, blendMap, "heightMapTest");
+		terrain = new Terrain(-0.5f, -0.5f, loader, texturePack, blendMap, "heightMap");
 
 		SkyboxRenderer skyRenderer = new SkyboxRenderer();
 		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
@@ -119,13 +120,34 @@ public class MainGameLoop {
 		RawModel modelRock = OBJLoader.loadObjModel("Rock", loader);
 		TexturedModel textModelRock = new TexturedModel(modelRock, new ModelTexture(loader.loadTexture("rock")));
 		
-		RawModel modelTree = OBJLoader.loadObjModel("Tree", loader);
-		TexturedModel textModelTree = new TexturedModel(modelTree, new ModelTexture(loader.loadTexture("rock")));
-
 		RawModel modelLavaball = OBJLoader.loadObjModel("lavaball", loader);
 		TexturedModel textModelLavaball = new TexturedModel(modelLavaball,
-				new ModelTexture(loader.loadTexture("lava")));
+		new ModelTexture(loader.loadTexture("lava")));
 
+
+		//trees
+		RawModel modelTree01 = OBJLoader.loadObjModel("Tree01", loader);
+		TexturedModel textModelTree01 = new TexturedModel(modelTree01, new ModelTexture(loader.loadTexture("treeTex01")));
+		
+		RawModel modelTree02 = OBJLoader.loadObjModel("Tree02", loader);
+		TexturedModel textModelTree02 = new TexturedModel(modelTree02, new ModelTexture(loader.loadTexture("treeTex02")));
+		
+		RawModel modelTree03 = OBJLoader.loadObjModel("Tree03", loader);
+		TexturedModel textModelTree03 = new TexturedModel(modelTree03, new ModelTexture(loader.loadTexture("treeTex03")));
+		
+		RawModel modelTree04 = OBJLoader.loadObjModel("Tree04", loader);
+		TexturedModel textModelTree04 = new TexturedModel(modelTree04, new ModelTexture(loader.loadTexture("treeTex04")));
+		
+		RawModel modelTree05 = OBJLoader.loadObjModel("Tree05", loader);
+		TexturedModel textModelTree05 = new TexturedModel(modelTree05, new ModelTexture(loader.loadTexture("treeTex05")));
+		
+		trees = new ArrayList<TexturedModel>();
+		trees.add(textModelTree01);
+		trees.add(textModelTree02);
+		trees.add(textModelTree03);
+		trees.add(textModelTree04);
+		trees.add(textModelTree05);
+		
 		//lights
 		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.3f, 0.3f, 0.3f));
 		Light pLight = new Light(new Vector3f(0, 7, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.0001f, 0.00001f));
@@ -155,18 +177,21 @@ public class MainGameLoop {
 		
 		// Paar Sachen spawnen
 		Random random = new Random();
+		int t = 0;
 		for (int i = 0; i < terrain.getEnemys().length; i++) {
 			for (int j = 0; j < terrain.getEnemys().length; j++) {
 				if (terrain.getEnemys()[i][j] == "rock") {
 					float x = -200f + (float) i * (400f / 255f);
 					float z = -200f + (float) j * (400f / 255f);
 					float y = terrain.getHeightOfTerrain(x, z);
-					new Rock(textModelRock, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+					new Object(textModelRock, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 				} else if (terrain.getEnemys()[i][j] == "tree") {
 					float x = -200f + (float) i * (400f / 255f);
 					float z = -200f + (float) j * (400f / 255f);
 					float y = terrain.getHeightOfTerrain(x, z);
-					new Rock(textModelTree, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
+					new Object(trees.get(t), pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 3);
+					t = t + 2;
+					t = t % 5;
 				}
 			}
 		}
@@ -232,8 +257,8 @@ public class MainGameLoop {
 		// system.generateParticles(player.getPosition());
 		ParticleMaster.update(camera);
 		Vector3f mousePos = mPicker.getCurrentTerrainPoint();
-		for (int i = 0; i < Rock.rocks.size(); i++) {
-			Rock rock = Rock.rocks.get(i);
+		for (int i = 0; i < Object.objects.size(); i++) {
+			Object rock = Object.objects.get(i);
 			rock.update();
 		}
 		if (mousePos != null) {
@@ -249,8 +274,8 @@ public class MainGameLoop {
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
-		for (int i = 0; i < Rock.rocks.size(); i++) {
-			Rock rock = Rock.rocks.get(i);
+		for (int i = 0; i < Object.objects.size(); i++) {
+			Object rock = Object.objects.get(i);
 			renderer.processEntity(rock);
 		}
 		ParticleMaster.renderParticles(camera);
@@ -263,8 +288,8 @@ public class MainGameLoop {
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
-		for (int i = 0; i < Rock.rocks.size(); i++) {
-			Rock rock = Rock.rocks.get(i);
+		for (int i = 0; i < Object.objects.size(); i++) {
+			Object rock = Object.objects.get(i);
 			renderer.processEntity(rock);
 		}
 		ParticleMaster.renderParticles(camera);
@@ -277,8 +302,8 @@ public class MainGameLoop {
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		player.render(renderer, camera);
-		for (int i = 0; i < Rock.rocks.size(); i++) {
-			Rock rock = Rock.rocks.get(i);
+		for (int i = 0; i < Object.objects.size(); i++) {
+			Object rock = Object.objects.get(i);
 			renderer.processEntity(rock);
 		}
 		ParticleMaster.renderParticles(camera);
