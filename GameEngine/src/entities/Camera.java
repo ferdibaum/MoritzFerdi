@@ -26,7 +26,7 @@ public class Camera {
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix = new Matrix4f();
 
-	private Vector3f position = new Vector3f(-38, 55, -22);
+	private Vector3f position = new Vector3f(0, 55, 41);
 	private float yaw = 0;
 	private float pitch = 54;
 	private float roll;
@@ -107,7 +107,7 @@ public class Camera {
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			Vector3f playerPos = player.getPosition();
-			position.x = playerPos.x - 15;
+			position.x = playerPos.x;
 			position.z = playerPos.z + 41;
 			position.y = 55;
 		}

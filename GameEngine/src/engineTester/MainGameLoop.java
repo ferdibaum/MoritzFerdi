@@ -155,10 +155,15 @@ public class MainGameLoop {
 		
 		//lights
 		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.4f, 0.4f, 0.4f));
-		Light pLight = new Light(new Vector3f(0, 7, 0), new Vector3f(2, 0, 0), new Vector3f(1, 0.0001f, 0.00001f));
+		Light pLight01 = new Light(new Vector3f(-96.4f, 7, -96.4f), new Vector3f(2, 0, 0), new Vector3f(0.01f, 0.0001f, 0.0005f));
+		Light pLight02 = new Light(new Vector3f(89.06f, 7, 95.31f), new Vector3f(2, 0, 0), new Vector3f(0.005f, 0.0001f, 0.001f));
+		Light pLight03 = new Light(new Vector3f(0, 7, 0), new Vector3f(1, 0.74f, 0.035f), new Vector3f(0.2f, 0.002f, 0.0002f));
+
 		
 		lights.add(light);
-		//lights.add(pLight);
+		lights.add(pLight01);
+		lights.add(pLight02);
+		lights.add(pLight03);
 
 		
 		//rest
