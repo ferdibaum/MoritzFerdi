@@ -194,28 +194,36 @@ public class Player extends Entity {
 		}
 		for (int i = 0; i < bullets.size(); i++) {
 			Projectile bullet = bullets.get(i);
-			System.out.println(bullet.getRotY());
-			if(bullet.delta > 0) bullet.delta--;
+			if (bullet.delta > 0)
+				bullet.delta--;
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
 			pSys.setDirection(new Vector3f((float) Math.sin(Math.toRadians(bullet.getRotY())), 0,
 					(float) Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
 			bullet.increasePosition(dx, 0, dz);
 			pSys.generateParticles(bullet.getPosition());
-			
-			if(wall  !=null){
-				
+
+			if (wall != null) {
+
 				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPosition());
-				if(diffWall<2f && bullet.delta < 30){
-					if((bullet.getPosition().getX()>wall.getPos1().getX() || bullet.getPosition().getX()>wall.getPos2().getX())&&(bullet.getPosition().getY()>wall.getPos1().getY() || bullet.getPosition().getY()>wall.getPos2().getY())){
-						bullet.setRotY((float) (bullet.getRotY()+(360-2* Maths.angleBetweenVs(new Vector2f((float)Math.sin(Math.toRadians(bullet.getRotY())), (float)Math.cos (Math.toRadians(bullet.getRotY()))), Vector2f.sub(wall.getPos1(), wall.getPos2(), null)))));						
-					}else{
-						bullet.setRotY((float) (bullet.getRotY()-(360-2* Maths.angleBetweenVs(new Vector2f((float)Math.sin(Math.toRadians(bullet.getRotY())), (float)Math.cos (Math.toRadians(bullet.getRotY()))), Vector2f.sub(wall.getPos1(), wall.getPos2(), null)))));												
-					}
+				if (diffWall < 2f && bullet.delta < 30) {
+					double angle = Maths.angleBetweenVs(
+							new Vector2f((float) Math.sin(Math.toRadians(bullet.getRotY())),
+									(float) Math.cos(Math.toRadians(bullet.getRotY()))),
+							Vector2f.sub(wall.getPos1(), wall.getPos2(), null));
+					bullet.setRotY((float) (bullet.getRotY() + (360 - 2 * angle)));
+					double angle2 = Maths.angleBetweenVs(
+							new Vector2f((float) Math.sin(Math.toRadians(bullet.getRotY())),
+									(float) Math.cos(Math.toRadians(bullet.getRotY()))),
+							Vector2f.sub(wall.getPos1(), wall.getPos2(), null));
+					if(!(Math.abs(angle-angle2)<=1)){
+						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
+						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
+					}else
 					bullet.delta = 60;
 				}
 			}
-			 
+
 			if (bullet.colliding() != null) {
 				if (bullet.colliding().getClass().getName().equals("entities.Object")) {
 					bullet.colliding().setLife(bullet.colliding().getLife() - 1);
@@ -236,37 +244,35 @@ public class Player extends Entity {
 	}
 
 	private float calcDiffWall(Vector2f pos1, Vector2f pos2, Vector3f position) {
-		Vector2f posB = new Vector2f(position.x,position.z);
+		Vector2f posB = new Vector2f(position.x, position.z);
 		Vector2f dir = Vector2f.sub(pos1, pos2, null);
 		Vector2f start = new Vector2f(pos1);
 		dir = dir.normalise(dir);
 		float abstand1 = Vector2f.sub(start, posB, null).length();
 		float abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
-		if(abstand1>abstand2){
-			while(abstand1>abstand2){
+		if (abstand1 > abstand2) {
+			while (abstand1 > abstand2) {
 				start = Vector2f.sub(start, dir, null);
 				abstand1 = Vector2f.sub(start, posB, null).length();
 				abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
 			}
-		}else{
-			while(abstand1<abstand2){
+		} else {
+			while (abstand1 < abstand2) {
 				start = Vector2f.add(start, dir, null);
 				abstand1 = Vector2f.sub(start, posB, null).length();
 				abstand2 = Vector2f.sub(Vector2f.sub(start, dir, null), posB, null).length();
 			}
 		}
-		
-		if((Vector2f.sub(start, pos1, null).length()<Vector2f.sub(pos1, pos2, null).length())&&(Vector2f.sub(start, pos2, null).length()<Vector2f.sub(pos1, pos2, null).length())){
+
+		if ((Vector2f.sub(start, pos1, null).length() < Vector2f.sub(pos1, pos2, null).length())
+				&& (Vector2f.sub(start, pos2, null).length() < Vector2f.sub(pos1, pos2, null).length())) {
 			return Vector2f.sub(start, posB, null).length();
-		}else if(Vector2f.sub(start, pos1, null).length()<Vector2f.sub(start, pos2, null).length()){
+		} else if (Vector2f.sub(start, pos1, null).length() < Vector2f.sub(start, pos2, null).length()) {
 			return Vector2f.sub(pos1, posB, null).length();
-		}else{
+		} else {
 			return Vector2f.sub(pos2, posB, null).length();
 		}
-		
-		
-		
-		
+
 	}
 
 	public void render(MasterRenderer renderer, Camera camera) {
