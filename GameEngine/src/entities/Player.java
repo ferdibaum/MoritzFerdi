@@ -13,6 +13,8 @@ import animatedModel.AnimatedModel;
 import engineTester.MainGameLoop;
 import models.TexturedModel;
 import particles.ParticleSystem;
+import particles.ParticleTexture;
+import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import toolbox.Maths;
@@ -20,11 +22,12 @@ import toolbox.Maths;
 public class Player extends Entity {
 
 	private static final int TURNSTEPS = 3;
-	private static final float MAX_SPEED = 0.2f;
+
 	private static final int HITBOX = 1;
 
 	// private static final float TERRAIN_HEIGHT = 0;
-	private float speed = 0.2f;
+	private static float MAX_SPEED = 0.2f;
+	private float speed = MAX_SPEED;
 
 	private float currentSpeed = 0;
 	private float currentTurnSpeed = 0;
@@ -43,11 +46,14 @@ public class Player extends Entity {
 	private int turnesDone;
 
 	ParticleSystem pSys;
+	ParticleSystem pSysSprint;
 
 	private AnimatedModel animModel;
 
 	private Wall wall;
 	boolean wallBool = false;
+
+	private int sprintcd = 0;
 	Vector2f wall1 = new Vector2f(0, 0);
 	Vector2f wall2 = new Vector2f(0, 0);
 
@@ -68,6 +74,10 @@ public class Player extends Entity {
 
 		this.animModel = animModel;
 		wall = null;
+
+		Loader loader = new Loader();
+		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
+		pSysSprint = new ParticleSystem(pTexFire, 350, 43, -0.3f, 0.3f, 3);
 	}
 
 	public void move(Terrain terrain) {
@@ -95,7 +105,8 @@ public class Player extends Entity {
 				}
 				// collision height here
 				if (terrainHeight > 0.05 && b) {
-					this.increasePosition(dir.x / dir.length() * speed, 0, dir.y / dir.length() * speed);
+					this.increasePosition((dir.x / dir.length()) * speed, 0, (dir.y / dir.length()) * speed);
+					// System.out.println((dir.x / dir.length()) * speed);
 				}
 
 				terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
@@ -180,9 +191,17 @@ public class Player extends Entity {
 				}
 			}
 		}
+		// System.out.println(sprintcd);
+		if (Keyboard.isKeyDown(Keyboard.KEY_C) && sprintcd == 0) {
+			MAX_SPEED = MAX_SPEED * 2;
+			sprintcd = 600;
+		}
+
 	}
 
 	public void update() {
+		if (sprintcd > 0)
+			sprintcd--;
 
 		checkInputs();
 
@@ -216,7 +235,7 @@ public class Player extends Entity {
 							new Vector2f((float) Math.sin(Math.toRadians(bullet.getRotY())),
 									(float) Math.cos(Math.toRadians(bullet.getRotY()))),
 							Vector2f.sub(wall.getPos1(), wall.getPos2(), null));
-					if(!(Math.abs(angle-angle2)<=1)){
+					if (!(Math.abs(angle - angle2) <= 1)) {
 						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
 						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
 					}
@@ -241,6 +260,11 @@ public class Player extends Entity {
 			animModel.update();
 		if (wall != null)
 			wall.update();
+
+		if (sprintcd > 300)
+			pSysSprint.generateParticles(this.getPosition());
+		if (sprintcd == 300)
+			MAX_SPEED = MAX_SPEED / 2;
 	}
 
 	private float calcDiffWall(Vector2f pos1, Vector2f pos2, Vector3f position) {
@@ -281,5 +305,9 @@ public class Player extends Entity {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
+	}
+
+	private void sprint() {
+
 	}
 }
