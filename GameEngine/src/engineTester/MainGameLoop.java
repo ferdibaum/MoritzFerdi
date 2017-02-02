@@ -263,7 +263,7 @@ public class MainGameLoop {
 	// Physikalische Berechnungen etc machen
 	private static void update() {
 		camera.move(player);
-		player.update();
+		player.update(terrain);
 		player.move(terrain);
 		mPicker.update();
 		// system.generateParticles(player.getPosition());
