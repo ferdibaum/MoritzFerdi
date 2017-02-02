@@ -91,6 +91,10 @@ public class Camera {
 		 ************************************************/ 
 		
 		int dWheel = Mouse.getDWheel() / 120;
+		float viewDist = (float) Math.tan(Math.toRadians(pitch)) * position.y;
+		float startViewDist = 75.7f;
+		//System.out.println(viewDist);
+		
 		if (dWheel < 0 && position.y <= 120) {
 			position.x = position.x + diff1.x * diff2.y * ZOOM_SPEED * dWheel;
 			position.z = position.z + diff1.y * diff2.y * -ZOOM_SPEED * dWheel;
@@ -119,7 +123,7 @@ public class Camera {
 			position.x = position.x + diff1.x * -SPEED;
 			position.z = position.z + diff1.y * SPEED;
 		}
-		if (Mouse.getY() > (DisplayManager.HEIGHT - 30) && position.z >= -150) {
+		if (Mouse.getY() > (DisplayManager.HEIGHT - 30) && position.z >= (-150 + viewDist - startViewDist)) {
 			position.x = position.x + diff1.x * SPEED;
 			position.z = position.z + diff1.y * -SPEED;
 		}
