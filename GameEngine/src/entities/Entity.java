@@ -20,7 +20,15 @@ public class Entity {
 
 	private int hitBox;
 	
-	protected ParticleSystem pSys;
+	public ParticleSystem pSys;
+
+	public ParticleSystem getpSys() {
+		return pSys;
+	}
+
+	public void setpSys(ParticleSystem pSys) {
+		this.pSys = pSys;
+	}
 
 	public static List<Entity> entities = new ArrayList<Entity>();
 

@@ -8,6 +8,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import abilitys.Meteoroid;
 import abilitys.Wall;
 import animatedModel.AnimatedModel;
 import engineTester.MainGameLoop;
@@ -57,6 +58,14 @@ public class Player extends Entity {
 	Vector2f wall1 = new Vector2f(0, 0);
 	Vector2f wall2 = new Vector2f(0, 0);
 
+	private Meteoroid meteoroid;
+	private boolean meteoroidBool = false;
+	private int meteoroidCd = 0;
+	private boolean meteorioidBool = false;
+	private ParticleSystem pmetero;
+	private ParticleSystem pmeteroMove;
+	 private ParticleSystem psawnmetero;
+
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
 	public Player(TexturedModel model, ParticleSystem pSys, Vector3f position, float rotX, float rotY, float rotZ,
@@ -78,6 +87,10 @@ public class Player extends Entity {
 		Loader loader = new Loader();
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
 		pSysSprint = new ParticleSystem(pTexFire, 350, 43, -0.3f, 0.3f, 3);
+		
+		pmeteroMove = new ParticleSystem(pTexFire, 1000, 30, 1f, 0.3f, 3);
+		pmetero = new ParticleSystem(pTexFire, 500, 30, -0.3f, 0.3f, 3);
+		psawnmetero = new ParticleSystem(pTexFire, 350, 20, 4f, 0.3f, 3);
 	}
 
 	public void move(Terrain terrain) {
@@ -98,7 +111,7 @@ public class Player extends Entity {
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
 				boolean b = true;
 				for (Entity e : Entity.entities) {
-					if (!e.getClass().toString().equals("class entities.Player")) {
+					if (!e.getClass().toString().equals("class entities.Player") && !(e instanceof Meteoroid)) {
 						if (Vector3f.sub(newPos, e.getPosition(), null).length() < 3)
 							b = false;
 					}
@@ -122,7 +135,33 @@ public class Player extends Entity {
 
 	}
 
-	private void checkInputs() {
+	private void checkInputs(Terrain terrain) {
+		if (meteoroidCd > 0) {
+			meteoroidCd--;
+		}else{
+			meteoroid = null;
+		}
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+			if (meteoroidCd == 0) {
+				meteorioidBool = true;
+				if (MainGameLoop.getMPicker().getCurrentTerrainPoint() != null) {
+					psawnmetero.generateParticles(MainGameLoop.getMPicker().getCurrentTerrainPoint());
+					;
+				}
+
+			}
+		} else {
+			if (meteoroidCd == 0 && meteorioidBool) {
+				Vector3f destiny = new Vector3f(MainGameLoop.getMPicker().getCurrentTerrainPoint().x,
+						MainGameLoop.getMPicker().getCurrentTerrainPoint().y,
+						MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
+				Vector3f start = new Vector3f(destiny.x+50,destiny.y + 70,destiny.z);
+				meteoroid = new Meteoroid(bulletModel, pmetero, start, 0, 0, 0, 3, 1, 1, start, destiny);
+				meteoroidCd = 300;
+				meteorioidBool = false;
+			}
+		}
 
 		if (Mouse.isButtonDown(0)) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_V)) {
@@ -199,11 +238,23 @@ public class Player extends Entity {
 
 	}
 
-	public void update() {
+	public void update(Terrain terrain) {
 		if (sprintcd > 0)
 			sprintcd--;
 
-		checkInputs();
+		checkInputs(terrain);
+		if(meteoroid != null){
+			//System.out.println(Vector3f.sub(meteoroid.getPosition(), meteoroid.getDestiny(), null).length());
+			if(Vector3f.sub(meteoroid.getPosition(), meteoroid.getDestiny(), null).length() < 5 ){
+				meteoroid.setLife(0);
+				meteoroid.getpSys().generateParticles(meteoroid.getDestiny());
+			}else{
+				Vector3f vec = Vector3f.sub(meteoroid.getStart(), meteoroid.getDestiny(), null).normalise(null);
+				pmeteroMove.generateParticles(meteoroid.getPosition());
+				meteoroid.setPosition(Vector3f.sub(meteoroid.getPosition(), new Vector3f(vec.x/ meteoroid.getSpeed(),vec.y/ meteoroid.getSpeed(), vec.z/ meteoroid.getSpeed()), null));
+			}	
+		}
+		
 
 		// ********** SHOOTING ***************
 		if (shooting) {
@@ -305,9 +356,5 @@ public class Player extends Entity {
 		for (Entity entity : bullets) {
 			renderer.processEntity(entity);
 		}
-	}
-
-	private void sprint() {
-
 	}
 }
