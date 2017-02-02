@@ -219,7 +219,7 @@ public class Player extends Entity {
 					if(!(Math.abs(angle-angle2)<=1)){
 						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
 						bullet.setRotY((float) (bullet.getRotY() - (360 - 2 * angle)));
-					}else
+					}elsegfjh
 					bullet.delta = 60;
 				}
 			}
