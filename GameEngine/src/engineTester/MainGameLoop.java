@@ -171,7 +171,7 @@ public class MainGameLoop {
 
 		// GUI
 		guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("lava"), new Vector2f(0, -1), new Vector2f(0.5f, 0.3f));
+		GuiTexture gui = new GuiTexture(loader.loadTexture("Untitled"), new Vector2f(0, -0.9f), new Vector2f(0.5f, 0.3f));
 		guis.add(gui);
 		guiRenderer = new GuiRenderer(loader);
 		
