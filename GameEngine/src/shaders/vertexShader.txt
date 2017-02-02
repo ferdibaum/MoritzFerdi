@@ -1,6 +1,6 @@
 #version 330 core
 
-const int l = 9;
+const int l = 12;
 
 in vec3 position;
 in vec2 textureCoords;

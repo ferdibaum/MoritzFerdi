@@ -1,6 +1,6 @@
 #version 330 core
 
-const int l = 9;
+const int l = 12;
 
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;

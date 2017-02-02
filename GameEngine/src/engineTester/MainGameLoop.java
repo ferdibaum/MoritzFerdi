@@ -153,17 +153,25 @@ public class MainGameLoop {
 		trees.add(textModelTree04);
 		trees.add(textModelTree05);
 		
+		//lamps and assigned lights
+		RawModel lamp = OBJLoader.loadObjModel("lamp", loader);
+		TexturedModel texLamp = new TexturedModel(lamp, new ModelTexture(loader.loadTexture("lamp")));
+		RawModel lampLight = OBJLoader.loadObjModel("lampLight", loader);
+		TexturedModel texLampLight = new TexturedModel(lampLight, new ModelTexture(loader.loadTexture("lampLight")));
+		//new Object(texLamp, pSysRock, new Vector3f(2, 0, 2), 0, 0, 0f, 1f, 2, -1);
+		//new Object(texLampLight, pSysRock, new Vector3f(2, 0, 2), 0, 0, 0f, 1f, 2, -1);
+		//Light pLight03 = new Light(new Vector3f(2, 18.7f, 2), new Vector3f(1, 0.74f, 0.035f), new Vector3f(0.2f, 0.002f, 0.0002f));
+		//lights.add(pLight03);
+		
 		//lights
 		Light light = new Light(new Vector3f(0, 1000, 0), new Vector3f(0.4f, 0.4f, 0.4f));
 		Light pLight01 = new Light(new Vector3f(-96.4f, 7, -96.4f), new Vector3f(2, 0, 0), new Vector3f(0.01f, 0.0001f, 0.0005f));
 		Light pLight02 = new Light(new Vector3f(89.06f, 7, 95.31f), new Vector3f(2, 0, 0), new Vector3f(0.005f, 0.0001f, 0.001f));
-		Light pLight03 = new Light(new Vector3f(0, 7, 0), new Vector3f(1, 0.74f, 0.035f), new Vector3f(0.2f, 0.002f, 0.0002f));
 
 		
 		lights.add(light);
 		lights.add(pLight01);
 		lights.add(pLight02);
-		lights.add(pLight03);
 		
 		//rest
 		camera = new Camera();
@@ -186,23 +194,27 @@ public class MainGameLoop {
 		guis.add(lavaRefle);
 		*/
 		
-		// Paar Sachen spawnen
+		// sachen aus map spawnen
 		Random random = new Random();
 		int t = 0;
 		for (int i = 0; i < terrain.getEnemys().length; i++) {
 			for (int j = 0; j < terrain.getEnemys().length; j++) {
+				float x = -200f + (float) i * (400f / 255f);
+				float z = -200f + (float) j * (400f / 255f);
+				float y = terrain.getHeightOfTerrain(x, z);
 				if (terrain.getEnemys()[i][j] == "rock") {
-					float x = -200f + (float) i * (400f / 255f);
-					float z = -200f + (float) j * (400f / 255f);
-					float y = terrain.getHeightOfTerrain(x, z);
 					new Object(textModelRock, pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 1);
 				} else if (terrain.getEnemys()[i][j] == "tree") {
-					float x = -200f + (float) i * (400f / 255f);
-					float z = -200f + (float) j * (400f / 255f);
-					float y = terrain.getHeightOfTerrain(x, z);
+					//float x = -200f + (float) i * (400f / 255f);
+					//float z = -200f + (float) j * (400f / 255f);
+					//float y = terrain.getHeightOfTerrain(x, z);
 					new Object(trees.get(t), pSysRock, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 2, 3);
 					t = t + 2;
 					t = t % 5;
+				} else if (terrain.getEnemys()[i][j] == "lamp") {
+					new Object(texLamp, null, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 1, -1);
+					new Object(texLampLight, null, new Vector3f(x, y, z), 0, random.nextFloat() * 180f, 0f, 1f, 0, -1);
+					lights.add(new Light(new Vector3f(x, y + 18.7f, z), new Vector3f(1, 0.74f, 0.035f), new Vector3f(0.4f, 0.005f, 0.0002f)));
 				}
 			}
 		}

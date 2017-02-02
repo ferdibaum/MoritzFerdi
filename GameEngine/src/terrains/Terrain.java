@@ -104,6 +104,9 @@ public class Terrain {
 				else if (image.getRGB(i, j) == -65536){
 					this.objects[i][j] = "tree";
 				}
+				else if (image.getRGB(i, j) == -256){
+					this.objects[i][j] = "lamp";
+				}
 				//System.out.println(image.getRGB(i, j));
 
 			}

@@ -62,9 +62,9 @@ public class Player extends Entity {
 	private boolean meteoroidBool = false;
 	private int meteoroidCd = 0;
 	private boolean meteorioidBool = false;
-	private ParticleSystem pmetero;
-	private ParticleSystem pmeteroMove;
-	 private ParticleSystem psawnmetero;
+	private ParticleSystem pMetero;
+	private ParticleSystem pMeteroMove;
+	 private ParticleSystem pSpawnMetero;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -88,9 +88,9 @@ public class Player extends Entity {
 		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
 		pSysSprint = new ParticleSystem(pTexFire, 350, 43, -0.3f, 0.3f, 3);
 		
-		pmeteroMove = new ParticleSystem(pTexFire, 1000, 30, 1f, 0.3f, 3);
-		pmetero = new ParticleSystem(pTexFire, 500, 30, -0.3f, 0.3f, 3);
-		psawnmetero = new ParticleSystem(pTexFire, 350, 20, 4f, 0.3f, 3);
+		pMeteroMove = new ParticleSystem(pTexFire, 1000, 30, 1f, 0.3f, 3);
+		pMetero = new ParticleSystem(pTexFire, 500, 30, -0.3f, 0.3f, 3);
+		pSpawnMetero = new ParticleSystem(pTexFire, 350, 20, 4f, 0.3f, 3);
 	}
 
 	public void move(Terrain terrain) {
@@ -146,7 +146,7 @@ public class Player extends Entity {
 			if (meteoroidCd == 0) {
 				meteorioidBool = true;
 				if (MainGameLoop.getMPicker().getCurrentTerrainPoint() != null) {
-					psawnmetero.generateParticles(MainGameLoop.getMPicker().getCurrentTerrainPoint());
+					pSpawnMetero.generateParticles(MainGameLoop.getMPicker().getCurrentTerrainPoint());
 					;
 				}
 
@@ -157,7 +157,7 @@ public class Player extends Entity {
 						MainGameLoop.getMPicker().getCurrentTerrainPoint().y,
 						MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
 				Vector3f start = new Vector3f(destiny.x+50,destiny.y + 70,destiny.z);
-				meteoroid = new Meteoroid(bulletModel, pmetero, start, 0, 0, 0, 3, 1, 1, start, destiny);
+				meteoroid = new Meteoroid(bulletModel, pMetero, start, 0, 0, 0, 3, 1, 1, start, destiny);
 				meteoroidCd = 300;
 				meteorioidBool = false;
 			}
@@ -250,7 +250,7 @@ public class Player extends Entity {
 				meteoroid.getpSys().generateParticles(meteoroid.getDestiny());
 			}else{
 				Vector3f vec = Vector3f.sub(meteoroid.getStart(), meteoroid.getDestiny(), null).normalise(null);
-				pmeteroMove.generateParticles(meteoroid.getPosition());
+				pMeteroMove.generateParticles(meteoroid.getPosition());
 				meteoroid.setPosition(Vector3f.sub(meteoroid.getPosition(), new Vector3f(vec.x/ meteoroid.getSpeed(),vec.y/ meteoroid.getSpeed(), vec.z/ meteoroid.getSpeed()), null));
 			}	
 		}
