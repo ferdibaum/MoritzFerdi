@@ -59,12 +59,11 @@ public class Player extends Entity {
 	Vector2f wall2 = new Vector2f(0, 0);
 
 	private Meteoroid meteoroid;
-	private boolean meteoroidBool = false;
 	private int meteoroidCd = 0;
-	private boolean meteorioidBool = false;
+	private boolean meteoroidBool = false;
 	private ParticleSystem pMetero;
 	private ParticleSystem pMeteroMove;
-	 private ParticleSystem pSpawnMetero;
+	private ParticleSystem pSpawnMetero;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -85,12 +84,19 @@ public class Player extends Entity {
 		wall = null;
 
 		Loader loader = new Loader();
-		ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("fire"), 8);
-		pSysSprint = new ParticleSystem(pTexFire, 350, 43, -0.3f, 0.3f, 3);
 		
-		pMeteroMove = new ParticleSystem(pTexFire, 1000, 30, 1f, 0.3f, 3);
-		pMetero = new ParticleSystem(pTexFire, 500, 30, -0.3f, 0.3f, 3);
-		pSpawnMetero = new ParticleSystem(pTexFire, 350, 20, 4f, 0.3f, 3);
+		ParticleTexture pTexSprint = new ParticleTexture(loader.loadTexture("sprint"), 4);
+		pSysSprint = new ParticleSystem(pTexSprint, 160, 25, -0.3f, 0.6f, 3);
+		pSysSprint.randomizeRotation();
+		
+		ParticleTexture pTexMetero = new ParticleTexture(loader.loadTexture("fire"), 8);
+		pMeteroMove = new ParticleSystem(pTexMetero, 1000, 30, 1f, 0.3f, 10);
+		pMetero = new ParticleSystem(pTexMetero, 500, 15, -0.3f, 0.5f, 5);
+		
+		
+		ParticleTexture pTexMeteroMark = new ParticleTexture(loader.loadTexture("mark"), 4);
+		pSpawnMetero = new ParticleSystem(pTexMeteroMark, 40, 20, 1, 1, 5);
+		pSpawnMetero.setDirection(new Vector3f(0,1,0), 0);
 	}
 
 	public void move(Terrain terrain) {
@@ -144,7 +150,7 @@ public class Player extends Entity {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
 			if (meteoroidCd == 0) {
-				meteorioidBool = true;
+				meteoroidBool = true;
 				if (MainGameLoop.getMPicker().getCurrentTerrainPoint() != null) {
 					pSpawnMetero.generateParticles(MainGameLoop.getMPicker().getCurrentTerrainPoint());
 					;
@@ -152,14 +158,14 @@ public class Player extends Entity {
 
 			}
 		} else {
-			if (meteoroidCd == 0 && meteorioidBool) {
+			if (meteoroidCd == 0 && meteoroidBool) {
 				Vector3f destiny = new Vector3f(MainGameLoop.getMPicker().getCurrentTerrainPoint().x,
 						MainGameLoop.getMPicker().getCurrentTerrainPoint().y,
 						MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
 				Vector3f start = new Vector3f(destiny.x+50,destiny.y + 70,destiny.z);
 				meteoroid = new Meteoroid(bulletModel, pMetero, start, 0, 0, 0, 3, 1, 1, start, destiny);
 				meteoroidCd = 300;
-				meteorioidBool = false;
+				meteoroidBool = false;
 			}
 		}
 

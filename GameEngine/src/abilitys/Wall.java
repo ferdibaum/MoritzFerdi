@@ -15,15 +15,18 @@ public class Wall {
 
 	private int densityfactor = 3;
 	private Loader loader = new Loader();
-	private ParticleTexture pTexFire = new ParticleTexture(loader.loadTexture("cosmic"), 4);
-	private ParticleSystem pSys = new ParticleSystem(pTexFire, 400, 5, .3f, 0.3f, 4);
+	private ParticleTexture pTexWall = new ParticleTexture(loader.loadTexture("wall"), 4);
+	private ParticleSystem pSys = new ParticleSystem(pTexWall, 35, 2, 0, 0.7f, 3);
 
 	public Wall(Vector2f wall1, Vector2f wall2) {
-
 		pos1 = new Vector2f(wall1.x, wall1.y);
 		pos2 = new Vector2f(wall2.x, wall2.y);
 		vec = Vector2f.sub(pos1, pos2, null);
-
+		pSys.setScaleError(0.5f);
+		pSys.setLifeError(0.1f);
+		pSys.setSpeedError(0.5f);
+		pSys.randomizeRotation();
+		pSys.setDirection(new Vector3f(0,1,0), 0.2f);
 	}
 
 	public Vector2f getPos1() {
