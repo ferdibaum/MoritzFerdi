@@ -46,4 +46,9 @@ public class Maths {
 		return viewMatrix;
 	}
 
+	public static double angleBetweenVs(Vector2f sub, Vector2f sub2) {
+		
+		return Math.acos((sub.x*sub2.x+sub.y*sub2.y)/(sub.length()*sub2.length()))*(180/Math.PI   );
+	}
+
 }

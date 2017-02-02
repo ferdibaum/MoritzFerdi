@@ -15,6 +15,7 @@ import models.TexturedModel;
 import particles.ParticleSystem;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
+import toolbox.Maths;
 
 public class Player extends Entity {
 
@@ -193,6 +194,7 @@ public class Player extends Entity {
 		}
 		for (int i = 0; i < bullets.size(); i++) {
 			Projectile bullet = bullets.get(i);
+			System.out.println(bullet.getRotY());
 			if(bullet.delta > 0) bullet.delta--;
 			float dx = (float) (Projectile.SPEED * Math.sin(Math.toRadians(bullet.getRotY())));
 			float dz = (float) (Projectile.SPEED * Math.cos(Math.toRadians(bullet.getRotY())));
@@ -205,7 +207,11 @@ public class Player extends Entity {
 				
 				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPosition());
 				if(diffWall<2f && bullet.delta < 30){
-					bullet.setRotY(bullet.getRotY()+180);
+					if((bullet.getPosition().getX()>wall.getPos1().getX() || bullet.getPosition().getX()>wall.getPos2().getX())&&(bullet.getPosition().getY()>wall.getPos1().getY() || bullet.getPosition().getY()>wall.getPos2().getY())){
+						bullet.setRotY((float) (bullet.getRotY()+(360-2* Maths.angleBetweenVs(new Vector2f((float)Math.sin(Math.toRadians(bullet.getRotY())), (float)Math.cos (Math.toRadians(bullet.getRotY()))), Vector2f.sub(wall.getPos1(), wall.getPos2(), null)))));						
+					}else{
+						bullet.setRotY((float) (bullet.getRotY()-(360-2* Maths.angleBetweenVs(new Vector2f((float)Math.sin(Math.toRadians(bullet.getRotY())), (float)Math.cos (Math.toRadians(bullet.getRotY()))), Vector2f.sub(wall.getPos1(), wall.getPos2(), null)))));												
+					}
 					bullet.delta = 60;
 				}
 			}
