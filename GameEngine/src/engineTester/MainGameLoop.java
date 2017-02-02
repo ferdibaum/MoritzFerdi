@@ -164,7 +164,6 @@ public class MainGameLoop {
 		lights.add(pLight01);
 		lights.add(pLight02);
 		lights.add(pLight03);
-
 		
 		//rest
 		camera = new Camera();
