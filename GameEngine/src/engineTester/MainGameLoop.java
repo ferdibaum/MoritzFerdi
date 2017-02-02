@@ -162,7 +162,7 @@ public class MainGameLoop {
 
 		
 		//rest
-		camera = new Camera();
+		camera = new Camera();rhrt
 
 		player = new Player(textModelNova, pSysFireball, new Vector3f(0, terrain.getHeightOfTerrain(0, 0), 0), 0, 0,
 				0, 1, textModelLavaball, 100, animmodel);
