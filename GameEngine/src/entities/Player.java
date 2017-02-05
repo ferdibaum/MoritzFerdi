@@ -91,7 +91,9 @@ public class Player extends Entity {
 		
 		ParticleTexture pTexMetero = new ParticleTexture(loader.loadTexture("fire"), 8);
 		pMeteroMove = new ParticleSystem(pTexMetero, 1000, 30, 1f, 0.3f, 10);
+		pMeteroMove.randomizeRotation();
 		pMetero = new ParticleSystem(pTexMetero, 500, 15, -0.3f, 0.5f, 5);
+		pMetero.randomizeRotation();
 		
 		
 		ParticleTexture pTexMeteroMark = new ParticleTexture(loader.loadTexture("mark"), 4);
