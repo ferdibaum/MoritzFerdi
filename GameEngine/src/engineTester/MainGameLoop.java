@@ -102,7 +102,7 @@ public class MainGameLoop {
 		lavaRenderer = new LavaRenderer(loader, lavaShader, renderer.getProjectionMatrix(), buffers);
 		lavas = new ArrayList<LavaTile>();
 		lava = new LavaTile(0, 0, 0);
-		lavas.add(lava);rthsr
+		lavas.add(lava);
 		
 		//particleSystems
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
