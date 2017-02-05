@@ -157,7 +157,9 @@ public class MainGameLoop {
 		RawModel lamp = OBJLoader.loadObjModel("lamp", loader);
 		TexturedModel texLamp = new TexturedModel(lamp, new ModelTexture(loader.loadTexture("lamp")));
 		RawModel lampLight = OBJLoader.loadObjModel("lampLight", loader);
-		TexturedModel texLampLight = new TexturedModel(lampLight, new ModelTexture(loader.loadTexture("lampLight")));
+		ModelTexture lampLightTex = new ModelTexture(loader.loadTexture("lampLight"));
+		lampLightTex.setReflectivity(1);
+		TexturedModel texLampLight = new TexturedModel(lampLight, lampLightTex);
 		//new Object(texLamp, pSysRock, new Vector3f(2, 0, 2), 0, 0, 0f, 1f, 2, -1);
 		//new Object(texLampLight, pSysRock, new Vector3f(2, 0, 2), 0, 0, 0f, 1f, 2, -1);
 		//Light pLight03 = new Light(new Vector3f(2, 18.7f, 2), new Vector3f(1, 0.74f, 0.035f), new Vector3f(0.2f, 0.002f, 0.0002f));
