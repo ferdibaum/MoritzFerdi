@@ -70,6 +70,8 @@ public class Player extends Entity {
 	private ParticleSystem pSpawnMetero;
 	Animation standAnimation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.STAND_ANIM_FILE));
 	Animation walkAnimation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.WALK_ANIM_FILE));
+	
+	Animation animation = standAnimation;
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -106,13 +108,13 @@ public class Player extends Entity {
 		pSpawnMetero = new ParticleSystem(pTexMeteroMark, 40, 20, 1, 1, 5);
 		pSpawnMetero.setDirection(new Vector3f(0,1,0), 0);
 		
-		animModel.doAnimation(standAnimation);
+		animModel.doAnimation(animation);
 	}
 
 	public void move(Terrain terrain) {
 
 		if (moving) {
-			animModel.doAnimation(walkAnimation);
+			
 			Vector2f pos = new Vector2f();
 			pos.set(this.getPosition().getX(), this.getPosition().getZ());
 			Vector2f dir = Vector2f.sub(destination, pos, null);
@@ -144,12 +146,9 @@ public class Player extends Entity {
 				}
 
 			} else {
-				animModel.doAnimation(standAnimation);
 				moving = false;
 				turnesDone = 0;
 			}
-		}else{
-			animModel.doAnimation(standAnimation);
 		}
 
 	}
@@ -326,6 +325,12 @@ public class Player extends Entity {
 			}
 		}
 		// ********** SHOOTING ***************
+		if(moving){
+			animation = walkAnimation;
+		}else{
+			animation = standAnimation;
+		}
+		animModel.doAnimation(animation);
 		animModel.update();
 		if (wall != null)
 			wall.update();

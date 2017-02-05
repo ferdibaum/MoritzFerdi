@@ -54,7 +54,7 @@ public class Animator {
 	 *            - the new animation to carry out.
 	 */
 	public void doAnimation(Animation animation) {
-		this.animationTime = 0;
+		//this.animationTime = 0;
 		this.currentAnimation = animation;
 	}
 
