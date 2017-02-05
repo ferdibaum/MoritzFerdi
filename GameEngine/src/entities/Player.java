@@ -95,7 +95,6 @@ public class Player extends Entity {
 		pMetero = new ParticleSystem(pTexMetero, 500, 15, -0.3f, 0.5f, 5);
 		pMetero.randomizeRotation();
 		
-		
 		ParticleTexture pTexMeteroMark = new ParticleTexture(loader.loadTexture("mark"), 4);
 		pSpawnMetero = new ParticleSystem(pTexMeteroMark, 40, 20, 1, 1, 5);
 		pSpawnMetero.setDirection(new Vector3f(0,1,0), 0);
