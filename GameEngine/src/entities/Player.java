@@ -11,7 +11,10 @@ import org.lwjgl.util.vector.Vector3f;
 import abilitys.Meteoroid;
 import abilitys.Wall;
 import animatedModel.AnimatedModel;
+import animation.Animation;
+import engineTester.GeneralSettings;
 import engineTester.MainGameLoop;
+import loaders.AnimationLoader;
 import models.TexturedModel;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -19,6 +22,7 @@ import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import toolbox.Maths;
+import utils.MyFile;
 
 public class Player extends Entity {
 
@@ -64,6 +68,8 @@ public class Player extends Entity {
 	private ParticleSystem pMetero;
 	private ParticleSystem pMeteroMove;
 	private ParticleSystem pSpawnMetero;
+	Animation standAnimation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.STAND_ANIM_FILE));
+	Animation walkAnimation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.WALK_ANIM_FILE));
 
 	private List<Projectile> bullets = new ArrayList<Projectile>();
 
@@ -99,12 +105,14 @@ public class Player extends Entity {
 		ParticleTexture pTexMeteroMark = new ParticleTexture(loader.loadTexture("mark"), 4);
 		pSpawnMetero = new ParticleSystem(pTexMeteroMark, 40, 20, 1, 1, 5);
 		pSpawnMetero.setDirection(new Vector3f(0,1,0), 0);
+		
+		animModel.doAnimation(standAnimation);
 	}
 
 	public void move(Terrain terrain) {
 
 		if (moving) {
-
+			animModel.doAnimation(walkAnimation);
 			Vector2f pos = new Vector2f();
 			pos.set(this.getPosition().getX(), this.getPosition().getZ());
 			Vector2f dir = Vector2f.sub(destination, pos, null);
@@ -136,9 +144,12 @@ public class Player extends Entity {
 				}
 
 			} else {
+				animModel.doAnimation(standAnimation);
 				moving = false;
 				turnesDone = 0;
 			}
+		}else{
+			animModel.doAnimation(standAnimation);
 		}
 
 	}
@@ -315,8 +326,7 @@ public class Player extends Entity {
 			}
 		}
 		// ********** SHOOTING ***************
-		if (moving)
-			animModel.update();
+		animModel.update();
 		if (wall != null)
 			wall.update();
 

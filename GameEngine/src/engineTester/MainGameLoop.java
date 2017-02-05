@@ -90,8 +90,7 @@ public class MainGameLoop {
 		
 		AnimatedModel animmodel = AnimatedModelLoader.loadEntity(new MyFile("res", GeneralSettings.MODEL_FILE),
 				new MyFile("res", GeneralSettings.DIFFUSE_FILE));
-		Animation animation = AnimationLoader.loadAnimation(new MyFile("res", GeneralSettings.ANIM_FILE));
-		animmodel.doAnimation(animation);
+		
 		
 		//scene = SceneLoader.loadScene(GeneralSettings.RES_FOLDER);
 		
