@@ -328,13 +328,13 @@ public class MainGameLoop {
 		//renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		renderer.processTerrain(bTerrain);
+		lavaRenderer.render(lavas, camera);
 		player.render(renderer, camera);
 		for (int i = 0; i < Object.objects.size(); i++) {
 			Object objc = Object.objects.get(i);
 			renderer.processEntity(objc);
 		}
 		ParticleMaster.renderParticles(camera);
-		lavaRenderer.render(lavas, camera);
 		guiRenderer.render(guis);
 		
 		DisplayManager.updateDisplay(s);
