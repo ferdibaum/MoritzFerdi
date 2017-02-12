@@ -1,4 +1,4 @@
-package toolbox;
+package tools;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;

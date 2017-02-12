@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import animatedModel.AnimatedModel;
 import entities.Camera;
 import entities.Entity;
-import toolbox.Maths;
+import tools.Maths;
 import utils.OpenGlUtils;
 
 /**

@@ -2,7 +2,7 @@ package lava;
 
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.ShaderProgram;
-import toolbox.Maths;
+import tools.Maths;
 import entities.Camera;
 
 public class LavaShader extends ShaderProgram {

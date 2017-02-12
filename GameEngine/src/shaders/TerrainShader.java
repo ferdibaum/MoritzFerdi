@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
-import toolbox.Maths;
+import tools.Maths;
 
 public class TerrainShader extends ShaderProgram{
 	
@@ -46,16 +46,16 @@ public class TerrainShader extends ShaderProgram{
 
 	@Override
 	protected void getAllUniformLocation() {
-		loc_transformationMat = super.getUniformLocation("transfomationMatrix");
-		loc_projectionMat = super.getUniformLocation("projectionMatrix");
-		loc_viewMat = super.getUniformLocation("viewMatrix");
+		loc_transformationMat = super.getUniformLocation("transfomationMat");
+		loc_projectionMat = super.getUniformLocation("projectionMat");
+		loc_viewMat = super.getUniformLocation("viewMat");
 		loc_rTexture = super.getUniformLocation("rTexture");
 		loc_gTexture = super.getUniformLocation("gTexture");
 		loc_bTexture = super.getUniformLocation("bTexture");
 		loc_blendMap = super.getUniformLocation("blendMap");
 		loc_shineDamper = super.getUniformLocation("shineDamper");
 		loc_reflectivity = super.getUniformLocation("reflectivity");
-		loc_backgroundTexture = super.getUniformLocation("backgroundTexture");
+		loc_backgroundTexture = super.getUniformLocation("backgroundText");
 		loc_plane = super.getUniformLocation("plane");
 		
 		loc_lightPos = new int[MAX_LIGHTS];
@@ -63,8 +63,8 @@ public class TerrainShader extends ShaderProgram{
 		loc_attenuation = new int[MAX_LIGHTS];
 		
 		for (int i = 0; i < MAX_LIGHTS; i++) {
-			loc_lightPos[i] = super.getUniformLocation("lightPosition[" + i + "]");
-			loc_lightCol[i] = super.getUniformLocation("lightColour[" + i + "]");
+			loc_lightPos[i] = super.getUniformLocation("lightPos[" + i + "]");
+			loc_lightCol[i] = super.getUniformLocation("lightCol[" + i + "]");
 			loc_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 		}
 	}

@@ -14,7 +14,7 @@ import models.RawModel;
 import models.TexturedModel;
 import shaders.StaticShader;
 import textures.ModelTexture;
-import toolbox.Maths;
+import tools.Maths;
 
 public class EntityRenderer {
 	

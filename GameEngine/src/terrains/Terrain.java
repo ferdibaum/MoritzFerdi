@@ -13,7 +13,7 @@ import models.RawModel;
 import renderEngine.Loader;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import toolbox.Maths;
+import tools.Maths;
 
 public class Terrain {
 

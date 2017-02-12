@@ -40,7 +40,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import toolbox.MousePicker;
+import tools.MousePicker;
 import utils.MyFile;
 
 public class MainGameLoop {

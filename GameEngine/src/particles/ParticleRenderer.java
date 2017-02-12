@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Camera;
 import models.RawModel;
 import renderEngine.Loader;
-import toolbox.Maths;
+import tools.Maths;
 
 public class ParticleRenderer {
 

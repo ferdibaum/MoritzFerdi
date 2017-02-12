@@ -11,10 +11,10 @@ out vec3 surfaceNormal;
 out vec3 toLightVector[l];
 out vec3 toCameraVector;
 
-uniform mat4 transfomationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform vec3 lightPosition[l];
+uniform mat4 transfomationMat;
+uniform mat4 projectionMat;
+uniform mat4 viewMat;
+uniform vec3 lightPos[l];
 
 uniform float useFakeLighting;
 
@@ -23,11 +23,11 @@ uniform vec4 plane;
 
 void main(void) {
 
-	vec4 worldPosition = transfomationMatrix * vec4(position,1.0);
+	vec4 worldPosition = transfomationMat * vec4(position,1.0);
 	
 	gl_ClipDistance[0] = dot(worldPosition, plane);
 	
-	gl_Position = projectionMatrix * viewMatrix * transfomationMatrix *  vec4(position,1.0);
+	gl_Position = projectionMat * viewMat * transfomationMat *  vec4(position,1.0);
 	pass_textureCoords = textureCoords; 
 	
 	vec3 actualNormal = normal;
@@ -35,11 +35,11 @@ void main(void) {
 		actualNormal = vec3(0.0,1.0,0.0);
 	}
 	
-	surfaceNormal = (transfomationMatrix * vec4(actualNormal,0.0)).xyz;
+	surfaceNormal = (transfomationMat * vec4(actualNormal,0.0)).xyz;
 	for(int i = 0; i < l; i++){
-		toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+		toLightVector[i] = lightPos[i] - worldPosition.xyz;
 	}
-	toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+	toCameraVector = (inverse(viewMat) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
 	
 	
 }

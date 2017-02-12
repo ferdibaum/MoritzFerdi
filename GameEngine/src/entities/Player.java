@@ -21,7 +21,7 @@ import particles.ParticleTexture;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import toolbox.Maths;
+import tools.Maths;
 import utils.MyFile;
 
 public class Player extends Entity {

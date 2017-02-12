@@ -9,14 +9,14 @@ in vec3 toCameraVector;
 
 out vec4 out_Color;
 
-uniform sampler2D backgroundTexture;
+uniform sampler2D backgroundText;
 uniform sampler2D rTexture;
 uniform sampler2D gTexture;
 uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 
 uniform sampler2D textureSampler;
-uniform vec3 lightColour[l];
+uniform vec3 lightCol[l];
 uniform vec3 attenuation[l];
 uniform float shineDamper;
 uniform float reflectivity;
@@ -27,7 +27,7 @@ void main(void){
 
 	float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
 	vec2 tiledCoords = pass_textureCoords * 40.0;
-	vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
+	vec4 backgroundTextColour = texture(backgroundText, tiledCoords) * backTextureAmount;
 	vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
 	vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
 	vec4 bTextureColour = texture(bTexture,tiledCoords) * blendMapColour.b;
@@ -43,16 +43,16 @@ void main(void){
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);
-		totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+		totalColour = backgroundTextColour + rTextureColour + gTextureColour + bTextureColour;
 		float nDot1 = dot(unitNormal, unitLightVector);
 		float brightness = max(nDot1,0.0);
 		vec3 lightDirection = -unitLightVector;
 		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
-		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
-		specularFactor = max(specularFactor,0.0);
-		float dampedFactor = pow(specularFactor, shineDamper);
-		totalDiffuse = totalDiffuse + (brightness * lightColour[i])/attFactor;
-		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i])/attFactor;
+		float specularFac = dot(reflectedLightDirection, unitVectorToCamera);
+		specularFac = max(specularFac,0.0);
+		float dampedFactor = pow(specularFac, shineDamper);
+		totalDiffuse = totalDiffuse + (brightness * lightCol[i])/attFactor;
+		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightCol[i])/attFactor;
 	}
 	totalDiffuse = max(totalDiffuse, 0.2);
 	

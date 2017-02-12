@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
-import toolbox.Maths;
+import tools.Maths;
 
 public class StaticShader extends ShaderProgram {
 
@@ -41,9 +41,9 @@ public class StaticShader extends ShaderProgram {
 
 	@Override
 	protected void getAllUniformLocation() {
-		loc_viewMat = super.getUniformLocation("viewMatrix");
-		loc_projectionMat = super.getUniformLocation("projectionMatrix");
-		loc_transformationMat = super.getUniformLocation("transfomationMatrix");
+		loc_viewMat = super.getUniformLocation("viewMat");
+		loc_projectionMat = super.getUniformLocation("projectionMat");
+		loc_transformationMat = super.getUniformLocation("transfomationMat");
 		loc_shineDamper = super.getUniformLocation("shineDamper");
 		loc_reflectivity = super.getUniformLocation("reflectivity");
 		loc_useFakeLight = super.getUniformLocation("useFakeLighting");
@@ -53,8 +53,8 @@ public class StaticShader extends ShaderProgram {
 		loc_lightCol = new int[MAX_LIGHTS];
 		loc_attenuation = new int[MAX_LIGHTS];
 		for (int i = 0; i < MAX_LIGHTS; i++) {
-			loc_lightPos[i] = super.getUniformLocation("lightPosition[" + i + "]");
-			loc_lightCol[i] = super.getUniformLocation("lightColour[" + i + "]");
+			loc_lightPos[i] = super.getUniformLocation("lightPos[" + i + "]");
+			loc_lightCol[i] = super.getUniformLocation("lightCol[" + i + "]");
 			loc_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 		}
 	}
