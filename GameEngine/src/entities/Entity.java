@@ -64,11 +64,11 @@ public class Entity {
 		this.model = model;
 	}
 
-	public Vector3f getPosition() {
+	public Vector3f getPos() {
 		return position;
 	}
 
-	public void setPosition(Vector3f position) {
+	public void setPos(Vector3f position) {
 		this.position = position;
 	}
 
@@ -121,8 +121,8 @@ public class Entity {
 		for (Entity col : Entity.entities) {
 			if (col != this
 					&& ((Vector2f
-							.sub(new Vector2f(this.getPosition().x, this.getPosition().z),
-									new Vector2f(col.getPosition().x, col.getPosition().z), null)
+							.sub(new Vector2f(this.getPos().x, this.getPos().z),
+									new Vector2f(col.getPos().x, col.getPos().z), null)
 							.length() - this.getHitBox()) - col.getHitBox()) < 1) {
 				entity = col;
 				break;

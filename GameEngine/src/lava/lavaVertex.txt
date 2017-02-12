@@ -3,19 +3,19 @@
 in vec2 position;
 
 out vec4 clipSpace;
-out vec2 textureCoords;
+out vec2 textCoords;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 projectionMat;
+uniform mat4 viewMat;
+uniform mat4 modelMat;
 
 const float tiling = 6.0;
 
 void main(void) {
 
-	clipSpace = projectionMatrix * viewMatrix * modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
+	clipSpace = projectionMat * viewMat * modelMat * vec4(position.x, 0.0, position.y, 1.0);
 	gl_Position = clipSpace;
-	textureCoords = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
+	textCoords = vec2(position.x/2.0 + 0.5, position.y/2.0 + 0.5) * tiling;
  
 
 }

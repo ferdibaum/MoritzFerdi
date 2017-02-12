@@ -20,15 +20,15 @@ public class Light {
 		this.attenuation = attenuation;
 	}
 	
-	public Vector3f getAttenuation(){
+	public Vector3f getAtten(){
 		return attenuation;
 	}
 
-	public Vector3f getPosition() {
+	public Vector3f getPos() {
 		return position;
 	}
 
-	public void setPosition(Vector3f position) {
+	public void setPos(Vector3f position) {
 		this.position = position;
 	}
 

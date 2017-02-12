@@ -28,15 +28,15 @@ public class ParticleMaster {
 			Iterator<Particle> iterator = list.iterator();
 			while (iterator.hasNext()) {
 				Particle p = iterator.next();
-				boolean stillAlive = p.update(camera);
-				if (!stillAlive) {
+				boolean alive = p.update(camera);
+				if (!alive) {
 					iterator.remove();
 					if (list.isEmpty()) {
 						mapIterator.remove();
 					}
 				}
 			}
-			InsertionSort.sortHighToLow(list);
+			InsertionSort.sortHigh(list);
 		}
 	}
 

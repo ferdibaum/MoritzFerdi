@@ -7,7 +7,7 @@ import colladaLoader.ColladaLoader;
 import colladaLoader.JointData;
 import colladaLoader.JointsData;
 import colladaLoader.MeshData;
-import engineTester.GeneralSettings;
+import mainGameLoop.GeneralSettings;
 import openglObjects.Vao;
 import textures.Texture;
 import utils.MyFile;

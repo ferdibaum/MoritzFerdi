@@ -2,7 +2,7 @@ package lava;
 
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.ShaderProgram;
-import toolbox.Maths;
+import tools.Maths;
 import entities.Camera;
 
 public class LavaShader extends ShaderProgram {
@@ -10,13 +10,13 @@ public class LavaShader extends ShaderProgram {
 	private final static String VERTEX_FILE = "src/lava/lavaVertex.txt";
 	private final static String FRAGMENT_FILE = "src/lava/lavaFragment.txt";
 
-	private int location_modelMatrix;
-	private int location_viewMatrix;
-	private int location_projectionMatrix;
-	private int location_reflectionTexture;
-	private int location_refractionTexture;
-	private int location_dudvMap;
-	private int location_moveFact;
+	private int loc_modelMat;
+	private int loc_viewMat;
+	private int loc_projectionMat;
+	private int loc_reflectionText;
+	private int loc_refractionText;
+	private int loc_dudvMap;
+	private int loc_moveFact;
 
 	
 	public LavaShader() {
@@ -30,36 +30,36 @@ public class LavaShader extends ShaderProgram {
 
 	@Override
 	protected void getAllUniformLocation() {
-		location_projectionMatrix = getUniformLocation("projectionMatrix");
-		location_viewMatrix = getUniformLocation("viewMatrix");
-		location_modelMatrix = getUniformLocation("modelMatrix");
-		location_reflectionTexture = getUniformLocation("reflectionTexture");
-		location_refractionTexture = getUniformLocation("refractionTexture");
-		location_dudvMap = getUniformLocation("dudvMap");
-		location_moveFact = getUniformLocation("moveFact");
+		loc_projectionMat = getUniformLocation("projectionMat");
+		loc_viewMat = getUniformLocation("viewMat");
+		loc_modelMat = getUniformLocation("modelMat");
+		loc_reflectionText = getUniformLocation("reflectText");
+		loc_refractionText = getUniformLocation("refractText");
+		loc_dudvMap = getUniformLocation("dudvMap");
+		loc_moveFact = getUniformLocation("moveFact");
 	}
 
 	public void connectTextureUnits(){
-		super.loadInt(location_reflectionTexture, 0);
-		super.loadInt(location_refractionTexture, 1);
-		super.loadInt(location_dudvMap, 2);
+		super.loadInt(loc_reflectionText, 0);
+		super.loadInt(loc_refractionText, 1);
+		super.loadInt(loc_dudvMap, 2);
 	}
 	
 	public void loadMoveFact(float factor){
-		super.loadFloat(location_moveFact, factor);
+		super.loadFloat(loc_moveFact, factor);
 	}
 	
-	public void loadProjectionMatrix(Matrix4f projection) {
-		loadMatrix(location_projectionMatrix, projection);
+	public void loadProjectionMat(Matrix4f projection) {
+		loadMatrix(loc_projectionMat, projection);
 	}
 	
-	public void loadViewMatrix(Camera camera){
+	public void loadViewMat(Camera camera){
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		loadMatrix(location_viewMatrix, viewMatrix);
+		loadMatrix(loc_viewMat, viewMatrix);
 	}
 
-	public void loadModelMatrix(Matrix4f modelMatrix){
-		loadMatrix(location_modelMatrix, modelMatrix);
+	public void loadModelMat(Matrix4f modelMatrix){
+		loadMatrix(loc_modelMat, modelMatrix);
 	}
 
 }

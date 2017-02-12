@@ -22,15 +22,13 @@ public class DisplayManager {
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			//ContextAttribs attribs = new ContextAttribs(3, 2).withProfileCore(true).withForwardCompatible(true);
-			//Display.create(new PixelFormat().withDepthBits(24).withSamples(4), attribs);
-			Display.setFullscreen(true);
+			//Display.setFullscreen(true);
 			Display.create();
 			Display.setInitialBackground(1, 1, 1);
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
-			System.err.println("Couldn't create display!");
+			System.err.println("Display could not be created!");
 			System.exit(-1);
 		}
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);

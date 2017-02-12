@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
-import toolbox.Maths;
+import tools.Maths;
 import entities.Camera;
 import models.RawModel;
 
@@ -34,7 +34,7 @@ public class LavaRenderer {
 		dudvTexture = loader.loadTexture(DUDV_MAP);
 		shader.start();
 		shader.connectTextureUnits();
-		shader.loadProjectionMatrix(projectionMatrix);
+		shader.loadProjectionMat(projectionMatrix);
 		shader.stop();
 		setUpVAO(loader);
 	}
@@ -44,8 +44,8 @@ public class LavaRenderer {
 		for (LavaTile tile : lava) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
 					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0,
-					LavaTile.TILE_SIZE);
-			shader.loadModelMatrix(modelMatrix);
+					LavaTile.SIZE);
+			shader.loadModelMat(modelMatrix);
 			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quad.getVertexCount());
 		}
 		unbind();
@@ -53,7 +53,7 @@ public class LavaRenderer {
 	
 	private void prepareRender(Camera camera){
 		shader.start();
-		shader.loadViewMatrix(camera);
+		shader.loadViewMat(camera);
 		moveFact += MOVE_SPEED * DisplayManager.getFrameTimeSeconds();
 		moveFact %= 1;
 		shader.loadMoveFact(moveFact);
@@ -74,7 +74,6 @@ public class LavaRenderer {
 	}
 
 	private void setUpVAO(Loader loader) {
-		// Just x and z vectex positions here, y is set to 0 in v.shader
 		int x = 3;
 		float[] vertices = {-x, -x, -x, x, x, -x, x, -x, -x, x, x, x};
 		quad = loader.loadToVAO(vertices);

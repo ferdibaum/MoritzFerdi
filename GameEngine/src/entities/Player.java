@@ -12,16 +12,16 @@ import abilitys.Meteoroid;
 import abilitys.Wall;
 import animatedModel.AnimatedModel;
 import animation.Animation;
-import engineTester.GeneralSettings;
-import engineTester.MainGameLoop;
 import loaders.AnimationLoader;
+import mainGameLoop.GeneralSettings;
+import mainGameLoop.MainGameLoop;
 import models.TexturedModel;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import toolbox.Maths;
+import tools.Maths;
 import utils.MyFile;
 
 public class Player extends Entity {
@@ -116,7 +116,7 @@ public class Player extends Entity {
 		if (moving) {
 			
 			Vector2f pos = new Vector2f();
-			pos.set(this.getPosition().getX(), this.getPosition().getZ());
+			pos.set(this.getPos().getX(), this.getPos().getZ());
 			Vector2f dir = Vector2f.sub(destination, pos, null);
 			if (dir.length() > 0.1) {
 				if (turnesDone < TURNSTEPS) {
@@ -124,13 +124,13 @@ public class Player extends Entity {
 					turnesDone++;
 				}
 
-				Vector3f newPos = new Vector3f(this.getPosition().x + dir.x / dir.length() * speed,
-						this.getPosition().y, this.getPosition().z + dir.y / dir.length() * speed);
+				Vector3f newPos = new Vector3f(this.getPos().x + dir.x / dir.length() * speed,
+						this.getPos().y, this.getPos().z + dir.y / dir.length() * speed);
 				float terrainHeight = terrain.getHeightOfTerrain(newPos.x, newPos.z);
 				boolean b = true;
 				for (Entity e : Entity.entities) {
 					if (!e.getClass().toString().equals("class entities.Player") && !(e instanceof Meteoroid)) {
-						if (Vector3f.sub(newPos, e.getPosition(), null).length() < 3)
+						if (Vector3f.sub(newPos, e.getPos(), null).length() < 3)
 							b = false;
 					}
 				}
@@ -140,9 +140,9 @@ public class Player extends Entity {
 					// System.out.println((dir.x / dir.length()) * speed);
 				}
 
-				terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-				if (super.getPosition().y != terrainHeight) {
-					super.getPosition().y = terrainHeight;
+				terrainHeight = terrain.getHeightOfTerrain(super.getPos().x, super.getPos().z);
+				if (super.getPos().y != terrainHeight) {
+					super.getPos().y = terrainHeight;
 				}
 
 			} else {
@@ -194,9 +194,9 @@ public class Player extends Entity {
 				deltaShoot = now - lastShoot;
 				if (deltaShoot > atkSpeed) {
 					Vector3f bullletPos = new Vector3f();
-					bullletPos.x = this.getPosition().x;
-					bullletPos.y = this.getPosition().y + 5;
-					bullletPos.z = this.getPosition().z;
+					bullletPos.x = this.getPos().x;
+					bullletPos.y = this.getPos().y + 5;
+					bullletPos.z = this.getPos().z;
 					bullets.add(new Projectile(bulletModel, bullletPos, 0.0f, this.getRotY(), this.getRotZ(), 1f));
 					deltaShoot = 0;
 					lastShoot = now;
@@ -223,7 +223,7 @@ public class Player extends Entity {
 						MainGameLoop.getMPicker().getCurrentTerrainPoint().z);
 
 				Vector2f pos = new Vector2f();
-				pos.set(this.getPosition().getX(), this.getPosition().getZ());
+				pos.set(this.getPos().getX(), this.getPos().getZ());
 				Vector2f dir = Vector2f.sub(destination, pos, null);
 				Vector2f currDir = new Vector2f();
 				currDir.x = (float) (Math.sin(Math.toRadians(this.getRotY())));
@@ -263,13 +263,13 @@ public class Player extends Entity {
 		checkInputs(terrain);
 		if(meteoroid != null){
 			//System.out.println(Vector3f.sub(meteoroid.getPosition(), meteoroid.getDestiny(), null).length());
-			if(Vector3f.sub(meteoroid.getPosition(), meteoroid.getDestiny(), null).length() < 5 ){
+			if(Vector3f.sub(meteoroid.getPos(), meteoroid.getDestiny(), null).length() < 5 ){
 				meteoroid.setLife(0);
 				meteoroid.getpSys().generateParticles(meteoroid.getDestiny());
 			}else{
 				Vector3f vec = Vector3f.sub(meteoroid.getStart(), meteoroid.getDestiny(), null).normalise(null);
-				pMeteroMove.generateParticles(meteoroid.getPosition());
-				meteoroid.setPosition(Vector3f.sub(meteoroid.getPosition(), new Vector3f(vec.x/ meteoroid.getSpeed(),vec.y/ meteoroid.getSpeed(), vec.z/ meteoroid.getSpeed()), null));
+				pMeteroMove.generateParticles(meteoroid.getPos());
+				meteoroid.setPos(Vector3f.sub(meteoroid.getPos(), new Vector3f(vec.x/ meteoroid.getSpeed(),vec.y/ meteoroid.getSpeed(), vec.z/ meteoroid.getSpeed()), null));
 			}	
 		}
 		
@@ -289,11 +289,11 @@ public class Player extends Entity {
 			pSys.setDirection(new Vector3f((float) Math.sin(Math.toRadians(bullet.getRotY())), 0,
 					(float) Math.cos(Math.toRadians(bullet.getRotY()))), 0.025f);
 			bullet.increasePosition(dx, 0, dz);
-			pSys.generateParticles(bullet.getPosition());
+			pSys.generateParticles(bullet.getPos());
 
 			if (wall != null) {
 
-				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPosition());
+				float diffWall = calcDiffWall(wall.getPos1(), wall.getPos2(), bullet.getPos());
 				if (diffWall < 2f && bullet.delta < 30) {
 					double angle = Maths.angleBetweenVs(
 							new Vector2f((float) Math.sin(Math.toRadians(bullet.getRotY())),
@@ -319,7 +319,7 @@ public class Player extends Entity {
 					bullet.destroy();
 				}
 			}
-			if (Vector3f.sub(bullet.getPosition(), bullet.getStart(), null).length() > Projectile.RANGE) {
+			if (Vector3f.sub(bullet.getPos(), bullet.getStart(), null).length() > Projectile.RANGE) {
 				bullets.remove(bullet);
 				bullet.destroy();
 			}
@@ -336,7 +336,7 @@ public class Player extends Entity {
 			wall.update();
 
 		if (sprintcd > 300)
-			pSysSprint.generateParticles(this.getPosition());
+			pSysSprint.generateParticles(this.getPos());
 		if (sprintcd == 300)
 			MAX_SPEED = MAX_SPEED / 2;
 	}

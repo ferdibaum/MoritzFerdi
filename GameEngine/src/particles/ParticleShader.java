@@ -7,28 +7,28 @@ import shaders.ShaderProgram;
 
 public class ParticleShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "src/particles/particleVShader.txt";
-	private static final String FRAGMENT_FILE = "src/particles/particleFShader.txt";
+	private static final String VERTEX_SHADER = "src/particles/particleVShader.txt";
+	private static final String FRAGMENT_SHADER = "src/particles/particleFShader.txt";
 
-	private int location_modelViewMatrix;
-	private int location_projectionMatrix;
-	private int location_texOffset1;
-	private int location_texOffset2;
-	private int location_texCoordInfo;
+	private int loc_modelViewMat;
+	private int loc_projectionMat;
+	private int loc_texOff1;
+	private int loc_texOff2;
+	private int loc_texCoordInfo;
 
 	
 	
 	public ParticleShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super(VERTEX_SHADER, FRAGMENT_SHADER);
 	}
 
 	@Override
 	protected void getAllUniformLocation() {
-		location_modelViewMatrix = super.getUniformLocation("modelViewMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_texOffset1 = super.getUniformLocation("texOffset1");
-		location_texOffset2 = super.getUniformLocation("texOffset2");
-		location_texCoordInfo = super.getUniformLocation("texCoordInfo");
+		loc_modelViewMat = super.getUniformLocation("modelViewMat");
+		loc_projectionMat = super.getUniformLocation("projectionMat");
+		loc_texOff1 = super.getUniformLocation("texOff1");
+		loc_texOff2 = super.getUniformLocation("texOff2");
+		loc_texCoordInfo = super.getUniformLocation("texCoordInfo");
 	}
 
 	@Override
@@ -37,18 +37,18 @@ public class ParticleShader extends ShaderProgram {
 	}
 	
 	protected void loadTextureCoordInfo(Vector2f offset1, Vector2f offset2, float numRows, float blend) {
-		super.load2DVector(location_texOffset1, offset1);
-		super.load2DVector(location_texOffset2, offset2);
-		super.load2DVector(location_texCoordInfo, new Vector2f(numRows, blend));
+		super.load2DVector(loc_texOff1, offset1);
+		super.load2DVector(loc_texOff2, offset2);
+		super.load2DVector(loc_texCoordInfo, new Vector2f(numRows, blend));
 
 	}
 
 	protected void loadModelViewMatrix(Matrix4f modelView) {
-		super.loadMatrix(location_modelViewMatrix, modelView);
+		super.loadMatrix(loc_modelViewMat, modelView);
 	}
 
 	protected void loadProjectionMatrix(Matrix4f projectionMatrix) {
-		super.loadMatrix(location_projectionMatrix, projectionMatrix);
+		super.loadMatrix(loc_projectionMat, projectionMatrix);
 	}
 
 }

@@ -1,4 +1,4 @@
-package toolbox;
+package tools;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;

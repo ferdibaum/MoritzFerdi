@@ -10,12 +10,12 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 
 public class Camera {
-
+	/**
 	private static final float PITCH_SENSITIVITY = 0.3f;
 	private static final float YAW_SENSITIVITY = 0.3f;
 	private static final float MAX_PITCH = 90;
 	private static final float Y_OFFSET = 5;
-
+	*/
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.2f;
 	private static final float FAR_PLANE = 400;
@@ -106,7 +106,7 @@ public class Camera {
 			position.y = position.y - diff2.x * ZOOM_SPEED * dWheel;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			Vector3f playerPos = player.getPosition();
+			Vector3f playerPos = player.getPos();
 			position.x = playerPos.x;
 			position.z = playerPos.z + 41;
 			position.y = 55;
@@ -163,7 +163,7 @@ public class Camera {
 		return Matrix4f.mul(projectionMatrix, viewMatrix, null);
 	}
 
-	private void updateViewMatrix() {
+	private void updateViewMat() {
 		viewMatrix.setIdentity();
 		Matrix4f.rotate((float) Math.toRadians(pitch), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
 		Matrix4f.rotate((float) Math.toRadians(yaw), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
@@ -171,19 +171,19 @@ public class Camera {
 		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
 	}
 
-	private static Matrix4f createProjectionMatrix() {
-		Matrix4f projectionMatrix = new Matrix4f();
+	private static Matrix4f createProjectionMat() {
+		Matrix4f projectionMat = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
 		float x_scale = y_scale / aspectRatio;
 		float frustum_length = FAR_PLANE - NEAR_PLANE;
 
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-		projectionMatrix.m33 = 0;
-		return projectionMatrix;
+		projectionMat.m00 = x_scale;
+		projectionMat.m11 = y_scale;
+		projectionMat.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMat.m23 = -1;
+		projectionMat.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMat.m33 = 0;
+		return projectionMat;
 	}
 }
