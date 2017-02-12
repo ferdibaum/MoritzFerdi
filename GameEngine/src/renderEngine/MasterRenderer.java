@@ -18,7 +18,6 @@ import models.TexturedModel;
 import renderer.AnimatedModelRenderer;
 import shaders.StaticShader;
 import shaders.TerrainShader;
-import skybox.SkyboxRenderer;
 import terrains.Terrain;
 
 public class MasterRenderer {
