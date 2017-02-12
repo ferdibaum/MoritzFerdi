@@ -2,32 +2,12 @@ package animation;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-/**
- * A quaternion simply represents a 3D rotation. The maths behind it is quite
- * complex (literally; it involves complex numbers) so I wont go into it in too
- * much detail. The important things to note are that it represents a 3d
- * rotation, it's very easy to interpolate between two quaternion rotations
- * (which would not be easy to do correctly with Euler rotations or rotation
- * matrices), and you can convert to and from matrices fairly easily. So when we
- * need to interpolate between rotations we'll represent them as quaternions,
- * but when we need to apply the rotations to anything we'll convert back to a
- * matrix.
- * 
- * @author Karl
- *
- */
+
 public class Quaternion {
 
 	private float x, y, z, w;
 
-	/**
-	 * Creates a quaternion and normalizes it.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param w
-	 */
+
 	public Quaternion(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;
@@ -36,14 +16,6 @@ public class Quaternion {
 		normalize();
 	}
 
-	/**
-	 * Extracts the rotation part of a transformation matrix and converts it to
-	 * a quaternion using the magic of maths.
-	 * 
-	 * @param matrix
-	 *            - the transformation matrix containing the rotation which this
-	 *            quaternion shall represent.
-	 */
 	public Quaternion(Matrix4f matrix) {
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
 		if (diagonal > 0) {
@@ -74,15 +46,7 @@ public class Quaternion {
 		this.normalize();
 	}
 
-	/**
-	 * Converts the quaternion to a 4x4 matrix representing the exact same
-	 * rotation as this quaternion. (The rotation is only contained in the
-	 * top-left 3x3 part, but a 4x4 matrix is returned here for convenience
-	 * seeing as it will be multiplied with other 4x4 matrices).
-	 * 
-	 * @return The rotation matrix which represents the exact same rotation as
-	 *         this quaternion.
-	 */
+
 	public Matrix4f toRotationMatrix() {
 		Matrix4f matrix = new Matrix4f();
 		final float xy = x * y;
@@ -113,9 +77,7 @@ public class Quaternion {
 		return matrix;
 	}
 
-	/**
-	 * Normalizes the quaternion.
-	 */
+
 	public void normalize() {
 		float mag = (float) Math.sqrt(w * w + x * x + y * y + z * z);
 		w /= mag;
@@ -124,21 +86,6 @@ public class Quaternion {
 		z /= mag;
 	}
 
-	/**
-	 * Interpolates between two quaternion rotations and returns a new
-	 * quaternion which represents a rotation somewhere in between the two input
-	 * rotations.
-	 * 
-	 * @param start
-	 *            - the starting rotation.
-	 * @param end
-	 *            - the end rotation.
-	 * @param progression
-	 *            - a value between 0 and 1 indicating how much to interpolate
-	 *            between the two rotations. 0 would retrun the start rotation,
-	 *            and 1 would return the end rotation.
-	 * @return The interpolated rotation as a quaternion.
-	 */
 	public static Quaternion slerp(Quaternion start, Quaternion end, float progression) {
 		start.normalize();
 		end.normalize();
