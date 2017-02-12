@@ -2,7 +2,7 @@ package lava;
 
 public class LavaTile {
 	
-	public static final float TILE_SIZE = 60;
+	public static final float SIZE = 65;
 	
 	private float height;
 	private float x,z;

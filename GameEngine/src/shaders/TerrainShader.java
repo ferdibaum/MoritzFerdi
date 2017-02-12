@@ -17,20 +17,20 @@ public class TerrainShader extends ShaderProgram{
 	private static final String VERTEX_FILE = "src/shaders/terrainVertexShader.txt";
 	private static final String FRAGMENT_FILE = "src/shaders/terrainFragmentShader.txt";
 	
-	private int location_transformationMatrix;
-	private int location_projectionMatrix;
-	private int location_viewMatrix;
-	private int location_lightPosition[];
-	private int location_lightColour[];
-	private int location_attenuation[];
-	private int location_shineDamper;
-	private int location_reflectivity;
-	private int location_backgroundTexture;
-	private int location_rTexture;
-	private int location_gTexture;
-	private int location_bTexture;
-	private int location_blendMap;
-	private int location_plane;
+	private int loc_transformationMat;
+	private int loc_projectionMat;
+	private int loc_viewMat;
+	private int loc_lightPos[];
+	private int loc_lightCol[];
+	private int loc_attenuation[];
+	private int loc_shineDamper;
+	private int loc_reflectivity;
+	private int loc_backgroundTexture;
+	private int loc_rTexture;
+	private int loc_gTexture;
+	private int loc_bTexture;
+	private int loc_blendMap;
+	private int loc_plane;
 	
 	
 	public TerrainShader() {
@@ -46,71 +46,71 @@ public class TerrainShader extends ShaderProgram{
 
 	@Override
 	protected void getAllUniformLocation() {
-		location_transformationMatrix = super.getUniformLocation("transfomationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		location_shineDamper = super.getUniformLocation("shineDamper");
-		location_reflectivity = super.getUniformLocation("reflectivity");
-		location_backgroundTexture = super.getUniformLocation("backgroundTexture");
-		location_rTexture = super.getUniformLocation("rTexture");
-		location_gTexture = super.getUniformLocation("gTexture");
-		location_bTexture = super.getUniformLocation("bTexture");
-		location_blendMap = super.getUniformLocation("blendMap");
-		location_plane = super.getUniformLocation("plane");
+		loc_transformationMat = super.getUniformLocation("transfomationMatrix");
+		loc_projectionMat = super.getUniformLocation("projectionMatrix");
+		loc_viewMat = super.getUniformLocation("viewMatrix");
+		loc_rTexture = super.getUniformLocation("rTexture");
+		loc_gTexture = super.getUniformLocation("gTexture");
+		loc_bTexture = super.getUniformLocation("bTexture");
+		loc_blendMap = super.getUniformLocation("blendMap");
+		loc_shineDamper = super.getUniformLocation("shineDamper");
+		loc_reflectivity = super.getUniformLocation("reflectivity");
+		loc_backgroundTexture = super.getUniformLocation("backgroundTexture");
+		loc_plane = super.getUniformLocation("plane");
 		
-		location_lightPosition = new int[MAX_LIGHTS];
-		location_lightColour = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
+		loc_lightPos = new int[MAX_LIGHTS];
+		loc_lightCol = new int[MAX_LIGHTS];
+		loc_attenuation = new int[MAX_LIGHTS];
 		
 		for (int i = 0; i < MAX_LIGHTS; i++) {
-			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
-			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
-			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
+			loc_lightPos[i] = super.getUniformLocation("lightPosition[" + i + "]");
+			loc_lightCol[i] = super.getUniformLocation("lightColour[" + i + "]");
+			loc_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 		}
 	}
 	
 	public void connectTextureUnits(){
-		super.loadInt(location_backgroundTexture, 0);
-		super.loadInt(location_rTexture, 1);
-		super.loadInt(location_gTexture, 2);
-		super.loadInt(location_bTexture, 3);
-		super.loadInt(location_blendMap, 4);
+		super.loadInt(loc_backgroundTexture, 0);
+		super.loadInt(loc_rTexture, 1);
+		super.loadInt(loc_gTexture, 2);
+		super.loadInt(loc_bTexture, 3);
+		super.loadInt(loc_blendMap, 4);
 	}
 	
 	public void loadClipPlane(Vector4f plane){
-		super.load4DVector(location_plane, plane);
+		super.load4DVector(loc_plane, plane);
 	}
 	
 	public void loadShineVariables(float damper, float reflectivity){
-		super.loadFloat(location_shineDamper, damper);
-		super.loadFloat(location_reflectivity, reflectivity);
+		super.loadFloat(loc_shineDamper, damper);
+		super.loadFloat(loc_reflectivity, reflectivity);
 	}
 	
 	public void loadLight(List<Light> lights){
 		for (int i = 0; i < MAX_LIGHTS; i++) {
 			if (i < lights.size()) {
-				super.load3DVector(location_lightPosition[i], lights.get(i).getPosition());
-				super.load3DVector(location_lightColour[i], lights.get(i).getColour());
-				super.load3DVector(location_attenuation[i], lights.get(i).getAttenuation());
+				super.load3DVector(loc_lightPos[i], lights.get(i).getPos());
+				super.load3DVector(loc_lightCol[i], lights.get(i).getColour());
+				super.load3DVector(loc_attenuation[i], lights.get(i).getAtten());
 			} else {
-				super.load3DVector(location_lightPosition[i], new Vector3f(0,0,0));
-				super.load3DVector(location_lightColour[i], new Vector3f(0,0,0));
-				super.load3DVector(location_attenuation[i], new Vector3f(1,0,0));
+				super.load3DVector(loc_lightPos[i], new Vector3f(0,0,0));
+				super.load3DVector(loc_lightCol[i], new Vector3f(0,0,0));
+				super.load3DVector(loc_attenuation[i], new Vector3f(1,0,0));
 			}
 		}
 	}
 
 	public void loadTransformationMatrix(Matrix4f matrix){
-		super.loadMatrix(location_transformationMatrix, matrix);
+		super.loadMatrix(loc_transformationMat, matrix);
 	}
 	
 	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix(location_viewMatrix, viewMatrix);
+		super.loadMatrix(loc_viewMat, viewMatrix);
 	}
 	
 	public void loadProjectionMatrix(Matrix4f projection){
-		super.loadMatrix(location_projectionMatrix, projection);
+		super.loadMatrix(loc_projectionMat, projection);
 	}
 
 }

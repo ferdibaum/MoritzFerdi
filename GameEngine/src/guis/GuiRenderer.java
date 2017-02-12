@@ -33,7 +33,7 @@ public class GuiRenderer {
 		for(GuiTexture gui: guis){
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, gui.getTexture());
-			Matrix4f matrix = Maths.createTransformationMatrix(gui.getPosition(), gui.getScale());
+			Matrix4f matrix = Maths.createTransformationMatrix(gui.getPos(), gui.getScale());
 			shader.loadTransformation(matrix);
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 		}

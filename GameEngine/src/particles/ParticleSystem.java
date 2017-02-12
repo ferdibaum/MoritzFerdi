@@ -31,13 +31,7 @@ public class ParticleSystem {
 		this.texture = texture;
 	}
 
-	/**
-	 * @param direction
-	 *            - The average direction in which particles are emitted.
-	 * @param deviation
-	 *            - A value between 0 and 1 indicating how far from the chosen
-	 *            direction particles can deviate.
-	 */
+
 	public void setDirection(Vector3f direction, float deviation) {
 		this.direction = new Vector3f(direction);
 		this.directionDeviation = (float) (deviation * Math.PI);
@@ -47,26 +41,17 @@ public class ParticleSystem {
 		randomRotation = true;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+
 	public void setSpeedError(float error) {
 		this.speedError = error * averageSpeed;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+
 	public void setLifeError(float error) {
 		this.lifeError = error * averageLifeLength;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+
 	public void setScaleError(float error) {
 		this.scaleError = error * averageScale;
 	}

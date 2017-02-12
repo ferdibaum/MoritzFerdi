@@ -1,4 +1,4 @@
-package engineTester;
+package mainGameLoop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,6 @@ import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
 import renderer.AnimatedModelRenderer;
-import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
@@ -84,9 +83,8 @@ public class MainGameLoop {
 
 		bTerrain = new Terrain(-0.5f, -0.5f, 600, loader, texturePack, blendMapBG, "heightMapBG");
 		
-		SkyboxRenderer skyRenderer = new SkyboxRenderer();
 		AnimatedModelRenderer entityRenderer = new AnimatedModelRenderer();
-		renderer = new MasterRenderer(entityRenderer, skyRenderer);
+		renderer = new MasterRenderer(entityRenderer);
 		
 		AnimatedModel animmodel = AnimatedModelLoader.loadEntity(new MyFile("res", GeneralSettings.MODEL_FILE),
 				new MyFile("res", GeneralSettings.DIFFUSE_FILE));

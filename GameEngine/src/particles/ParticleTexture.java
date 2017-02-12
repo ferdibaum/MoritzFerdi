@@ -10,7 +10,7 @@ public class ParticleTexture {
 		this.numberOfRows = numberOfRows;
 	}
 
-	public int getTextureID() {
+	public int getTextID() {
 		return textureID;
 	}
 

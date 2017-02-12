@@ -7,8 +7,8 @@ const float distStrength = 0.025;
 
 out vec4 out_Color;
 
-uniform sampler2D reflectionTexture;
-uniform sampler2D refractionTexture;
+uniform sampler2D reflectText;
+uniform sampler2D refractText;
 uniform sampler2D dudvMap;
 
 uniform float moveFact;
@@ -19,9 +19,9 @@ void main(void) {
 	vec2 reflectTexCoords = vec2(ndc.x, -ndc.y);
 	vec2 refractTexCoords = vec2(ndc.x, ndc.y);
 	
-	vec2 distortion1 = (texture(dudvMap, vec2(textureCoords.x + moveFact, textureCoords.y)).rg * 2.0 - 1.0) * distStrength;
-	vec2 distortion2 = (texture(dudvMap, vec2(-textureCoords.x + moveFact, textureCoords.y + moveFact)).rg * 2.0 - 1.0) * distStrength;
-	vec2 totalDist = distortion1 + distortion2;
+	vec2 dist1 = (texture(dudvMap, vec2(textureCoords.x + moveFact, textureCoords.y)).rg * 2.0 - 1.0) * distStrength;
+	vec2 dist2 = (texture(dudvMap, vec2(-textureCoords.x + moveFact, textureCoords.y + moveFact)).rg * 2.0 - 1.0) * distStrength;
+	vec2 totalDist = dist1 + dist2;
 	
 	reflectTexCoords += totalDist;
 	reflectTexCoords.x = clamp(reflectTexCoords.x, 0.001, 0.999);
@@ -30,8 +30,8 @@ void main(void) {
 	refractTexCoords += totalDist;
 	refractTexCoords = clamp(refractTexCoords, 0.001, 0.999);
 	
-	vec4 reflectColour = texture(reflectionTexture, reflectTexCoords);
-	vec4 refractColour = texture(refractionTexture, refractTexCoords);
+	vec4 reflectColour = texture(reflectText, reflectTexCoords);
+	vec4 refractColour = texture(refractText, refractTexCoords);
 
 	out_Color = mix(refractColour, reflectColour, 0.5);
 	out_Color = mix(out_Color, vec4(0.6, 0.35, 0.0, 0.5), 0.3);

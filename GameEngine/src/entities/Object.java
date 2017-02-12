@@ -22,7 +22,7 @@ public class Object extends Entity {
 	public void update() {
 		if (this.getLife() == 0) {
 			objects.remove(this);
-			Vector3f pos = this.getPosition();
+			Vector3f pos = this.getPos();
 			pos.y += 2;
 			pSys.generateParticles(pos);
 			this.destroy();

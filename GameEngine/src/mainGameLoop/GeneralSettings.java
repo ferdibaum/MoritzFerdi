@@ -1,4 +1,4 @@
-package engineTester;
+package mainGameLoop;
 
 import org.lwjgl.util.vector.Vector3f;
 

@@ -35,19 +35,17 @@ public class MasterRenderer {
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
 	
-	private SkyboxRenderer skyRenderer;
 	private AnimatedModelRenderer animRenderer;
 	
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
-	public MasterRenderer(AnimatedModelRenderer animrenderer, SkyboxRenderer skyRenderer){
+	public MasterRenderer(AnimatedModelRenderer animrenderer){
 		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader,projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader,projectionMatrix);
-		this.skyRenderer = skyRenderer;
 		this.animRenderer = animrenderer;
 	}
 	
@@ -84,7 +82,7 @@ public class MasterRenderer {
 	
 	protected void renderAnim(AnimatedModel model, Camera camera, Light light, Entity entity) {
 		//prepare();
-		animRenderer.render(model, camera, light.getPosition(), projectionMatrix, entity);
+		animRenderer.render(model, camera, light.getPos(), projectionMatrix, entity);
 		//skyRenderer.render(scene.getCamera());
 	}
 	
@@ -106,7 +104,6 @@ public class MasterRenderer {
 	}
 	
 	public void cleanUp(){
-		skyRenderer.cleanUp();
 		animRenderer.cleanUp();
 		shader.cleanUp();
 		terrainShader.cleanUp();

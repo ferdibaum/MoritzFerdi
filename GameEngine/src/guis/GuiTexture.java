@@ -21,7 +21,7 @@ public class GuiTexture {
 	}
 
 
-	public Vector2f getPosition() {
+	public Vector2f getPos() {
 		return position;
 	}
 
