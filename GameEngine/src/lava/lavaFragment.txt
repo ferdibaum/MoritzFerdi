@@ -23,12 +23,13 @@ void main(void) {
 	vec2 dist2 = (texture(dudvMap, vec2(-textureCoords.x + moveFact, textureCoords.y + moveFact)).rg * 2.0 - 1.0) * distStrength;
 	vec2 totalDist = dist1 + dist2;
 	
+	refractTexCoords += totalDist;
+	refractTexCoords = clamp(refractTexCoords, 0.001, 0.999);
+	
 	reflectTexCoords += totalDist;
 	reflectTexCoords.x = clamp(reflectTexCoords.x, 0.001, 0.999);
 	reflectTexCoords.y = clamp(reflectTexCoords.y, -0.999, -0.001);
 		
-	refractTexCoords += totalDist;
-	refractTexCoords = clamp(refractTexCoords, 0.001, 0.999);
 	
 	vec4 reflectColour = texture(reflectText, reflectTexCoords);
 	vec4 refractColour = texture(refractText, refractTexCoords);
